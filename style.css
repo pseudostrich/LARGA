@@ -1,0 +1,9742 @@
+/* ==========================================================
+
+   LOCAL FONTS
+
+   ========================================================== */
+
+
+
+@font-face {
+
+    font-family: "General Sans";
+
+    src: url("Assets/Fonts/GeneralSans-Variable.woff2") format("woff2");
+
+    font-weight: 200 700;
+
+    font-style: normal;
+
+    font-display: swap;
+
+}
+
+
+
+
+
+@font-face {
+
+    font-family: "Montserrat";
+
+    src: url("Assets/Fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
+
+    font-weight: 100 900;
+
+    font-style: normal;
+
+    font-display: swap;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   GLOBAL
+
+   ========================================================== */
+
+
+
+:root {
+
+    --larga-orange: #f56600;
+
+    --larga-orange-light: #ff7919;
+
+
+
+    --larga-blue-top: #075dbc;
+
+    --larga-blue-middle: #064a96;
+
+    --larga-blue-bottom: #002b56;
+
+
+
+    --dark-text: #15171c;
+
+    --muted-text: #777c86;
+
+
+
+    --general:
+
+        "General Sans",
+
+        Arial,
+
+        Helvetica,
+
+        sans-serif;
+
+
+
+    --montserrat:
+
+        "Montserrat",
+
+        Arial,
+
+        Helvetica,
+
+        sans-serif;
+
+}
+
+
+
+
+
+* {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+
+
+
+
+html,
+
+body {
+
+    width: 100%;
+
+    min-height: 100%;
+
+}
+
+
+
+
+
+body {
+
+    min-height: 100vh;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    padding: 12px;
+
+
+
+    font-family: var(--general);
+
+
+
+    background: #dddddf;
+
+}
+
+
+
+
+
+button,
+
+input {
+
+    font: inherit;
+
+}
+
+
+
+
+
+button {
+
+    cursor: pointer;
+
+}
+
+
+
+
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   PHONE
+
+   ========================================================== */
+
+
+
+.phone {
+
+    position: relative;
+
+
+
+    width: min(
+
+        393px,
+
+        calc(100vw - 24px)
+
+    );
+
+
+
+    height: min(
+
+        780px,
+
+        calc(100vh - 24px)
+
+    );
+
+
+
+    min-height: 600px;
+
+
+
+    overflow: hidden;
+
+
+
+    border-radius: 30px;
+
+
+
+    background: #f7f7f9;
+
+
+
+    box-shadow:
+
+        0 22px 58px
+
+        rgba(0, 0, 0, 0.18);
+
+}
+
+
+
+
+
+.full-screen {
+
+    position: absolute;
+
+
+
+    inset: 0;
+
+
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   SHARED BLUE BACKGROUND
+
+   ========================================================== */
+
+
+
+.onboarding-screen,
+
+.role-screen,
+
+.loading-screen,
+
+.auth-screen {
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            var(--larga-blue-top) 0%,
+
+            var(--larga-blue-middle) 45%,
+
+            var(--larga-blue-bottom) 100%
+
+        );
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   ONBOARDING
+
+   ========================================================== */
+
+
+
+.onboarding-screen {
+
+    z-index: 1000;
+
+
+
+    overflow: hidden;
+
+
+
+    color: white;
+
+
+
+    user-select: none;
+
+
+
+    cursor: pointer;
+
+}
+
+
+
+
+
+.onboarding-screen img {
+
+    pointer-events: none;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+}
+
+
+
+
+
+.onboarding-page {
+
+    position: absolute;
+
+
+
+    inset: 0;
+
+
+
+    width: 100%;
+
+    height: 100%;
+
+
+
+    will-change: transform;
+
+
+
+    backface-visibility: hidden;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   SPLASH
+
+   ========================================================== */
+
+
+
+.splash-view {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+
+
+
+.splash-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.splash-logo {
+
+    width: 92px;
+
+
+
+    margin-bottom: 18px;
+
+}
+
+
+
+
+
+.splash-wordmark {
+
+    width: 205px;
+
+}
+
+
+
+
+
+.splash-tagline {
+
+    margin-top: 12px;
+
+
+
+    color: white;
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   INTRO
+
+   ========================================================== */
+
+
+
+.intro-slide {
+
+    display: flex;
+
+    flex-direction: column;
+
+
+
+    padding:
+
+        34px
+
+        28px
+
+        82px;
+
+}
+
+
+
+
+
+.intro-image-area {
+
+    height: 51%;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+
+
+
+.intro-image {
+
+    max-width: 100%;
+
+    max-height: 92%;
+
+
+
+    object-fit: contain;
+
+}
+
+
+
+
+
+.intro-copy {
+
+    margin-top: 12px;
+
+}
+
+
+
+
+
+.intro-copy h1 {
+
+    max-width: 320px;
+
+
+
+    margin-bottom: 12px;
+
+
+
+    color: white;
+
+
+
+    font-size: 31px;
+
+    font-weight: 650;
+
+    line-height: 1.02;
+
+
+
+    letter-spacing: -0.7px;
+
+}
+
+
+
+
+
+.intro-copy p {
+
+    max-width: 300px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.76);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 11px;
+
+    font-weight: 450;
+
+    line-height: 1.55;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   ONBOARDING CONTROLS
+
+   ========================================================== */
+
+
+
+.onboarding-controls {
+
+    position: absolute;
+
+
+
+    left: 28px;
+
+    right: 28px;
+
+    bottom: 27px;
+
+
+
+    z-index: 100;
+
+
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+
+    pointer-events: none;
+
+
+
+    opacity: 1;
+
+
+
+    transition:
+
+        opacity
+
+        0.22s
+
+        ease;
+
+}
+
+
+
+
+
+.onboarding-controls.controls-hidden {
+
+    opacity: 0;
+
+}
+
+
+
+
+
+.onboarding-indicator {
+
+    display: flex;
+
+    align-items: center;
+
+
+
+    gap: 7px;
+
+}
+
+
+
+
+
+.onboarding-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+
+
+    flex-shrink: 0;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        rgba(255, 255, 255, 0.38);
+
+
+
+    transition:
+
+        width
+
+        0.38s
+
+        cubic-bezier(0.22, 1, 0.36, 1),
+
+
+
+        background-color
+
+        0.3s
+
+        ease;
+
+}
+
+
+
+
+
+.onboarding-dot.active {
+
+    width: 44px;
+
+
+
+    background:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+.onboarding-hint {
+
+    max-width: 180px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.54);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    line-height: 1.3;
+
+
+
+    text-align: right;
+
+
+
+    opacity: 1;
+
+
+
+    transform:
+
+        translateY(0);
+
+
+
+    transition:
+
+        opacity
+
+        0.16s
+
+        ease,
+
+
+
+        transform
+
+        0.16s
+
+        ease;
+
+}
+
+
+
+
+
+.onboarding-hint.hint-fade {
+
+    opacity: 0;
+
+
+
+    transform:
+
+        translateY(2px);
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   GET STARTED
+
+   ========================================================== */
+
+
+
+.orange-button {
+
+    position: relative;
+
+
+
+    z-index: 150;
+
+
+
+    width: 100%;
+
+
+
+    margin-top: 24px;
+
+
+
+    padding:
+
+        14px
+
+        18px;
+
+
+
+    border: none;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        var(--larga-orange);
+
+
+
+    color: white;
+
+
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   ROLE
+
+   ========================================================== */
+
+
+
+.role-screen {
+
+    z-index: 900;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    padding: 32px;
+
+
+
+    color: white;
+
+}
+
+
+
+
+
+.role-content {
+
+    width: 100%;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.role-logo {
+
+    width: 68px;
+
+
+
+    margin-bottom: 28px;
+
+}
+
+
+
+
+
+.role-eyebrow {
+
+    margin-bottom: 10px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.55);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+
+
+    letter-spacing: 1.5px;
+
+}
+
+
+
+
+
+.role-content h1 {
+
+    margin-bottom: 32px;
+
+
+
+    color: white;
+
+
+
+    font-size: 34px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: -0.6px;
+
+}
+
+
+
+
+
+.role-button {
+
+    width: 100%;
+
+
+
+    min-height: 46px;
+
+
+
+    padding:
+
+        13px
+
+        18px;
+
+
+
+    margin-bottom: 12px;
+
+
+
+    border-radius: 999px;
+
+
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.commuter-button {
+
+    border: none;
+
+
+
+    background:
+
+        var(--larga-orange);
+
+
+
+    color: white;
+
+}
+
+
+
+
+
+.driver-button {
+
+    border: none;
+
+
+
+    background: white;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+.text-button {
+
+    margin-top: 16px;
+
+
+
+    border: none;
+
+
+
+    background: transparent;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.65);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   PERSONALIZING
+
+   ========================================================== */
+
+
+
+.loading-screen {
+
+    z-index: 950;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    padding: 36px;
+
+}
+
+
+
+
+
+.personalizing-content {
+
+    width: 100%;
+
+
+
+    text-align: center;
+
+
+
+    transform:
+
+        translateY(-8px);
+
+}
+
+
+
+
+
+.personalizing-content h1 {
+
+    max-width: 335px;
+
+
+
+    margin:
+
+        0
+
+        auto;
+
+
+
+    color: white;
+
+
+
+    font-size: 31px;
+
+    font-weight: 650;
+
+    line-height: 1.16;
+
+
+
+    letter-spacing: -0.8px;
+
+}
+
+
+
+
+
+.personalizing-content h1 span {
+
+    display: block;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+.simple-loader {
+
+    width: 72px;
+
+    height: 72px;
+
+
+
+    margin:
+
+        36px
+
+        auto
+
+        0;
+
+
+
+    border:
+
+        10px
+
+        solid
+
+        rgba(255, 255, 255, 0.28);
+
+
+
+    border-top-color:
+
+        white;
+
+
+
+    border-radius: 50%;
+
+
+
+    animation:
+
+        simpleSpin
+
+        0.85s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+@keyframes simpleSpin {
+
+
+
+    from {
+
+        transform:
+
+            rotate(0deg);
+
+    }
+
+
+
+    to {
+
+        transform:
+
+            rotate(360deg);
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   AUTH
+
+   ========================================================== */
+
+
+
+.auth-screen {
+
+    z-index: 800;
+
+
+
+    overflow: hidden;
+
+
+
+    color: white;
+
+}
+
+
+
+
+
+.auth-view {
+
+    position: absolute;
+
+
+
+    inset: 0;
+
+
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   AUTH BRAND
+
+   ========================================================== */
+
+
+
+.auth-brand-lockup {
+
+    width: 100%;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.auth-brand-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    gap: 8px;
+
+}
+
+
+
+
+
+.auth-brand-icon {
+
+    width: 48px;
+
+    height: auto;
+
+}
+
+
+
+
+
+.auth-brand-wordmark {
+
+    width: 148px;
+
+    height: auto;
+
+}
+
+
+
+
+
+.auth-tagline {
+
+    margin-top: 4px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.95);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   AUTH LANDING
+
+   ========================================================== */
+
+
+
+.auth-landing-view {
+
+    display: flex;
+
+    flex-direction: column;
+
+
+
+    padding:
+
+        112px
+
+        38px
+
+        38px;
+
+}
+
+
+
+
+
+.auth-landing-message {
+
+    margin-top: 64px;
+
+}
+
+
+
+
+
+.auth-landing-message h1 {
+
+    max-width: 295px;
+
+
+
+    margin-bottom: 12px;
+
+
+
+    color: white;
+
+
+
+    font-size: 23px;
+
+    font-weight: 650;
+
+    line-height: 1.08;
+
+
+
+    letter-spacing: -0.5px;
+
+}
+
+
+
+
+
+.auth-landing-message p {
+
+    max-width: 296px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.76);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 10px;
+
+    font-weight: 450;
+
+    line-height: 1.55;
+
+}
+
+
+
+
+
+.auth-primary-actions {
+
+    display: grid;
+
+
+
+    gap: 10px;
+
+
+
+    margin-top: 46px;
+
+}
+
+
+
+
+
+.landing-button {
+
+    width: 100%;
+
+    height: 44px;
+
+
+
+    padding:
+
+        0
+
+        18px;
+
+
+
+    border-radius: 999px;
+
+
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+
+
+    transition:
+
+        transform 0.15s ease,
+
+        opacity 0.15s ease,
+
+        background-color 0.15s ease;
+
+}
+
+
+
+
+
+.landing-button:active {
+
+    transform:
+
+        scale(0.985);
+
+}
+
+
+
+
+
+.guest-landing-button {
+
+    border:
+
+        2px
+
+        solid
+
+        var(--larga-orange);
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+.create-landing-button {
+
+    border:
+
+        2px
+
+        solid
+
+        var(--larga-orange);
+
+
+
+    background:
+
+        var(--larga-orange);
+
+
+
+    color: white;
+
+}
+
+
+
+
+
+.login-landing-button {
+
+    border:
+
+        2px
+
+        solid
+
+        white;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   SOCIAL BUTTONS
+
+   ========================================================== */
+
+
+
+.social-auth {
+
+    text-align: center;
+
+}
+
+
+
+
+
+.social-auth-bottom {
+
+    margin-top: auto;
+
+}
+
+
+
+
+
+.form-social-auth {
+
+    margin-top: 24px;
+
+
+
+    padding-bottom: 4px;
+
+}
+
+
+
+
+
+.social-auth > p {
+
+    margin-bottom: 15px;
+
+
+
+    color:
+
+        rgba(255, 255, 255, 0.87);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 450;
+
+}
+
+
+
+
+
+.social-auth-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    gap: 12px;
+
+}
+
+
+
+
+
+.social-icon-button {
+
+    width: 42px;
+
+    height: 42px;
+
+
+
+    padding: 0;
+
+
+
+    border: none;
+
+
+
+    border-radius: 50%;
+
+
+
+    background: transparent;
+
+
+
+    transition:
+
+        transform 0.15s ease,
+
+        opacity 0.15s ease;
+
+}
+
+
+
+
+
+.social-icon-button:hover {
+
+    transform:
+
+        translateY(-2px);
+
+}
+
+
+
+
+
+.social-icon-button:active {
+
+    transform:
+
+        scale(0.94);
+
+}
+
+
+
+
+
+.social-icon-button img {
+
+    display: block;
+
+
+
+    width: 42px;
+
+    height: 42px;
+
+
+
+    object-fit: contain;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   LOGIN / SIGN UP SCREEN
+
+   ========================================================== */
+
+
+
+.auth-form-view {
+
+    display: flex;
+
+    flex-direction: column;
+
+
+
+    overflow-y: auto;
+
+
+
+    scrollbar-width: none;
+
+
+
+    padding:
+
+        68px
+
+        34px
+
+        30px;
+
+}
+
+
+
+
+
+.auth-form-view::-webkit-scrollbar {
+
+    display: none;
+
+}
+
+
+
+
+
+.auth-form-view.signup-mode {
+
+    padding-top: 52px;
+
+}
+
+
+
+
+
+.auth-back-control {
+
+    position: absolute;
+
+
+
+    top: 24px;
+
+    left: 22px;
+
+
+
+    z-index: 30;
+
+
+
+    width: 37px;
+
+    height: 37px;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        rgba(255, 255, 255, 0.14);
+
+
+
+    border-radius: 50%;
+
+
+
+    background:
+
+        rgba(0, 0, 0, 0.09);
+
+
+
+    color: white;
+
+
+
+    font-size: 17px;
+
+
+
+    transition:
+
+        background-color 0.15s ease;
+
+}
+
+
+
+
+
+.auth-back-control:hover {
+
+    background:
+
+        rgba(255, 255, 255, 0.1);
+
+}
+
+
+
+
+
+.form-brand-lockup {
+
+    flex-shrink: 0;
+
+}
+
+
+
+
+
+.auth-form-heading {
+
+    margin-top: 38px;
+
+}
+
+
+
+
+
+.signup-mode .auth-form-heading {
+
+    margin-top: 25px;
+
+}
+
+
+
+
+
+.auth-form-heading h1 {
+
+    margin-bottom: 4px;
+
+
+
+    color: white;
+
+
+
+    font-size: 22px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: -0.4px;
+
+}
+
+
+
+
+
+.auth-form-heading p {
+
+    color:
+
+        rgba(255, 255, 255, 0.72);
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 450;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   PHONE / EMAIL TAB
+
+   ========================================================== */
+
+
+
+.credential-tabs {
+
+    display: grid;
+
+
+
+    grid-template-columns:
+
+        1fr
+
+        1fr;
+
+
+
+    gap: 6px;
+
+
+
+    margin-top: 24px;
+
+    margin-bottom: 22px;
+
+}
+
+
+
+
+
+.signup-mode .credential-tabs {
+
+    margin-top: 19px;
+
+    margin-bottom: 18px;
+
+}
+
+
+
+
+
+.credential-tab {
+
+    height: 37px;
+
+
+
+    padding:
+
+        0
+
+        8px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        transparent;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+
+
+    transition:
+
+        background-color 0.18s ease,
+
+        color 0.18s ease;
+
+}
+
+
+
+
+
+.active-credential-tab {
+
+    background:
+
+        var(--larga-orange);
+
+
+
+    color:
+
+        white;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   AUTH INPUTS
+
+   ========================================================== */
+
+
+
+.authentication-form {
+
+    width: 100%;
+
+}
+
+
+
+
+
+.auth-input {
+
+    width: 100%;
+
+    height: 44px;
+
+
+
+    padding:
+
+        0
+
+        18px;
+
+
+
+    margin-bottom: 11px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        rgba(0, 0, 0, 0.2);
+
+
+
+    border-radius: 999px;
+
+
+
+    outline: none;
+
+
+
+    background: white;
+
+
+
+    color:
+
+        #202329;
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+
+
+    transition:
+
+        border-color 0.15s ease,
+
+        box-shadow 0.15s ease;
+
+}
+
+
+
+
+
+.auth-input::placeholder {
+
+    color:
+
+        #9da2aa;
+
+}
+
+
+
+
+
+.auth-input:focus {
+
+    border-color:
+
+        var(--larga-orange);
+
+
+
+    box-shadow:
+
+        0
+
+        0
+
+        0
+
+        3px
+
+        rgba(245, 102, 0, 0.09);
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   PASSWORD + EYE ICON
+
+   ========================================================== */
+
+
+
+.password-control {
+
+    position: relative;
+
+
+
+    width: 100%;
+
+}
+
+
+
+
+
+.password-control .auth-input {
+
+    padding-right: 50px;
+
+}
+
+
+
+
+
+.password-toggle {
+
+    position: absolute;
+
+
+
+    top: 0;
+
+    right: 5px;
+
+
+
+    width: 40px;
+
+    height: 44px;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border: none;
+
+
+
+    border-radius: 50%;
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        #777e88;
+
+
+
+    transition:
+
+        color 0.15s ease,
+
+        background-color 0.15s ease;
+
+}
+
+
+
+
+
+.password-toggle:hover {
+
+    color:
+
+        var(--larga-orange);
+
+
+
+    background:
+
+        rgba(245, 102, 0, 0.05);
+
+}
+
+
+
+
+
+.password-toggle svg {
+
+    width: 18px;
+
+    height: 18px;
+
+
+
+    fill: none;
+
+
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+
+
+    pointer-events: none;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   INTERNATIONAL PHONE INPUT
+
+   ========================================================== */
+
+
+
+.phone-input-section {
+
+    width: 100%;
+
+
+
+    margin-bottom: 11px;
+
+}
+
+
+
+
+
+.iti {
+
+    width: 100%;
+
+}
+
+
+
+
+
+/*
+
+   IMPORTANT:
+
+   No manual padding-left is used here.
+
+
+
+   intl-tel-input automatically reserves enough room for
+
+   the selected flag and calling code.
+
+*/
+
+
+
+.iti input.iti__tel-input {
+
+    width: 100% !important;
+
+    height: 44px !important;
+
+
+
+    padding-right: 18px !important;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        rgba(0, 0, 0, 0.2) !important;
+
+
+
+    border-radius:
+
+        999px !important;
+
+
+
+    outline:
+
+        none !important;
+
+
+
+    background:
+
+        white !important;
+
+
+
+    color:
+
+        #202329 !important;
+
+
+
+    font-family:
+
+        var(--montserrat) !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+
+
+    font-weight:
+
+        500 !important;
+
+}
+
+
+
+
+
+.iti input.iti__tel-input::placeholder {
+
+    color:
+
+        #9da2aa !important;
+
+}
+
+
+
+
+
+.iti input.iti__tel-input:focus {
+
+    border-color:
+
+        var(--larga-orange) !important;
+
+
+
+    box-shadow:
+
+        0
+
+        0
+
+        0
+
+        3px
+
+        rgba(245, 102, 0, 0.09) !important;
+
+}
+
+
+
+
+
+.iti__selected-country {
+
+    border-radius:
+
+        999px
+
+        0
+
+        0
+
+        999px;
+
+
+
+    padding-left:
+
+        13px !important;
+
+
+
+    padding-right:
+
+        10px !important;
+
+}
+
+
+
+
+
+.iti__selected-country-primary {
+
+    gap:
+
+        7px !important;
+
+}
+
+
+
+
+
+.iti__selected-dial-code {
+
+    color:
+
+        #272a30 !important;
+
+
+
+    font-family:
+
+        var(--montserrat) !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+
+
+    font-weight:
+
+        550 !important;
+
+
+
+    white-space:
+
+        nowrap;
+
+}
+
+
+
+
+
+/* COUNTRY DROPDOWN */
+
+
+
+.iti__dropdown-content {
+
+    z-index:
+
+        6000 !important;
+
+
+
+    max-height:
+
+        305px !important;
+
+
+
+    overflow:
+
+        hidden !important;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #e5e7eb !important;
+
+
+
+    border-radius:
+
+        14px !important;
+
+
+
+    background:
+
+        white !important;
+
+
+
+    color:
+
+        #202329 !important;
+
+
+
+    box-shadow:
+
+        0
+
+        15px
+
+        38px
+
+        rgba(0, 0, 0, 0.24) !important;
+
+}
+
+
+
+
+
+.iti__search-input-wrapper {
+
+    position:
+
+        relative !important;
+
+
+
+    padding:
+
+        10px !important;
+
+
+
+    background:
+
+        white !important;
+
+
+
+    border-bottom:
+
+        1px
+
+        solid
+
+        #ececef !important;
+
+}
+
+
+
+
+
+.iti__search-icon {
+
+    position:
+
+        absolute !important;
+
+
+
+    left:
+
+        24px !important;
+
+
+
+    top:
+
+        50% !important;
+
+
+
+    transform:
+
+        translateY(-50%) !important;
+
+
+
+    z-index:
+
+        3 !important;
+
+
+
+    color:
+
+        #747a84 !important;
+
+
+
+    pointer-events:
+
+        none !important;
+
+}
+
+
+
+
+
+.iti__search-input {
+
+    width:
+
+        100% !important;
+
+
+
+    height:
+
+        38px !important;
+
+
+
+    margin:
+
+        0 !important;
+
+
+
+    padding:
+
+        0
+
+        14px
+
+        0
+
+        42px !important;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        var(--larga-orange) !important;
+
+
+
+    border-radius:
+
+        999px !important;
+
+
+
+    outline:
+
+        none !important;
+
+
+
+    background:
+
+        white !important;
+
+
+
+    color:
+
+        #202329 !important;
+
+
+
+    font-family:
+
+        var(--montserrat) !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+}
+
+
+
+
+
+.iti__search-input::placeholder {
+
+    color:
+
+        #979ca4 !important;
+
+}
+
+
+
+
+
+.iti__country-list {
+
+    max-height:
+
+        235px !important;
+
+
+
+    overflow-y:
+
+        auto !important;
+
+
+
+    background:
+
+        white !important;
+
+}
+
+
+
+
+
+.iti__country {
+
+    display:
+
+        flex !important;
+
+
+
+    align-items:
+
+        center !important;
+
+
+
+    gap:
+
+        10px !important;
+
+
+
+    padding:
+
+        11px
+
+        14px !important;
+
+
+
+    background:
+
+        white !important;
+
+
+
+    color:
+
+        #202329 !important;
+
+
+
+    font-family:
+
+        var(--montserrat) !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+
+
+    line-height:
+
+        1.35 !important;
+
+}
+
+
+
+
+
+.iti__country:hover,
+
+.iti__highlight {
+
+    background:
+
+        #f5f7fa !important;
+
+}
+
+
+
+
+
+.iti__country.iti__active {
+
+    background:
+
+        #eef3f8 !important;
+
+}
+
+
+
+
+
+.iti__country-name {
+
+    color:
+
+        #202329 !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+
+
+    font-weight:
+
+        500 !important;
+
+}
+
+
+
+
+
+.iti__dial-code {
+
+    color:
+
+        #717781 !important;
+
+
+
+    font-size:
+
+        10px !important;
+
+}
+
+
+
+
+
+.iti__flag {
+
+    flex-shrink: 0;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   FORGOT PASSWORD
+
+   ========================================================== */
+
+
+
+.forgot-row {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+
+
+    min-height: 22px;
+
+}
+
+
+
+
+
+.forgot-password-button {
+
+    padding:
+
+        1px
+
+        2px;
+
+
+
+    border: none;
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+
+
+    text-decoration: underline;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   AUTH VALIDATION + SUBMIT
+
+   ========================================================== */
+
+
+
+.auth-message {
+
+    min-height: 18px;
+
+
+
+    margin:
+
+        2px
+
+        5px
+
+        7px;
+
+
+
+    color:
+
+        #ffc2a0;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    line-height: 1.35;
+
+}
+
+
+
+
+
+.auth-submit-button {
+
+    width: 100%;
+
+    height: 44px;
+
+
+
+    border: none;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        var(--larga-orange);
+
+
+
+    color: white;
+
+
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+
+
+    transition:
+
+        transform 0.15s ease,
+
+        background-color 0.15s ease;
+
+}
+
+
+
+
+
+.auth-submit-button:hover {
+
+    background:
+
+        var(--larga-orange-light);
+
+}
+
+
+
+
+
+.auth-submit-button:active {
+
+    transform:
+
+        scale(0.985);
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   MOCK GOOGLE / APPLE MODAL
+
+   ========================================================== */
+
+
+
+.social-mock-overlay {
+
+    position: absolute;
+
+
+
+    inset: 0;
+
+
+
+    z-index: 9000;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    padding: 22px;
+
+
+
+    background:
+
+        rgba(0, 19, 42, 0.64);
+
+
+
+    backdrop-filter:
+
+        blur(7px);
+
+
+
+    -webkit-backdrop-filter:
+
+        blur(7px);
+
+}
+
+
+
+
+
+.social-mock-card {
+
+    position: relative;
+
+
+
+    width: 100%;
+
+    max-width: 335px;
+
+
+
+    padding:
+
+        27px
+
+        23px
+
+        22px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        rgba(255, 255, 255, 0.15);
+
+
+
+    border-radius: 23px;
+
+
+
+    background:
+
+        #ffffff;
+
+
+
+    color:
+
+        #1a1c21;
+
+
+
+    box-shadow:
+
+        0
+
+        25px
+
+        70px
+
+        rgba(0, 0, 0, 0.3);
+
+
+
+    animation:
+
+        mockModalEnter
+
+        0.24s
+
+        cubic-bezier(0.22, 1, 0.36, 1);
+
+}
+
+
+
+
+
+@keyframes mockModalEnter {
+
+
+
+    from {
+
+        opacity: 0;
+
+
+
+        transform:
+
+            translateY(14px)
+
+            scale(0.97);
+
+    }
+
+
+
+    to {
+
+        opacity: 1;
+
+
+
+        transform:
+
+            translateY(0)
+
+            scale(1);
+
+    }
+
+
+
+}
+
+
+
+
+
+.mock-close-button {
+
+    position: absolute;
+
+
+
+    top: 13px;
+
+    right: 13px;
+
+
+
+    width: 34px;
+
+    height: 34px;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border: none;
+
+
+
+    border-radius: 50%;
+
+
+
+    background:
+
+        #f2f3f5;
+
+
+
+    color:
+
+        #5e636b;
+
+
+
+    font-size: 22px;
+
+    font-weight: 400;
+
+    line-height: 1;
+
+}
+
+
+
+
+
+.mock-provider-header {
+
+    text-align: center;
+
+}
+
+
+
+
+
+.mock-provider-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+
+
+    margin-bottom: 13px;
+
+
+
+    object-fit: contain;
+
+}
+
+
+
+
+
+.mock-prototype-label {
+
+    margin-bottom: 7px;
+
+
+
+    color:
+
+        #9b9fa7;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+
+
+    letter-spacing: 1.3px;
+
+}
+
+
+
+
+
+.mock-provider-header h2 {
+
+    margin-bottom: 7px;
+
+
+
+    color:
+
+        #1b1d21;
+
+
+
+    font-size: 20px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: -0.35px;
+
+}
+
+
+
+
+
+.mock-provider-subtitle {
+
+    max-width: 250px;
+
+
+
+    margin:
+
+        0
+
+        auto;
+
+
+
+    color:
+
+        #747982;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    line-height: 1.5;
+
+}
+
+
+
+
+
+.mock-provider-panel {
+
+    margin-top: 22px;
+
+}
+
+
+
+
+
+.mock-account-option {
+
+    width: 100%;
+
+
+
+    display: flex;
+
+    align-items: center;
+
+
+
+    gap: 11px;
+
+
+
+    padding:
+
+        11px
+
+        12px;
+
+
+
+    margin-bottom: 8px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #e7e8eb;
+
+
+
+    border-radius: 14px;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        #1f2228;
+
+
+
+    text-align: left;
+
+
+
+    transition:
+
+        border-color 0.15s ease,
+
+        background-color 0.15s ease,
+
+        transform 0.15s ease;
+
+}
+
+
+
+
+
+.mock-account-option:hover {
+
+    border-color:
+
+        #d6d8dc;
+
+
+
+    background:
+
+        #f8f9fb;
+
+
+
+    transform:
+
+        translateY(-1px);
+
+}
+
+
+
+
+
+.mock-avatar {
+
+    width: 34px;
+
+    height: 34px;
+
+
+
+    flex-shrink: 0;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border-radius: 50%;
+
+
+
+    background:
+
+        #edf2ff;
+
+
+
+    color:
+
+        #3568d4;
+
+
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.mock-account-text {
+
+    min-width: 0;
+
+
+
+    flex: 1;
+
+}
+
+
+
+
+
+.mock-account-text strong {
+
+    display: block;
+
+
+
+    margin-bottom: 2px;
+
+
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.mock-account-text small {
+
+    display: block;
+
+
+
+    overflow: hidden;
+
+
+
+    color:
+
+        #7e838c;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+
+
+    text-overflow: ellipsis;
+
+
+
+    white-space: nowrap;
+
+}
+
+
+
+
+
+.mock-chevron {
+
+    color:
+
+        #a2a6ad;
+
+
+
+    font-size: 20px;
+
+}
+
+
+
+
+
+.mock-secondary-button {
+
+    width: 100%;
+
+    height: 40px;
+
+
+
+    margin-top: 8px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #dedfe3;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        #4d525b;
+
+
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+
+
+
+.mock-other-account {
+
+    margin-top: 12px;
+
+}
+
+
+
+
+
+.mock-input-label {
+
+    display: block;
+
+
+
+    margin:
+
+        0
+
+        0
+
+        7px
+
+        4px;
+
+
+
+    color:
+
+        #777c84;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+
+
+    letter-spacing: 1px;
+
+}
+
+
+
+
+
+.mock-input {
+
+    width: 100%;
+
+    height: 42px;
+
+
+
+    padding:
+
+        0
+
+        14px;
+
+
+
+    margin-bottom: 10px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #dfe1e5;
+
+
+
+    border-radius: 11px;
+
+
+
+    outline: none;
+
+
+
+    color:
+
+        #22252a;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.mock-input:focus {
+
+    border-color:
+
+        var(--larga-orange);
+
+
+
+    box-shadow:
+
+        0
+
+        0
+
+        0
+
+        3px
+
+        rgba(245, 102, 0, 0.07);
+
+}
+
+
+
+
+
+.mock-primary-button {
+
+    width: 100%;
+
+    height: 41px;
+
+
+
+    border: none;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        #1d1f23;
+
+
+
+    color: white;
+
+
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.apple-mock-continue {
+
+    background:
+
+        #000000;
+
+}
+
+
+
+
+
+.mock-error {
+
+    min-height: 16px;
+
+
+
+    margin-top: 9px;
+
+
+
+    color:
+
+        #c23c2b;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.mock-disclaimer {
+
+    margin-top: 9px;
+
+
+
+    color:
+
+        #a0a4ab;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 7.5px;
+
+    line-height: 1.45;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   DRIVER
+
+   ========================================================== */
+
+
+
+.driver-screen {
+
+    z-index: 700;
+
+
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    padding: 32px;
+
+
+
+    background:
+
+        #f7f7f9;
+
+}
+
+
+
+
+
+.driver-placeholder {
+
+    width: 100%;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.driver-logo {
+
+    width: 70px;
+
+
+
+    margin-bottom: 25px;
+
+}
+
+
+
+
+
+.driver-placeholder h1 {
+
+    margin-bottom: 10px;
+
+
+
+    font-size: 30px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.driver-placeholder p {
+
+    margin-bottom: 25px;
+
+
+
+    color: #777;
+
+
+
+    font-family: var(--montserrat);
+
+
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   MAIN APP
+
+   ========================================================== */
+
+
+
+.main-app {
+
+    width: 100%;
+
+    height: 100%;
+
+
+
+    background:
+
+        #f7f7f9;
+
+}
+
+
+
+
+
+.top-bar {
+
+    height: 78px;
+
+
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+
+    padding:
+
+        15px
+
+        19px;
+
+
+
+    border-bottom:
+
+        1px
+
+        solid
+
+        #eeeeef;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.brand-small {
+
+    margin-bottom: 3px;
+
+
+
+    color:
+
+        var(--larga-orange);
+
+
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: 2px;
+
+}
+
+
+
+
+
+.top-bar h2 {
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.profile-button {
+
+    width: 39px;
+
+    height: 39px;
+
+
+
+    border: none;
+
+
+
+    border-radius: 50%;
+
+
+
+    background:
+
+        #111;
+
+
+
+    color:
+
+        white;
+
+
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.app-content {
+
+    height:
+
+        calc(
+
+            100% - 78px - 72px
+
+        );
+
+
+
+    overflow-y: auto;
+
+
+
+    overscroll-behavior:
+
+        contain;
+
+}
+
+
+
+
+
+.page {
+
+    display: none;
+
+
+
+    padding:
+
+        22px
+
+        18px
+
+        26px;
+
+}
+
+
+
+
+
+.active-page {
+
+    display: block;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   MAIN TYPOGRAPHY
+
+   ========================================================== */
+
+
+
+.hero {
+
+    margin-bottom: 25px;
+
+}
+
+
+
+
+
+.hero h1,
+
+.page-heading h1 {
+
+    margin-bottom: 10px;
+
+
+
+    font-size: 31px;
+
+    font-weight: 650;
+
+    line-height: 1.05;
+
+
+
+    letter-spacing: -0.6px;
+
+}
+
+
+
+
+
+.subtitle,
+
+.page-heading > p:last-child {
+
+    color:
+
+        #707076;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+
+
+
+.eyebrow {
+
+    margin-bottom: 8px;
+
+
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: 1.4px;
+
+}
+
+
+
+
+
+.field-label {
+
+    display: block;
+
+
+
+    margin-bottom: 8px;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+
+
+    letter-spacing: 1px;
+
+}
+
+
+
+
+
+.destination-label {
+
+    margin-top: 20px;
+
+}
+
+
+
+
+
+.form-section input[type="text"] {
+
+    width: 100%;
+
+
+
+    padding: 15px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #dddddf;
+
+
+
+    border-radius: 12px;
+
+
+
+    outline: none;
+
+
+
+    background:
+
+        white;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 11px;
+
+}
+
+
+
+
+
+.form-section input[type="text"]:focus {
+
+    border-color:
+
+        var(--larga-orange);
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   APP BUTTONS
+
+   ========================================================== */
+
+
+
+.main-button {
+
+    width: 100%;
+
+
+
+    padding:
+
+        14px
+
+        16px;
+
+
+
+    border: none;
+
+
+
+    border-radius: 12px;
+
+
+
+    background:
+
+        #111;
+
+
+
+    color:
+
+        white;
+
+
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.route-search-button {
+
+    margin-top: 18px;
+
+}
+
+
+
+
+
+.secondary-button {
+
+    width: 100%;
+
+
+
+    padding: 14px;
+
+
+
+    margin-top: 10px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #cccccf;
+
+
+
+    border-radius: 12px;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        #111;
+
+
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.danger-button {
+
+    width: 100%;
+
+
+
+    padding: 14px;
+
+
+
+    margin-top: 10px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #dedee0;
+
+
+
+    border-radius: 12px;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        #a12b2b;
+
+
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.location-button {
+
+    width: 100%;
+
+
+
+    padding: 14px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #dddddf;
+
+
+
+    border-radius: 12px;
+
+
+
+    background:
+
+        white;
+
+
+
+    text-align: left;
+
+
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.back-button {
+
+    padding: 0;
+
+
+
+    margin-bottom: 18px;
+
+
+
+    border: none;
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        #666;
+
+
+
+    font-size: 11px;
+
+}
+
+
+
+
+
+.or-text {
+
+    margin:
+
+        9px
+
+        0;
+
+
+
+    color:
+
+        #aaa;
+
+
+
+    text-align: center;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+.message,
+
+.save-message {
+
+    min-height: 17px;
+
+
+
+    margin-top: 9px;
+
+
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   ROUTE RESULT
+
+   ========================================================== */
+
+
+
+.result-header {
+
+    margin-bottom: 14px;
+
+}
+
+
+
+
+
+.result-header h2 {
+
+    margin-bottom: 5px;
+
+
+
+    font-size: 23px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.result-header > p:last-child {
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.route-option-tabs {
+
+    display: flex;
+
+
+
+    gap: 7px;
+
+
+
+    overflow-x: auto;
+
+
+
+    margin-bottom: 15px;
+
+
+
+    padding-bottom: 3px;
+
+
+
+    scrollbar-width: none;
+
+}
+
+
+
+
+
+.route-option-tabs::-webkit-scrollbar {
+
+    display: none;
+
+}
+
+
+
+
+
+.route-option {
+
+    flex-shrink: 0;
+
+
+
+    padding:
+
+        9px
+
+        12px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #ddd;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        white;
+
+
+
+    font-size: 10px;
+
+    font-weight: 550;
+
+}
+
+
+
+
+
+.active-option {
+
+    border-color:
+
+        #111;
+
+
+
+    background:
+
+        #111;
+
+
+
+    color:
+
+        white;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   MAPS
+
+   ========================================================== */
+
+
+
+.mock-map {
+
+    position: relative;
+
+
+
+    height: 250px;
+
+
+
+    overflow: hidden;
+
+
+
+    margin-bottom: 14px;
+
+
+
+    border-radius: 18px;
+
+
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent 49%,
+
+            #dedee0 50%,
+
+            transparent 51%
+
+        ),
+
+        linear-gradient(
+
+            transparent 49%,
+
+            #dedee0 50%,
+
+            transparent 51%
+
+        ),
+
+        #eeeeef;
+
+
+
+    background-size:
+
+        75px
+
+        75px;
+
+}
+
+
+
+
+
+.map-label {
+
+    position: absolute;
+
+
+
+    top: 11px;
+
+    left: 11px;
+
+
+
+    z-index: 10;
+
+
+
+    padding:
+
+        7px
+
+        9px;
+
+
+
+    border-radius: 8px;
+
+
+
+    background:
+
+        white;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.map-user-marker {
+
+    position: absolute;
+
+
+
+    left: 30px;
+
+    bottom: 38px;
+
+
+
+    z-index: 5;
+
+
+
+    padding: 8px;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        #111;
+
+
+
+    color:
+
+        white;
+
+
+
+    font-size: 8px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.map-destination {
+
+    position: absolute;
+
+
+
+    top: 48px;
+
+    right: 28px;
+
+
+
+    z-index: 5;
+
+
+
+    font-size: 28px;
+
+}
+
+
+
+
+
+.guide-route-line,
+
+.trip-route-line {
+
+    position: absolute;
+
+
+
+    top: 132px;
+
+    left: 55px;
+
+
+
+    width: 250px;
+
+    height: 6px;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        #333;
+
+
+
+    transform:
+
+        rotate(-23deg);
+
+}
+
+
+
+
+
+.guide-jeep {
+
+    position: absolute;
+
+
+
+    z-index: 6;
+
+
+
+    font-size: 26px;
+
+}
+
+
+
+
+
+.jeep-a {
+
+    left: 85px;
+
+    top: 148px;
+
+
+
+    animation:
+
+        guideJeepOne
+
+        6s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+.jeep-b {
+
+    left: 175px;
+
+    top: 107px;
+
+
+
+    animation:
+
+        guideJeepTwo
+
+        8s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+@keyframes guideJeepOne {
+
+
+
+    from {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    to {
+
+        transform:
+
+            translate(165px, -70px);
+
+    }
+
+
+
+}
+
+
+
+
+
+@keyframes guideJeepTwo {
+
+
+
+    from {
+
+        transform:
+
+            translate(-45px, 25px);
+
+    }
+
+
+
+    to {
+
+        transform:
+
+            translate(80px, -32px);
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   ROUTE CARD
+
+   ========================================================== */
+
+
+
+.route-card {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+
+    padding: 15px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #eeeeef;
+
+
+
+    border-radius: 16px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.route-card h3 {
+
+    margin:
+
+        5px
+
+        0;
+
+
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.route-description {
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+.route-status {
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.status-live {
+
+    color:
+
+        #168242;
+
+}
+
+
+
+
+
+.status-offline {
+
+    color:
+
+        #999;
+
+}
+
+
+
+
+
+.eta-box {
+
+    width: 61px;
+
+    height: 61px;
+
+
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border-radius: 14px;
+
+
+
+    background:
+
+        #f0f0f2;
+
+}
+
+
+
+
+
+.eta-box strong {
+
+    font-size: 23px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.eta-box span {
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 7px;
+
+}
+
+
+
+
+
+.eta-caption {
+
+    margin-top: 5px;
+
+    margin-bottom: 15px;
+
+
+
+    color:
+
+        #999;
+
+
+
+    text-align: right;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   LIVE
+
+   ========================================================== */
+
+
+
+.page-heading {
+
+    margin-bottom: 20px;
+
+}
+
+
+
+
+
+.route-filter {
+
+    padding: 14px;
+
+
+
+    margin-bottom: 14px;
+
+
+
+    border-radius: 15px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.checkbox-row {
+
+    display: block;
+
+
+
+    padding:
+
+        10px
+
+        0;
+
+
+
+    border-bottom:
+
+        1px
+
+        solid
+
+        #eeeeef;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.checkbox-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+
+
+
+.checkbox-row input {
+
+    margin-right: 8px;
+
+}
+
+
+
+
+
+.live-path {
+
+    position: absolute;
+
+
+
+    height: 5px;
+
+
+
+    border-radius: 999px;
+
+
+
+    background:
+
+        #444;
+
+}
+
+
+
+
+
+.path-bajada {
+
+    width: 250px;
+
+
+
+    top: 130px;
+
+    left: 50px;
+
+
+
+    transform:
+
+        rotate(-20deg);
+
+}
+
+
+
+
+
+.path-matina {
+
+    width: 220px;
+
+
+
+    top: 160px;
+
+    left: 70px;
+
+
+
+    transform:
+
+        rotate(15deg);
+
+}
+
+
+
+
+
+.path-toril {
+
+    width: 240px;
+
+
+
+    top: 115px;
+
+    left: 55px;
+
+
+
+    transform:
+
+        rotate(32deg);
+
+}
+
+
+
+
+
+.live-jeep {
+
+    position: absolute;
+
+
+
+    z-index: 5;
+
+
+
+    font-size: 27px;
+
+}
+
+
+
+
+
+.live-jeep-1 {
+
+    top: 151px;
+
+    left: 65px;
+
+
+
+    animation:
+
+        liveJeepOne
+
+        7s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+.live-jeep-2 {
+
+    top: 95px;
+
+    left: 220px;
+
+
+
+    animation:
+
+        liveJeepTwo
+
+        6s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+.live-jeep-3 {
+
+    top: 150px;
+
+    left: 110px;
+
+
+
+    animation:
+
+        liveJeepThree
+
+        8s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+.live-jeep-4 {
+
+    top: 80px;
+
+    left: 110px;
+
+
+
+    animation:
+
+        liveJeepFour
+
+        7s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+@keyframes liveJeepOne {
+
+
+
+    0%,
+
+    100% {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    50% {
+
+        transform:
+
+            translate(170px, -60px);
+
+    }
+
+
+
+}
+
+
+
+
+
+@keyframes liveJeepTwo {
+
+
+
+    0%,
+
+    100% {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    50% {
+
+        transform:
+
+            translate(-120px, 55px);
+
+    }
+
+
+
+}
+
+
+
+
+
+@keyframes liveJeepThree {
+
+
+
+    0%,
+
+    100% {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    50% {
+
+        transform:
+
+            translate(130px, 35px);
+
+    }
+
+
+
+}
+
+
+
+
+
+@keyframes liveJeepFour {
+
+
+
+    0%,
+
+    100% {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    50% {
+
+        transform:
+
+            translate(105px, 100px);
+
+    }
+
+
+
+}
+
+
+
+
+
+.map-empty-message {
+
+    position: absolute;
+
+
+
+    top: 120px;
+
+
+
+    width: 100%;
+
+
+
+    color:
+
+        #777;
+
+
+
+    text-align: center;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.nearby-section h3 {
+
+    margin-bottom: 10px;
+
+
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.nearby-list {
+
+    display: grid;
+
+
+
+    gap: 8px;
+
+}
+
+
+
+
+
+.nearby-card {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+
+    padding: 13px;
+
+
+
+    border-radius: 14px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.nearby-card strong {
+
+    display: block;
+
+
+
+    margin-top: 3px;
+
+
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.nearby-eta {
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   TRIPS
+
+   ========================================================== */
+
+
+
+.empty-state {
+
+    padding:
+
+        90px
+
+        15px
+
+        20px;
+
+
+
+    text-align: center;
+
+}
+
+
+
+
+
+.empty-icon {
+
+    margin-bottom: 14px;
+
+
+
+    font-size: 43px;
+
+}
+
+
+
+
+
+.empty-state h2 {
+
+    margin-bottom: 7px;
+
+
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.empty-state p {
+
+    margin-bottom: 18px;
+
+
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+
+
+
+.trip-jeep {
+
+    position: absolute;
+
+
+
+    top: 145px;
+
+    left: 110px;
+
+
+
+    z-index: 6;
+
+
+
+    font-size: 27px;
+
+
+
+    animation:
+
+        tripJeepMove
+
+        7s
+
+        linear
+
+        infinite;
+
+}
+
+
+
+
+
+@keyframes tripJeepMove {
+
+
+
+    from {
+
+        transform:
+
+            translate(0, 0);
+
+    }
+
+
+
+    to {
+
+        transform:
+
+            translate(150px, -66px);
+
+    }
+
+
+
+}
+
+
+
+
+
+.trip-status-card {
+
+    padding: 17px;
+
+
+
+    margin-bottom: 11px;
+
+
+
+    border-radius: 16px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.trip-status-card h2 {
+
+    margin-bottom: 8px;
+
+
+
+    font-size: 19px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.trip-status-card > p:last-child {
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   SAVED
+
+   ========================================================== */
+
+
+
+.quick-places {
+
+    display: grid;
+
+
+
+    grid-template-columns:
+
+        1fr
+
+        1fr;
+
+
+
+    gap: 10px;
+
+
+
+    margin-bottom: 26px;
+
+}
+
+
+
+
+
+.saved-card {
+
+    padding: 15px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #eeeeef;
+
+
+
+    border-radius: 15px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.saved-card span {
+
+    display: block;
+
+
+
+    margin-bottom: 10px;
+
+
+
+    font-size: 24px;
+
+}
+
+
+
+
+
+.saved-card strong {
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.saved-card p {
+
+    margin-top: 4px;
+
+
+
+    color:
+
+        #999;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+}
+
+
+
+
+
+.saved-heading {
+
+    margin-bottom: 10px;
+
+
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.empty-saved {
+
+    padding: 23px;
+
+
+
+    border-radius: 15px;
+
+
+
+    background:
+
+        white;
+
+
+
+    color:
+
+        #777;
+
+
+
+    text-align: center;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.saved-route-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+
+    padding: 14px;
+
+
+
+    margin-bottom: 8px;
+
+
+
+    border:
+
+        1px
+
+        solid
+
+        #eeeeef;
+
+
+
+    border-radius: 14px;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.saved-route-item strong {
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+.saved-route-item p {
+
+    margin-top: 4px;
+
+
+
+    color:
+
+        #777;
+
+
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   BOTTOM NAV
+
+   ========================================================== */
+
+
+
+.bottom-nav {
+
+    position: absolute;
+
+
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+
+
+    z-index: 50;
+
+
+
+    height: 72px;
+
+
+
+    display: flex;
+
+
+
+    border-top:
+
+        1px
+
+        solid
+
+        #e7e7e9;
+
+
+
+    background:
+
+        white;
+
+}
+
+
+
+
+
+.nav-item {
+
+    width: 25%;
+
+    height: 100%;
+
+
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    border: none;
+
+
+
+    background:
+
+        transparent;
+
+
+
+    color:
+
+        #9a9a9e;
+
+}
+
+
+
+
+
+.nav-item span {
+
+    margin-bottom: 3px;
+
+
+
+    font-size: 20px;
+
+}
+
+
+
+
+
+.nav-item p {
+
+    font-family:
+
+        var(--montserrat);
+
+
+
+    font-size: 8px;
+
+}
+
+
+
+
+
+.active-nav {
+
+    color:
+
+        #111;
+
+
+
+    font-weight: 650;
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   MOBILE
+
+   ========================================================== */
+
+
+
+@media (max-width: 450px) {
+
+
+
+    body {
+
+        padding: 0;
+
+
+
+        background:
+
+            #f7f7f9;
+
+    }
+
+
+
+
+
+    .phone {
+
+        width:
+
+            100vw;
+
+
+
+        height:
+
+            100dvh;
+
+
+
+        min-height:
+
+            100dvh;
+
+
+
+        border-radius:
+
+            0;
+
+
+
+        box-shadow:
+
+            none;
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ==========================================================
+
+   SHORT SCREENS
+
+   ========================================================== */
+
+
+
+@media (max-height: 700px) {
+
+
+
+    .auth-landing-view {
+
+        padding-top:
+
+            72px;
+
+    }
+
+
+
+
+
+    .auth-landing-message {
+
+        margin-top:
+
+            38px;
+
+    }
+
+
+
+
+
+    .auth-primary-actions {
+
+        margin-top:
+
+            30px;
+
+    }
+
+
+
+
+
+    .auth-form-view {
+
+        padding-top:
+
+            54px;
+
+    }
+
+
+
+
+
+    .auth-form-heading {
+
+        margin-top:
+
+            24px;
+
+    }
+
+
+
+
+
+    .credential-tabs {
+
+        margin-top:
+
+            18px;
+
+
+
+        margin-bottom:
+
+            17px;
+
+    }
+
+
+
+}
+
+
+/* ==========================================================
+   GUIDE 2.0 - MAP FIRST ROUTE DISCOVERY
+   ========================================================== */
+
+.main-app {
+    position: relative;
+}
+
+#guidePage.guide-page {
+    min-height: 100%;
+    padding: 0 0 28px;
+    background:
+        linear-gradient(
+            180deg,
+            #eef2f5 0%,
+            #f7f7f9 48%,
+            #f7f7f9 100%
+        );
+}
+
+.guide-map-shell {
+    padding: 12px 12px 0;
+}
+
+.guide-map-canvas {
+    position: relative;
+    height: 302px;
+    overflow: hidden;
+    border: 1px solid rgba(13, 30, 48, 0.08);
+    border-radius: 25px;
+    background:
+        radial-gradient(
+            circle at 72% 23%,
+            rgba(245, 102, 0, 0.09),
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 18% 70%,
+            rgba(0, 74, 150, 0.08),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            #eef1eb 0%,
+            #e5e9e6 48%,
+            #edf0ec 100%
+        );
+    box-shadow:
+        0 16px 34px rgba(20, 30, 43, 0.08);
+}
+
+.guide-map-canvas::before,
+.guide-map-canvas::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    background: rgba(208, 219, 225, 0.66);
+}
+
+.guide-map-canvas::before {
+    width: 150px;
+    height: 42px;
+    right: -28px;
+    top: 91px;
+    transform: rotate(-20deg);
+}
+
+.guide-map-canvas::after {
+    width: 132px;
+    height: 35px;
+    left: -30px;
+    bottom: 64px;
+    transform: rotate(23deg);
+}
+
+.guide-map-road {
+    position: absolute;
+    z-index: 1;
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow:
+        inset 0 0 0 1px rgba(92, 110, 124, 0.07),
+        0 1px 2px rgba(55, 72, 83, 0.06);
+}
+
+.guide-map-road::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    right: 8px;
+    height: 1px;
+    transform: translateY(-50%);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(148, 158, 164, 0.28) 0 8px,
+            transparent 8px 15px
+        );
+}
+
+.road-one {
+    width: 330px;
+    left: -44px;
+    top: 152px;
+    transform: rotate(-18deg);
+}
+
+.road-two {
+    width: 250px;
+    right: -62px;
+    top: 202px;
+    transform: rotate(25deg);
+}
+
+.road-three {
+    width: 230px;
+    left: 34px;
+    top: 78px;
+    transform: rotate(31deg);
+}
+
+.road-four {
+    width: 190px;
+    left: 112px;
+    top: 116px;
+    transform: rotate(82deg);
+}
+
+.road-five {
+    width: 205px;
+    left: -36px;
+    top: 236px;
+    transform: rotate(-6deg);
+}
+
+.guide-route-svg {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.guide-selected-route {
+    fill: none;
+    stroke: var(--larga-orange);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter:
+        drop-shadow(0 5px 5px rgba(0, 0, 0, 0.16));
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    opacity: 0;
+}
+
+.guide-selected-route.route-visible {
+    opacity: 1;
+    animation:
+        guideRouteDraw
+        0.82s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        forwards;
+}
+
+@keyframes guideRouteDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.guide-map-top-row {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 15;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.guide-map-route-label {
+    min-width: 0;
+    max-width: 185px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.76);
+    box-shadow: 0 8px 24px rgba(30, 42, 54, 0.08);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+}
+
+.guide-map-route-dot {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    background: #a9b0b7;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07);
+}
+
+.guide-map-route-label small,
+.guide-map-route-label strong {
+    display: block;
+}
+
+.guide-map-route-label small {
+    margin-bottom: 1px;
+    color: #8c9299;
+    font-family: var(--montserrat);
+    font-size: 6.5px;
+    font-weight: 700;
+    letter-spacing: 1.05px;
+}
+
+.guide-map-route-label strong {
+    overflow: hidden;
+    color: #1b1d21;
+    font-size: 10px;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.guide-location-pill {
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.76);
+    color: #2b2f35;
+    box-shadow: 0 8px 24px rgba(30, 42, 54, 0.08);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    font-size: 8px;
+    font-weight: 650;
+}
+
+.guide-location-pill > span:first-child {
+    color: var(--larga-orange);
+    font-size: 14px;
+}
+
+.guide-map-selection-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 13px;
+    z-index: 12;
+    width: max-content;
+    max-width: calc(100% - 30px);
+    padding: 8px 11px;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 999px;
+    background: rgba(24, 28, 33, 0.72);
+    color: white;
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    font-weight: 550;
+    text-align: center;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.guide-map-selection-hint.has-route {
+    opacity: 0;
+    transform: translate(-50%, 5px);
+    pointer-events: none;
+}
+
+.guide-map-stops,
+.guide-map-jeeps {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+}
+
+.guide-map-stop {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    transform: translate(-50%, -50%);
+    border: 3px solid white;
+    border-radius: 50%;
+    background: var(--route-color, var(--larga-orange));
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.22);
+    animation: guideStopEnter 0.35s ease both;
+}
+
+@keyframes guideStopEnter {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.45);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.guide-live-jeep {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    border-radius: 11px;
+    background: var(--route-color, var(--larga-orange));
+    color: white;
+    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+    animation:
+        guideJeepPop 0.4s cubic-bezier(0.22, 1, 0.36, 1) both,
+        guideJeepFloat 2.2s ease-in-out 0.45s infinite alternate;
+}
+
+@keyframes guideJeepPop {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes guideJeepFloat {
+    from {
+        margin-top: 0;
+    }
+
+    to {
+        margin-top: -5px;
+    }
+}
+
+.guide-user-marker {
+    position: absolute;
+    left: 22%;
+    top: 67%;
+    z-index: 9;
+    width: 18px;
+    height: 18px;
+    border: 4px solid white;
+    border-radius: 50%;
+    background: #1478f2;
+    box-shadow:
+        0 2px 9px rgba(0, 0, 0, 0.2),
+        0 0 0 8px rgba(20, 120, 242, 0.13);
+}
+
+.guide-user-marker span {
+    position: absolute;
+    inset: -11px;
+    border: 1px solid rgba(20, 120, 242, 0.28);
+    border-radius: 50%;
+    animation: userMarkerPulse 1.8s ease-out infinite;
+}
+
+@keyframes userMarkerPulse {
+    from {
+        opacity: 0.8;
+        transform: scale(0.65);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(1.35);
+    }
+}
+
+.guide-discovery-panel {
+    padding: 19px 0 0;
+}
+
+.guide-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 14px;
+    padding: 0 18px;
+    margin-bottom: 13px;
+}
+
+.guide-kicker {
+    margin-bottom: 4px;
+    color: var(--larga-orange);
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    font-weight: 750;
+    letter-spacing: 1.35px;
+}
+
+.guide-section-heading h1 {
+    max-width: 255px;
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.06;
+    letter-spacing: -0.45px;
+}
+
+.guide-swipe-hint {
+    flex-shrink: 0;
+    padding-bottom: 2px;
+    color: #92969c;
+    font-family: var(--montserrat);
+    font-size: 7px;
+    font-weight: 550;
+}
+
+.route-carousel {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 6px 18px 18px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+}
+
+.route-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.guide-route-card {
+    --route-primary: #f56600;
+    --route-secondary: #ffffff;
+    --route-text: #ffffff;
+    position: relative;
+    width: 142px;
+    min-width: 142px;
+    height: 162px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    padding: 13px;
+    border: 1px solid rgba(16, 22, 28, 0.09);
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            145deg,
+            var(--route-primary) 0 68%,
+            var(--route-secondary) 68% 100%
+        );
+    color: var(--route-text);
+    text-align: left;
+    box-shadow: 0 8px 22px rgba(20, 28, 38, 0.08);
+    transition:
+        transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.24s ease,
+        border-color 0.24s ease,
+        filter 0.24s ease;
+}
+
+.guide-route-card::before {
+    content: "";
+    position: absolute;
+    width: 95px;
+    height: 95px;
+    right: -35px;
+    top: -36px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+}
+
+.guide-route-card::after {
+    content: "";
+    position: absolute;
+    width: 77px;
+    height: 1px;
+    right: 12px;
+    top: 74px;
+    transform: rotate(-24deg);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.guide-route-card:active {
+    transform: scale(0.98);
+}
+
+.guide-route-card.selected-route-card {
+    transform: translateY(-4px) scale(1.035);
+    border-color: rgba(255, 255, 255, 0.92);
+    box-shadow:
+        0 13px 28px rgba(20, 28, 38, 0.16),
+        0 0 0 2px var(--route-primary);
+    filter: saturate(1.07);
+}
+
+.route-card-number {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin-bottom: 3px;
+    font-family: var(--montserrat);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1.05px;
+    opacity: 0.76;
+}
+
+.guide-route-card h3 {
+    position: relative;
+    z-index: 2;
+    max-width: 110px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 680;
+    line-height: 1;
+    letter-spacing: -0.45px;
+}
+
+.route-card-identity {
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    bottom: 39px;
+    z-index: 2;
+    overflow: hidden;
+    color: var(--route-text);
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    font-weight: 520;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.84;
+}
+
+.route-card-footer {
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    bottom: 10px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #171a1f;
+}
+
+.route-card-frequency {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--montserrat);
+    font-size: 6.5px;
+    font-weight: 650;
+}
+
+.route-card-frequency::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--route-primary);
+}
+
+.route-card-more {
+    padding: 4px 7px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #1f2328;
+    font-family: var(--montserrat);
+    font-size: 6.5px;
+    font-weight: 700;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
+}
+
+.guide-route-search-block {
+    padding: 0 18px;
+}
+
+.guide-search-label {
+    display: block;
+    margin: 1px 0 8px 2px;
+    color: #5f646c;
+    font-family: var(--montserrat);
+    font-size: 8px;
+    font-weight: 650;
+    letter-spacing: 0.25px;
+}
+
+.guide-search-control {
+    position: relative;
+}
+
+.guide-search-control input {
+    width: 100%;
+    height: 46px;
+    padding: 0 43px 0 41px;
+    border: 1px solid #e0e2e5;
+    border-radius: 16px;
+    outline: none;
+    background: white;
+    color: #1c2025;
+    font-family: var(--montserrat);
+    font-size: 9px;
+    font-weight: 500;
+    box-shadow: 0 7px 18px rgba(20, 28, 38, 0.05);
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.guide-search-control input:focus {
+    border-color: rgba(245, 102, 0, 0.58);
+    box-shadow:
+        0 7px 18px rgba(20, 28, 38, 0.05),
+        0 0 0 3px rgba(245, 102, 0, 0.08);
+}
+
+.guide-search-control input::placeholder {
+    color: #a0a4ab;
+}
+
+.guide-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    color: var(--larga-orange);
+    font-size: 19px;
+    pointer-events: none;
+}
+
+.guide-search-clear {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    width: 31px;
+    height: 31px;
+    transform: translateY(-50%);
+    border: none;
+    border-radius: 50%;
+    background: #f0f1f3;
+    color: #686d74;
+    font-size: 17px;
+    line-height: 1;
+}
+
+.guide-search-results {
+    overflow: hidden;
+    margin-top: 8px;
+    border: 1px solid #e4e5e8;
+    border-radius: 17px;
+    background: white;
+    box-shadow: 0 14px 32px rgba(25, 33, 44, 0.09);
+}
+
+.guide-search-result {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border: none;
+    border-bottom: 1px solid #eff0f2;
+    background: white;
+    color: #1c2025;
+    text-align: left;
+}
+
+.guide-search-result:last-child {
+    border-bottom: none;
+}
+
+.guide-search-result:hover {
+    background: #fafafa;
+}
+
+.search-route-swatch {
+    width: 10px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--search-route-color, var(--larga-orange));
+}
+
+.search-route-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.search-route-copy strong,
+.search-route-copy small {
+    display: block;
+}
+
+.search-route-copy strong {
+    margin-bottom: 3px;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.search-route-copy small {
+    overflow: hidden;
+    color: #888d95;
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-route-chevron {
+    color: #a2a6ad;
+    font-size: 18px;
+}
+
+.guide-search-empty {
+    padding: 16px;
+    color: #8c9198;
+    font-family: var(--montserrat);
+    font-size: 8px;
+    text-align: center;
+}
+
+.guide-message {
+    min-height: 16px;
+    margin: 7px 3px 0;
+    color: #8c9198;
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    line-height: 1.4;
+}
+
+
+/* ==========================================================
+   ROUTE DETAIL - LIQUID GLASS
+   ========================================================== */
+
+.route-detail-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 23px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+}
+
+.route-detail-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.route-detail-backdrop {
+    position: absolute;
+    inset: 0;
+    border: none;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 24, 49, 0.2),
+            rgba(0, 17, 36, 0.48)
+        );
+    backdrop-filter: blur(13px) saturate(115%);
+    -webkit-backdrop-filter: blur(13px) saturate(115%);
+}
+
+.route-detail-glass {
+    --detail-accent: var(--larga-orange);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-height: calc(100% - 36px);
+    overflow-y: auto;
+    padding: 28px 21px 21px;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 29px;
+    background:
+        linear-gradient(
+            150deg,
+            rgba(255, 255, 255, 0.82),
+            rgba(255, 255, 255, 0.58)
+        );
+    color: #171b20;
+    box-shadow:
+        0 34px 70px rgba(0, 13, 28, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(26px) saturate(165%);
+    -webkit-backdrop-filter: blur(26px) saturate(165%);
+    opacity: 0;
+    transform: translateY(85px) scale(0.9);
+    transform-origin: center bottom;
+    transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.28s ease;
+    scrollbar-width: none;
+}
+
+.route-detail-glass::-webkit-scrollbar {
+    display: none;
+}
+
+.route-detail-overlay.is-open .route-detail-glass {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.route-detail-glass::before,
+.route-detail-glass::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+.route-detail-glass::before {
+    width: 165px;
+    height: 165px;
+    top: -90px;
+    right: -56px;
+    border-radius: 50%;
+    background: var(--detail-accent);
+    opacity: 0.17;
+    filter: blur(2px);
+}
+
+.route-detail-glass::after {
+    width: 130px;
+    height: 130px;
+    left: -77px;
+    bottom: 36px;
+    border-radius: 50%;
+    background: var(--detail-accent);
+    opacity: 0.08;
+}
+
+.route-detail-accent {
+    width: 54px;
+    height: 5px;
+    margin-bottom: 18px;
+    border-radius: 999px;
+    background: var(--detail-accent);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--detail-accent) 40%, transparent);
+}
+
+.route-detail-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.54);
+    color: #51565e;
+    font-size: 20px;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.07);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.route-detail-heading {
+    position: relative;
+    z-index: 2;
+}
+
+.route-detail-status {
+    margin-bottom: 5px;
+    color: var(--detail-accent);
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    font-weight: 750;
+    letter-spacing: 1.1px;
+}
+
+.route-detail-heading h2 {
+    max-width: 260px;
+    margin-bottom: 7px;
+    font-size: 29px;
+    font-weight: 680;
+    line-height: 1;
+    letter-spacing: -0.75px;
+}
+
+.route-detail-heading > p:last-child {
+    max-width: 300px;
+    color: #60666e;
+    font-family: var(--montserrat);
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.route-detail-section {
+    position: relative;
+    z-index: 2;
+    margin-top: 22px;
+}
+
+.route-detail-label {
+    margin-bottom: 9px;
+    color: #8a8f96;
+    font-family: var(--montserrat);
+    font-size: 7px;
+    font-weight: 750;
+    letter-spacing: 1px;
+}
+
+.route-landmark-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.route-landmark-chip {
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.53);
+    color: #363b42;
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    font-weight: 600;
+    box-shadow: 0 5px 12px rgba(31, 39, 49, 0.05);
+}
+
+.route-landmark-chip::before {
+    content: "•";
+    margin-right: 5px;
+    color: var(--detail-accent);
+}
+
+.route-detail-roads {
+    color: #3f454d;
+    font-family: var(--montserrat);
+    font-size: 8.5px;
+    font-weight: 520;
+    line-height: 1.6;
+}
+
+.route-detail-actions {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.route-detail-primary,
+.route-detail-secondary {
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.route-detail-primary {
+    border: none;
+    background: var(--detail-accent);
+    color: white;
+    box-shadow: 0 9px 20px color-mix(in srgb, var(--detail-accent) 25%, transparent);
+}
+
+.route-detail-secondary {
+    border: 1px solid rgba(60, 65, 72, 0.12);
+    background: rgba(255, 255, 255, 0.56);
+    color: #30343a;
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.route-detail-save-message {
+    position: relative;
+    z-index: 2;
+    min-height: 15px;
+    margin-top: 7px;
+    color: #747a82;
+    font-family: var(--montserrat);
+    font-size: 7.5px;
+    text-align: center;
+}
+
+@media (max-width: 450px) {
+
+    #guidePage.guide-page {
+        padding-bottom: 24px;
+    }
+
+    .guide-map-shell {
+        padding-top: 10px;
+    }
+
+    .guide-map-canvas {
+        height: 295px;
+    }
+
+    .route-detail-overlay {
+        padding: 18px;
+    }
+
+}
+
+
+
+/* ==========================================================
+   GUIDE 2.1 - FIXED LAYOUT, GLASS CARDS, SWIPE + MAP ZOOM
+   ========================================================== */
+
+.main-app.guide-mode .app-content {
+    overflow: hidden !important;
+}
+
+.main-app.guide-mode .app-content::-webkit-scrollbar {
+    display: none;
+}
+
+#guidePage.guide-page.active-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.guide-map-shell {
+    flex: 0 0 auto;
+    padding: 10px 12px 0;
+}
+
+.guide-map-canvas {
+    height: clamp(205px, 31vh, 245px);
+    touch-action: none;
+}
+
+.guide-map-world {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    transform: scale(var(--map-zoom, 1));
+    transform-origin: 50% 50%;
+    transition: transform 0.18s ease-out;
+    will-change: transform;
+}
+
+.guide-map-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.guide-location-pill {
+    min-height: 38px;
+    padding: 0 12px;
+}
+
+.guide-map-expand-button {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.76);
+    color: #20252b;
+    font-size: 15px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(30, 42, 54, 0.08);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+}
+
+.guide-map-expand-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.guide-map-zoom-controls {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 18;
+    display: grid;
+    gap: 5px;
+}
+
+.guide-map-zoom-controls button {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #20252b;
+    font-size: 17px;
+    font-weight: 650;
+    line-height: 1;
+    box-shadow: 0 6px 18px rgba(30, 42, 54, 0.09);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.guide-map-selection-hint {
+    bottom: 12px;
+    max-width: 190px;
+    padding: 8px 12px;
+    font-size: 7.5px;
+}
+
+.guide-discovery-panel {
+    flex: 1;
+    min-height: 0;
+    padding: 11px 0 0;
+}
+
+.guide-section-heading {
+    margin-bottom: 8px;
+}
+
+.guide-section-heading h1 {
+    font-size: 19px;
+}
+
+.guide-swipe-hint {
+    font-size: 6.8px;
+}
+
+.route-carousel {
+    gap: 9px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 18px 12px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.route-carousel.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+}
+
+.guide-route-card {
+    --route-primary: #f56600;
+    --route-secondary: #ffffff;
+    --route-text: #ffffff;
+    width: 132px;
+    min-width: 132px;
+    height: 130px;
+    padding: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            155deg,
+            color-mix(in srgb, var(--route-primary) 86%, transparent) 0%,
+            color-mix(in srgb, var(--route-primary) 68%, transparent) 60%,
+            color-mix(in srgb, var(--route-secondary) 58%, rgba(255, 255, 255, 0.28)) 100%
+        );
+    box-shadow:
+        0 10px 22px rgba(22, 30, 40, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    touch-action: pan-x;
+}
+
+.guide-route-card::before {
+    width: 78px;
+    height: 78px;
+    right: -24px;
+    top: -30px;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.guide-route-card::after {
+    width: 70px;
+    right: 7px;
+    top: 63px;
+    opacity: 0.58;
+}
+
+.guide-route-card.selected-route-card {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 13px 26px rgba(20, 28, 38, 0.14),
+        0 0 0 2px color-mix(in srgb, var(--route-primary) 78%, white 22%),
+        inset 0 1px 0 rgba(255, 255, 255, 0.38);
+    filter: saturate(1.04);
+}
+
+.route-card-number {
+    margin-bottom: 4px;
+    font-size: 6.4px;
+    opacity: 0.82;
+}
+
+.guide-route-card h3 {
+    max-width: 108px;
+    font-size: 18px;
+    line-height: 0.98;
+}
+
+.route-card-identity {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    display: -webkit-box;
+    margin-top: 7px;
+    max-width: 108px;
+    overflow: hidden;
+    color: var(--route-text);
+    font-size: 6.9px;
+    line-height: 1.28;
+    white-space: normal;
+    opacity: 0.82;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.route-card-color-label {
+    position: absolute;
+    left: 11px;
+    bottom: 35px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 108px;
+    padding: 3px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--route-text);
+    font-family: var(--montserrat);
+    font-size: 5.8px;
+    font-weight: 680;
+    letter-spacing: 0.15px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.route-card-color-label i {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 50%;
+}
+
+.route-card-color-label .primary-swatch {
+    background: var(--route-primary);
+}
+
+.route-card-color-label .secondary-swatch {
+    background: var(--route-secondary);
+}
+
+.route-card-footer {
+    left: 11px;
+    right: 11px;
+    bottom: 8px;
+    justify-content: center;
+}
+
+.route-card-frequency {
+    display: none !important;
+}
+
+.route-card-more {
+    min-width: 80px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--route-text);
+    font-size: 6.4px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.guide-route-search-block {
+    position: relative;
+    padding: 0 18px;
+}
+
+.guide-search-label {
+    margin-bottom: 6px;
+    font-size: 7.6px;
+}
+
+.guide-search-control input {
+    height: 42px;
+    border-radius: 15px;
+}
+
+.guide-search-results {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 50px;
+    z-index: 120;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 0;
+    scrollbar-width: none;
+}
+
+.guide-search-results::-webkit-scrollbar {
+    display: none;
+}
+
+.guide-message {
+    display: none;
+}
+
+#guidePage.map-expanded .guide-map-shell {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    padding: 7px;
+    background: #eef2f5;
+}
+
+#guidePage.map-expanded .guide-map-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+}
+
+#guidePage.map-expanded .guide-discovery-panel {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#guidePage.map-expanded .guide-map-selection-hint {
+    max-width: 220px;
+}
+
+@media (max-height: 690px) {
+    .guide-map-canvas {
+        height: 205px;
+    }
+
+    .guide-route-card {
+        height: 122px;
+    }
+
+    .route-card-color-label {
+        bottom: 32px;
+    }
+
+    .route-card-footer {
+        bottom: 6px;
+    }
+}
+
+
+/* ==========================================================
+   GUIDE 2.2 - READABLE FADE CARDS + FIXED BOTTOM SEARCH
+   ========================================================== */
+
+/* Keep the Guide screen itself static. Only the route carousel
+   and search-result dropdown are allowed to scroll. */
+.main-app.guide-mode .app-content,
+#guidePage.guide-page.active-page {
+    overflow: hidden !important;
+}
+
+#guidePage.guide-page.active-page {
+    height: 100%;
+}
+
+.guide-map-shell {
+    flex: 0 0 auto;
+    padding: 9px 10px 0;
+}
+
+.guide-map-canvas {
+    height: clamp(218px, 33vh, 258px);
+}
+
+.guide-discovery-panel {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 10px 0 0;
+}
+
+.guide-section-heading {
+    flex: 0 0 auto;
+    padding: 0 16px;
+    margin-bottom: 7px;
+}
+
+.guide-section-heading h1 {
+    max-width: 275px;
+    font-size: 20px;
+    line-height: 1.02;
+}
+
+.route-carousel {
+    flex: 0 0 auto;
+    gap: 11px;
+    min-height: 188px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 16px 12px;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+}
+
+.guide-route-card {
+    --route-primary: #f56600;
+    --route-secondary: #ffffff;
+    --route-text: #ffffff;
+    position: relative;
+    width: 154px;
+    min-width: 154px;
+    height: 176px;
+    overflow: hidden;
+    scroll-snap-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 23px;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--route-primary) 91%, white 9%) 0%,
+            color-mix(in srgb, var(--route-primary) 82%, transparent) 48%,
+            color-mix(in srgb, var(--route-primary) 45%, rgba(255,255,255,0.42)) 72%,
+            rgba(255,255,255,0.78) 100%
+        );
+    color: var(--route-text);
+    box-shadow:
+        0 12px 26px rgba(20, 28, 38, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    transition:
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.guide-route-card::before {
+    content: "";
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    top: -42px;
+    right: -30px;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.guide-route-card::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 47px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.48), transparent);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.guide-route-card.selected-route-card {
+    transform: translateY(-3px) scale(1.025);
+    border-color: rgba(255,255,255,0.96);
+    box-shadow:
+        0 15px 30px rgba(20, 28, 38, 0.15),
+        0 0 0 2px color-mix(in srgb, var(--route-primary) 70%, white 30%),
+        inset 0 1px 0 rgba(255,255,255,0.48);
+    filter: saturate(1.06);
+}
+
+.route-card-select-area {
+    position: absolute;
+    inset: 0 0 43px 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 15px 14px 10px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+}
+
+.route-card-number {
+    position: static;
+    display: block;
+    margin: 0 0 6px;
+    color: rgba(255,255,255,0.88);
+    font-family: var(--montserrat);
+    font-size: 7px;
+    font-weight: 760;
+    letter-spacing: 0.95px;
+}
+
+.guide-route-card h3 {
+    position: static;
+    max-width: 126px;
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 680;
+    line-height: 0.98;
+    letter-spacing: -0.45px;
+}
+
+.route-card-identity {
+    position: static;
+    display: -webkit-box;
+    max-width: 126px;
+    min-height: 30px;
+    margin: 8px 0 0;
+    overflow: hidden;
+    color: rgba(255,255,255,0.88);
+    font-family: var(--montserrat);
+    font-size: 7.4px;
+    font-weight: 520;
+    line-height: 1.35;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.route-card-color-label {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 126px;
+    margin-top: auto;
+    padding: 4px 7px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.96);
+    font-family: var(--montserrat);
+    font-size: 6.2px;
+    font-weight: 680;
+    line-height: 1;
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.route-card-color-label i {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border: 1px solid rgba(255,255,255,0.72);
+    border-radius: 50%;
+}
+
+.route-card-color-label .primary-swatch {
+    background: var(--route-primary);
+}
+
+.route-card-color-label .secondary-swatch {
+    background: var(--route-secondary);
+}
+
+.route-card-more {
+    position: absolute;
+    left: 50%;
+    bottom: 9px;
+    z-index: 5;
+    width: calc(100% - 30px);
+    min-width: 0;
+    height: 30px;
+    padding: 0 12px;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255,255,255,0.65);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.42);
+    color: color-mix(in srgb, var(--route-primary) 78%, #222 22%);
+    font-family: var(--general);
+    font-size: 7.4px;
+    font-weight: 720;
+    text-align: center;
+    box-shadow: 0 4px 13px rgba(20,28,38,0.07);
+    backdrop-filter: blur(12px) saturate(135%);
+    -webkit-backdrop-filter: blur(12px) saturate(135%);
+    transition: transform 0.16s ease, background-color 0.16s ease;
+}
+
+.route-card-more:active {
+    transform: translateX(-50%) scale(0.97);
+}
+
+/* Search is always anchored directly above the bottom tab bar. */
+.guide-route-search-block {
+    position: relative;
+    z-index: 160;
+    flex: 0 0 auto;
+    margin-top: auto;
+    padding: 7px 16px 10px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(247,247,249,0) 0%,
+            rgba(247,247,249,0.92) 24%,
+            #f7f7f9 50%
+        );
+}
+
+.guide-search-label {
+    display: block;
+    margin: 0 0 6px 2px;
+    color: #666d76;
+    font-size: 7.5px;
+}
+
+.guide-search-control {
+    position: relative;
+    z-index: 3;
+}
+
+.guide-search-control input {
+    height: 46px;
+    padding-left: 45px;
+    padding-right: 42px;
+    border: 1px solid #dde1e6;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 9px 24px rgba(20,28,38,0.06);
+    font-size: 9px;
+}
+
+.guide-search-results {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: calc(100% - 4px);
+    z-index: 220;
+    max-height: 198px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 5px;
+    border: 1px solid rgba(220,224,229,0.96);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 18px 44px rgba(20,28,38,0.17);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.guide-search-result {
+    min-height: 48px;
+    border-radius: 13px;
+}
+
+.guide-search-result:hover,
+.guide-search-result:focus-visible {
+    background: #f3f5f7;
+}
+
+/* Make the liquid-glass detail overlay unambiguously cover the app
+   and animate above the fixed Guide layout. */
+.route-detail-overlay {
+    z-index: 5000;
+}
+
+.route-detail-overlay.is-open .route-detail-glass {
+    animation: routeDetailGlassIn 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes routeDetailGlassIn {
+    from {
+        opacity: 0;
+        transform: translateY(72px) scale(0.91);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-height: 700px) {
+    .guide-map-canvas {
+        height: 205px;
+    }
+
+    .route-carousel {
+        min-height: 166px;
+    }
+
+    .guide-route-card {
+        width: 145px;
+        min-width: 145px;
+        height: 154px;
+    }
+
+    .route-card-select-area {
+        bottom: 40px;
+        padding-top: 12px;
+    }
+
+    .guide-route-card h3 {
+        font-size: 18px;
+    }
+
+    .route-card-identity {
+        margin-top: 5px;
+        min-height: 26px;
+        font-size: 6.8px;
+    }
+
+    .route-card-color-label {
+        font-size: 5.8px;
+    }
+
+    .route-card-more {
+        bottom: 7px;
+        height: 27px;
+    }
+
+    .guide-search-control input {
+        height: 42px;
+    }
+}
+
+
+/* ==========================================================
+   GUIDE 3.0 - MULTI ROUTE + POINT A TO B PLANNER
+   ========================================================== */
+
+.guide-section-heading {
+    align-items: flex-end;
+}
+
+.guide-header-action {
+    flex: 0 0 auto;
+    min-height: 29px;
+    padding: 0 10px;
+    margin-bottom: 1px;
+    border: 1px solid #dde1e6;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.78);
+    color: #4e555f;
+    font-family: var(--montserrat);
+    font-size: 6.8px;
+    font-weight: 700;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.guide-header-action:disabled {
+    opacity: 0.38;
+    cursor: default;
+}
+
+.guide-trip-summary {
+    max-width: 280px;
+    margin-top: 4px;
+    color: #7a818a;
+    font-family: var(--montserrat);
+    font-size: 7px;
+    line-height: 1.3;
+}
+
+.route-carousel {
+    min-height: 201px;
+}
+
+.guide-route-card {
+    width: 168px;
+    min-width: 168px;
+    height: 188px;
+    color: var(--route-text) !important;
+}
+
+.route-card-select-area {
+    inset: 0 0 46px 0;
+    padding: 16px 15px 11px;
+    color: var(--route-text) !important;
+}
+
+.route-card-number,
+.route-card-identity,
+.route-card-color-label,
+.guide-route-card h3 {
+    color: var(--route-text) !important;
+}
+
+.route-card-number {
+    opacity: 0.72;
+}
+
+.guide-route-card h3 {
+    max-width: 138px;
+    font-size: 21px;
+    line-height: 1;
+}
+
+.route-card-identity {
+    max-width: 138px;
+    min-height: 32px;
+    font-size: 7.7px;
+    opacity: 0.78;
+}
+
+.route-card-color-label {
+    max-width: 138px;
+    border-color: color-mix(in srgb, var(--route-text) 22%, transparent);
+    background: color-mix(in srgb, var(--route-text) 9%, transparent);
+    font-size: 6.3px;
+}
+
+.light-route-card {
+    border-color: rgba(80,86,94,0.10);
+    box-shadow:
+        0 12px 27px rgba(20, 28, 38, 0.10),
+        inset 0 1px 0 rgba(255,255,255,0.82);
+}
+
+.light-route-card::before {
+    border-color: rgba(40,45,50,0.10);
+}
+
+.light-route-card::after {
+    background: linear-gradient(90deg, transparent, rgba(40,45,50,0.14), transparent);
+}
+
+.light-route-card .route-card-color-label i {
+    border-color: rgba(65,70,77,0.25);
+}
+
+.route-card-more {
+    bottom: 9px;
+    height: 32px;
+    color: var(--route-accent) !important;
+    background: rgba(255,255,255,0.62);
+    border-color: rgba(255,255,255,0.72);
+}
+
+.light-route-card .route-card-more {
+    background: rgba(255,255,255,0.76);
+    border-color: rgba(60,65,72,0.11);
+}
+
+.multi-route-path {
+    transition: opacity 0.22s ease, stroke-width 0.22s ease, filter 0.22s ease;
+}
+
+.dimmed-route-path {
+    opacity: 0.22 !important;
+    stroke-width: 6 !important;
+    filter: none !important;
+}
+
+.focused-route-path {
+    opacity: 1 !important;
+    stroke-width: 11 !important;
+    filter: drop-shadow(0 5px 7px rgba(0,0,0,0.18));
+}
+
+.dimmed-map-object {
+    opacity: 0.22 !important;
+}
+
+.guide-map-journey-markers {
+    position: absolute;
+    inset: 0;
+    z-index: 11;
+    pointer-events: none;
+}
+
+.journey-map-marker {
+    position: absolute;
+    min-width: 62px;
+    max-width: 105px;
+    padding: 5px 7px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255,255,255,0.82);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.88);
+    box-shadow: 0 6px 18px rgba(20,28,38,0.12);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
+.journey-map-marker b,
+.journey-map-marker span {
+    display: block;
+}
+
+.journey-map-marker b {
+    margin-bottom: 2px;
+    color: #f56600;
+    font-family: var(--montserrat);
+    font-size: 5.5px;
+    letter-spacing: 0.7px;
+}
+
+.journey-map-marker span {
+    overflow: hidden;
+    color: #25282e;
+    font-size: 6.6px;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.journey-transfer-marker {
+    border-color: rgba(245,102,0,0.35);
+}
+
+.journey-end-marker b {
+    color: #1c7a43;
+}
+
+.journey-carousel .guide-route-card {
+    width: 190px;
+    min-width: 190px;
+    height: 188px;
+}
+
+.journey-card-select-area {
+    padding: 13px 15px 10px;
+}
+
+.journey-step-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 21px;
+    padding: 0 8px;
+    margin-bottom: 5px;
+    border: 1px solid color-mix(in srgb, var(--route-text) 22%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--route-text) 8%, transparent);
+    color: var(--route-text);
+    font-family: var(--montserrat);
+    font-size: 6px;
+    font-weight: 800;
+    letter-spacing: 0.65px;
+}
+
+.journey-ride-label {
+    color: var(--route-text);
+    font-family: var(--montserrat);
+    font-size: 5.8px;
+    font-weight: 760;
+    letter-spacing: 0.75px;
+    opacity: 0.7;
+}
+
+.journey-route-card h3 {
+    margin-top: 3px;
+    font-size: 18px;
+}
+
+.journey-leg-copy {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+    color: var(--route-text);
+}
+
+.journey-leg-copy span:not(.journey-leg-arrow) {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    font-family: var(--montserrat);
+    font-size: 6.1px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+}
+
+.journey-leg-copy b {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 5px;
+    letter-spacing: 0.45px;
+    opacity: 0.65;
+}
+
+.journey-leg-arrow {
+    font-size: 13px;
+    opacity: 0.55;
+}
+
+.dimmed-journey-card {
+    opacity: 0.42;
+    transform: scale(0.97) !important;
+}
+
+.focused-journey-card {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.025) !important;
+}
+
+.guide-mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 6px;
+    padding: 3px;
+    border: 1px solid #e1e4e8;
+    border-radius: 999px;
+    background: rgba(235,238,242,0.75);
+}
+
+.guide-mode-button {
+    min-height: 29px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #777e87;
+    font-family: var(--montserrat);
+    font-size: 6.8px;
+    font-weight: 700;
+}
+
+.guide-mode-button.active-guide-mode {
+    background: white;
+    color: #20242a;
+    box-shadow: 0 3px 10px rgba(20,28,38,0.08);
+}
+
+.guide-trip-planner {
+    width: 100%;
+}
+
+.guide-trip-inputs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 6px;
+    align-items: end;
+}
+
+.guide-trip-field span {
+    display: block;
+    margin: 0 0 4px 2px;
+    color: #7b828b;
+    font-family: var(--montserrat);
+    font-size: 5.8px;
+    font-weight: 800;
+    letter-spacing: 0.75px;
+}
+
+.guide-trip-field input {
+    width: 100%;
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #dde1e6;
+    border-radius: 12px;
+    outline: none;
+    background: rgba(255,255,255,0.96);
+    color: #25292f;
+    font-family: var(--montserrat);
+    font-size: 7px;
+}
+
+.guide-trip-field input:focus {
+    border-color: var(--larga-orange);
+    box-shadow: 0 0 0 3px rgba(245,102,0,0.08);
+}
+
+.guide-trip-arrow {
+    padding-bottom: 9px;
+    color: #9aa0a8;
+    font-size: 12px;
+}
+
+.guide-find-trip-button {
+    width: 100%;
+    height: 34px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 12px;
+    background: #15171b;
+    color: white;
+    font-size: 7.4px;
+    font-weight: 700;
+}
+
+.trip-planner-mode .guide-map-canvas {
+    height: clamp(198px, 29vh, 225px);
+}
+
+.trip-planner-mode .route-carousel {
+    min-height: 196px;
+}
+
+.trip-planner-mode .guide-route-search-block {
+    padding-top: 6px;
+}
+
+.guide-message {
+    display: block !important;
+    min-height: 10px;
+    margin: 5px 2px 0;
+    color: #868d96;
+    font-family: var(--montserrat);
+    font-size: 5.8px;
+    line-height: 1.25;
+}
+
+@media (max-height: 700px) {
+    .guide-route-card,
+    .journey-carousel .guide-route-card {
+        height: 168px;
+    }
+
+    .route-carousel,
+    .trip-planner-mode .route-carousel {
+        min-height: 178px;
+    }
+
+    .guide-route-card h3 {
+        font-size: 19px;
+    }
+
+    .journey-route-card h3 {
+        font-size: 17px;
+    }
+}
+
+/* ==========================================================
+   GUIDE 3.1 - CONTAINED TRIP LOCATION PICKER
+   ========================================================== */
+
+.trip-planner-mode .guide-route-search-block {
+    z-index: 360;
+}
+
+.guide-trip-planner {
+    position: relative;
+    z-index: 12;
+}
+
+.guide-trip-field {
+    min-width: 0;
+}
+
+.guide-trip-field label {
+    display: block;
+    margin: 0 0 4px 2px;
+    color: #7b828b;
+    font-family: var(--montserrat);
+    font-size: 5.8px;
+    font-weight: 800;
+    letter-spacing: 0.75px;
+}
+
+.guide-trip-field input {
+    min-width: 0;
+}
+
+.guide-place-results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 7px);
+    z-index: 420;
+    max-height: min(172px, 25vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 5px;
+    border: 1px solid rgba(220, 224, 229, 0.98);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 18px 42px rgba(20, 28, 38, 0.18);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.guide-place-results::-webkit-scrollbar {
+    width: 5px;
+}
+
+.guide-place-results::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(91, 98, 107, 0.28);
+}
+
+.guide-place-result {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 9px;
+    border: none;
+    border-bottom: 1px solid #eef0f2;
+    border-radius: 11px;
+    background: transparent;
+    color: #20242a;
+    text-align: left;
+}
+
+.guide-place-result:last-child {
+    border-bottom-color: transparent;
+}
+
+.guide-place-result:hover,
+.guide-place-result:focus-visible {
+    outline: none;
+    background: #f6f7f9;
+}
+
+.guide-current-location-result {
+    margin-bottom: 3px;
+    background: rgba(245, 102, 0, 0.07);
+}
+
+.guide-current-location-result:hover,
+.guide-current-location-result:focus-visible {
+    background: rgba(245, 102, 0, 0.12);
+}
+
+.guide-place-icon {
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9px;
+    background: #f0f2f5;
+    color: var(--larga-orange);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.guide-current-location-result .guide-place-icon {
+    background: var(--larga-orange);
+    color: white;
+}
+
+.guide-place-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.guide-place-copy strong,
+.guide-place-copy small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.guide-place-copy strong {
+    color: #22262c;
+    font-size: 8px;
+    font-weight: 680;
+}
+
+.guide-place-copy small {
+    margin-top: 2px;
+    color: #8a9098;
+    font-family: var(--montserrat);
+    font-size: 5.9px;
+    font-weight: 520;
+}
+
+.guide-place-chevron {
+    flex: 0 0 auto;
+    color: #a0a5ac;
+    font-size: 15px;
+}
+
+.guide-place-empty {
+    padding: 12px 10px;
+    color: #7d848d;
+    font-family: var(--montserrat);
+    font-size: 6.5px;
+    line-height: 1.45;
+    text-align: center;
+}
+
+@media (max-height: 700px) {
+    .guide-place-results {
+        max-height: 138px;
+    }
+}
+
+/* ==========================================================
+   GUIDE 3.2 - ROUTE CARD MORPH DETAILS
+   The selected mini card itself expands into the detail view.
+   ========================================================== */
+
+.route-card-placeholder {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    pointer-events: none;
+}
+
+.route-detail-overlay.card-morph-open {
+    opacity: 1;
+    transition: none;
+}
+
+.route-detail-overlay.card-morph-open .route-detail-backdrop {
+    opacity: 1;
+}
+
+.route-detail-backdrop {
+    opacity: 0;
+    background: rgba(8, 16, 26, 0.30);
+    backdrop-filter: blur(8px) saturate(112%);
+    -webkit-backdrop-filter: blur(8px) saturate(112%);
+    transition: opacity 0.34s ease;
+}
+
+.guide-route-card.route-card-expanded {
+    overflow: hidden;
+    scroll-snap-align: none;
+    border-color: rgba(255, 255, 255, 0.82);
+    box-shadow:
+        0 32px 72px rgba(8, 18, 30, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.52);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    transition: none;
+}
+
+.guide-route-card.route-card-expanded::before {
+    width: 210px;
+    height: 210px;
+    top: -108px;
+    right: -68px;
+    border-color: rgba(255, 255, 255, 0.20);
+    opacity: 0.9;
+}
+
+.guide-route-card.route-card-expanded::after {
+    left: 0;
+    right: 0;
+    top: 30%;
+    bottom: 0;
+    z-index: 0;
+    height: auto;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.48) 22%,
+            rgba(255, 255, 255, 0.84) 52%,
+            rgba(255, 255, 255, 0.94) 100%
+        );
+    opacity: 1;
+}
+
+.guide-route-card.route-card-expanded > .route-card-select-area,
+.guide-route-card.route-card-expanded > .route-card-more {
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.17s ease,
+        transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-route-card.route-card-expanded > .route-card-select-area {
+    transform: translateY(-8px);
+}
+
+.guide-route-card.route-card-expanded > .route-card-more {
+    transform: translateX(-50%) translateY(8px);
+}
+
+.guide-route-card.route-card-expanded .route-detail-glass {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    overflow-y: auto;
+    padding: 34px 22px 22px;
+    border: none;
+    border-radius: inherit;
+    background: transparent;
+    color: #171b20;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    opacity: 0 !important;
+    transform: translateY(14px) scale(0.985) !important;
+    animation: none !important;
+    transition:
+        opacity 0.30s ease,
+        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    scrollbar-width: none;
+}
+
+.guide-route-card.route-card-expanded.route-card-details-visible .route-detail-glass {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+.guide-route-card.route-card-expanded .route-detail-glass::before,
+.guide-route-card.route-card-expanded .route-detail-glass::after {
+    display: none;
+}
+
+.guide-route-card.route-card-expanded .route-detail-close {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-color: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.54);
+    color: color-mix(in srgb, var(--route-primary) 72%, #2c3137 28%);
+    box-shadow: 0 8px 20px rgba(20, 28, 38, 0.10);
+    transition:
+        transform 0.18s ease,
+        background-color 0.18s ease;
+}
+
+.guide-route-card.route-card-expanded .route-detail-close:active {
+    transform: scale(0.94);
+}
+
+.guide-route-card.route-card-expanded .route-detail-accent {
+    width: 62px;
+    margin-bottom: 20px;
+    background: var(--route-secondary);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.34),
+        0 5px 15px color-mix(in srgb, var(--route-primary) 34%, transparent);
+}
+
+.guide-route-card.route-card-expanded .route-detail-status,
+.guide-route-card.route-card-expanded .route-detail-heading h2,
+.guide-route-card.route-card-expanded .route-detail-heading > p:last-child {
+    color: var(--route-text);
+}
+
+.guide-route-card.route-card-expanded .route-detail-status {
+    opacity: 0.82;
+}
+
+.guide-route-card.route-card-expanded .route-detail-heading h2 {
+    max-width: calc(100% - 42px);
+    font-size: 31px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.guide-route-card.route-card-expanded .route-detail-heading > p:last-child {
+    max-width: 92%;
+    opacity: 0.84;
+}
+
+.guide-route-card.route-card-expanded .route-detail-section {
+    margin-top: 24px;
+}
+
+.guide-route-card.route-card-expanded .route-detail-label {
+    color: #777e87;
+}
+
+.guide-route-card.route-card-expanded .route-landmark-chip {
+    border-color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.58);
+    color: #30363d;
+    box-shadow: 0 6px 16px rgba(31, 39, 49, 0.06);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
+.guide-route-card.route-card-expanded .route-detail-roads {
+    color: #353b43;
+}
+
+.guide-route-card.route-card-expanded .route-detail-actions {
+    margin-top: 26px;
+}
+
+.guide-route-card.route-card-expanded .route-detail-primary {
+    background: var(--route-primary);
+    color: var(--route-text);
+    box-shadow: 0 10px 22px color-mix(in srgb, var(--route-primary) 28%, transparent);
+}
+
+.guide-route-card.route-card-expanded .route-detail-secondary {
+    border-color: rgba(60, 65, 72, 0.10);
+    background: rgba(255, 255, 255, 0.66);
+}
+
+.guide-route-card.route-card-expanded .route-detail-save-message {
+    color: #727983;
+}
+
+@media (max-height: 700px) {
+    .guide-route-card.route-card-expanded .route-detail-glass {
+        padding-top: 29px;
+    }
+
+    .guide-route-card.route-card-expanded .route-detail-heading h2 {
+        font-size: 27px;
+    }
+
+    .guide-route-card.route-card-expanded .route-detail-section {
+        margin-top: 18px;
+    }
+}
+
+/* ==========================================================
+   GUIDE 3.3 - COMPACT EXPANDED CARD + READABILITY + SMOOTHER MORPH
+   ========================================================== */
+
+.guide-route-card.route-card-expanded {
+    transform-origin: top left;
+    will-change: transform;
+}
+
+/* Keep the mini-card face visible during the first part of the expansion so
+   the transition reads as the same card growing rather than a modal swap. */
+.guide-route-card.route-card-expanded.route-card-morphing:not(.route-card-details-visible)
+    > .route-card-select-area,
+.guide-route-card.route-card-expanded.route-card-morphing:not(.route-card-details-visible)
+    > .route-card-more,
+.guide-route-card.route-card-expanded.route-card-show-mini
+    > .route-card-select-area,
+.guide-route-card.route-card-expanded.route-card-show-mini
+    > .route-card-more {
+    opacity: 1;
+}
+
+.guide-route-card.route-card-expanded.route-card-show-mini
+    > .route-card-select-area {
+    transform: translateY(0);
+}
+
+.guide-route-card.route-card-expanded.route-card-show-mini
+    > .route-card-more {
+    transform: translateX(-50%) translateY(0);
+}
+
+.guide-route-card.route-card-expanded .route-detail-glass {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 28px 20px 24px;
+    overflow-y: auto;
+}
+
+/* The heading remains on the route colour, but its contrast now follows the
+   actual primary route-board brightness for every route. */
+.guide-route-card.route-card-expanded .route-detail-status,
+.guide-route-card.route-card-expanded .route-detail-heading h2,
+.guide-route-card.route-card-expanded .route-detail-heading > p:last-child {
+    color: var(--route-text) !important;
+}
+
+.guide-route-card.route-card-expanded .route-detail-status {
+    opacity: 0.84;
+}
+
+.guide-route-card.route-card-expanded .route-detail-heading > p:last-child {
+    opacity: 0.90;
+    font-weight: 520;
+}
+
+/* Put dense information on a neutral glass surface so landmark and road text
+   stays readable on red, yellow, white, orange, green, blue, and brown cards. */
+.guide-route-card.route-card-expanded .route-detail-section {
+    margin-top: 16px;
+    padding: 12px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.63);
+    box-shadow:
+        0 7px 20px rgba(20, 28, 38, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.54);
+    backdrop-filter: blur(13px) saturate(125%);
+    -webkit-backdrop-filter: blur(13px) saturate(125%);
+}
+
+.guide-route-card.route-card-expanded .route-detail-label {
+    margin-bottom: 9px;
+    color: #5d6670 !important;
+    opacity: 1;
+}
+
+.guide-route-card.route-card-expanded .route-landmark-chip {
+    border-color: rgba(45, 52, 60, 0.09);
+    background: rgba(255, 255, 255, 0.82);
+    color: #252b32 !important;
+    box-shadow: 0 5px 13px rgba(31, 39, 49, 0.05);
+}
+
+.guide-route-card.route-card-expanded .route-detail-roads {
+    color: #303740 !important;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.guide-route-card.route-card-expanded .route-detail-actions {
+    margin-top: 16px;
+}
+
+.guide-route-card.route-card-expanded .route-detail-primary {
+    background: var(--route-primary);
+    color: var(--route-text) !important;
+    border: 1px solid color-mix(in srgb, var(--route-text) 12%, transparent);
+}
+
+.guide-route-card.route-card-expanded .route-detail-secondary {
+    color: #2e343b !important;
+    background: rgba(255, 255, 255, 0.76);
+}
+
+/* Remove the oversized lower fade/shape that made the bottom half look empty. */
+.guide-route-card.route-card-expanded::after {
+    top: 40%;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.16) 22%,
+            rgba(255,255,255,0.42) 66%,
+            rgba(255,255,255,0.58) 100%
+        );
+}
+
+.guide-route-card.route-card-expanded.route-card-morphing-out {
+    will-change: transform;
+}
+
+@media (max-height: 700px) {
+    .guide-route-card.route-card-expanded .route-detail-glass {
+        padding: 24px 18px 20px;
+    }
+
+    .guide-route-card.route-card-expanded .route-detail-section {
+        margin-top: 12px;
+        padding: 10px 11px;
+    }
+
+    .guide-route-card.route-card-expanded .route-detail-actions {
+        margin-top: 13px;
+    }
+}

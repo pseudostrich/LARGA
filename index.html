@@ -1,0 +1,3459 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+
+
+    <meta
+
+        name="viewport"
+
+        content="width=device-width, initial-scale=1.0"
+
+    >
+
+
+
+    <title>LARGA</title>
+
+
+
+    <!-- International phone number selector -->
+
+    <link
+
+        rel="stylesheet"
+
+        href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.3/dist/css/intlTelInput.min.css"
+
+    >
+
+
+
+    <link
+
+        rel="stylesheet"
+
+        href="style.css"
+
+    >
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="phone">
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- ONBOARDING -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen onboarding-screen"
+
+        id="onboardingScreen"
+
+    >
+
+
+
+        <!-- SPLASH -->
+
+
+
+        <div
+
+            class="onboarding-page splash-view"
+
+            id="splashView"
+
+        >
+
+
+
+            <div class="splash-content">
+
+
+
+                <img
+
+                    src="Assets/larga-logo.png"
+
+                    alt="LARGA logo"
+
+                    class="splash-logo"
+
+                >
+
+
+
+                <img
+
+                    src="Assets/larga-wordmark.png"
+
+                    alt="LARGA"
+
+                    class="splash-wordmark"
+
+                >
+
+
+
+                <p class="splash-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 1 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide1"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-tracking.png"
+
+                    alt="Real-time vehicle tracking"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Real-Time Vehicle
+
+                    Tracking
+
+                </h1>
+
+
+
+                <p>
+
+                    Know vehicle locations instantly.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 2 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide2"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-eta.png"
+
+                    alt="Accurate ETAs and route discovery"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Accurate ETAs &
+
+                    Route Discovery
+
+                </h1>
+
+
+
+                <p>
+
+                    Cut waiting times with precise arrival estimates.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 3 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide3"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-commute.png"
+
+                    alt="Predictable commute tracking"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Predictable
+
+                    Commute Tracking
+
+                </h1>
+
+
+
+                <p>
+
+                    Plan trips to school and work effortlessly.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                class="orange-button"
+
+                id="getStartedButton"
+
+                type="button"
+
+            >
+
+                Get Started
+
+            </button>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- FIXED ONBOARDING CONTROLS -->
+
+
+
+        <div
+
+            class="onboarding-controls controls-hidden"
+
+            id="onboardingControls"
+
+        >
+
+
+
+            <div class="onboarding-indicator">
+
+
+
+                <span class="onboarding-dot active"></span>
+
+                <span class="onboarding-dot"></span>
+
+                <span class="onboarding-dot"></span>
+
+
+
+            </div>
+
+
+
+
+
+            <p
+
+                class="onboarding-hint"
+
+                id="onboardingHint"
+
+            >
+
+                Click right to continue →
+
+            </p>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- ROLE SELECTION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen role-screen hidden"
+
+        id="roleScreen"
+
+    >
+
+
+
+        <div class="role-content">
+
+
+
+            <img
+
+                src="Assets/larga-logo.png"
+
+                alt="LARGA"
+
+                class="role-logo"
+
+            >
+
+
+
+            <p class="role-eyebrow">
+
+                PERSONALIZE YOUR EXPERIENCE
+
+            </p>
+
+
+
+            <h1>
+
+                I am a
+
+            </h1>
+
+
+
+
+
+            <button
+
+                class="role-button commuter-button"
+
+                id="commuterButton"
+
+                type="button"
+
+            >
+
+                Commuter
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="role-button driver-button"
+
+                id="driverButton"
+
+                type="button"
+
+            >
+
+                Driver
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="text-button"
+
+                id="backToIntroButton"
+
+                type="button"
+
+            >
+
+                ← Back
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- PERSONALIZING -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen loading-screen hidden"
+
+        id="loadingScreen"
+
+    >
+
+
+
+        <div class="personalizing-content">
+
+
+
+            <h1>
+
+                Personalizing
+
+                <br>
+
+
+
+                your app for
+
+
+
+                <span>
+
+                    flawless travelling.
+
+                </span>
+
+            </h1>
+
+
+
+
+
+            <div class="simple-loader"></div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- AUTHENTICATION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen auth-screen hidden"
+
+        id="authScreen"
+
+    >
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- AUTH LANDING -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="auth-view auth-landing-view"
+
+            id="authLandingView"
+
+        >
+
+
+
+            <div class="auth-brand-lockup">
+
+
+
+                <div class="auth-brand-row">
+
+
+
+                    <img
+
+                        src="Assets/larga-logo.png"
+
+                        alt=""
+
+                        class="auth-brand-icon"
+
+                    >
+
+
+
+                    <img
+
+                        src="Assets/larga-wordmark.png"
+
+                        alt="LARGA"
+
+                        class="auth-brand-wordmark"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <p class="auth-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-landing-message">
+
+
+
+                <h1>
+
+                    Navigate your commute
+
+                    <br>
+
+                    with real-time certainty.
+
+                </h1>
+
+
+
+                <p>
+
+                    Track jeepneys and buses across the city in real time.
+
+                    No more guesswork, just smoother travel.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-primary-actions">
+
+
+
+                <button
+
+                    class="landing-button guest-landing-button"
+
+                    id="guestLandingButton"
+
+                    type="button"
+
+                >
+
+                    Continue as guest
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="landing-button create-landing-button"
+
+                    id="createAccountLandingButton"
+
+                    type="button"
+
+                >
+
+                    Create Account
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="landing-button login-landing-button"
+
+                    id="loginLandingButton"
+
+                    type="button"
+
+                >
+
+                    Login
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="social-auth social-auth-bottom">
+
+
+
+                <p>
+
+                    or continue with
+
+                </p>
+
+
+
+
+
+                <div class="social-auth-buttons">
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Google"
+
+                        type="button"
+
+                        aria-label="Continue with Google"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/google-icon.svg"
+
+                            alt="Google"
+
+                        >
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Apple"
+
+                        type="button"
+
+                        aria-label="Continue with Apple"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/apple-icon.svg"
+
+                            alt="Apple"
+
+                        >
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- LOGIN / SIGN UP -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="auth-view auth-form-view hidden"
+
+            id="authFormView"
+
+        >
+
+
+
+            <button
+
+                class="auth-back-control"
+
+                id="authFormBackButton"
+
+                type="button"
+
+                aria-label="Go back"
+
+            >
+
+                ←
+
+            </button>
+
+
+
+
+
+            <div class="auth-brand-lockup form-brand-lockup">
+
+
+
+                <div class="auth-brand-row">
+
+
+
+                    <img
+
+                        src="Assets/larga-logo.png"
+
+                        alt=""
+
+                        class="auth-brand-icon"
+
+                    >
+
+
+
+                    <img
+
+                        src="Assets/larga-wordmark.png"
+
+                        alt="LARGA"
+
+                        class="auth-brand-wordmark"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <p class="auth-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-form-heading">
+
+
+
+                <h1 id="authFormTitle">
+
+                    Login
+
+                </h1>
+
+
+
+                <p id="authFormSubtitle">
+
+                    Sign in with your account details
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <!-- CONTACT NUMBER / EMAIL -->
+
+
+
+            <div class="credential-tabs">
+
+
+
+                <button
+
+                    class="credential-tab active-credential-tab"
+
+                    id="contactTab"
+
+                    type="button"
+
+                >
+
+                    Contact Number
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="credential-tab"
+
+                    id="emailTab"
+
+                    type="button"
+
+                >
+
+                    Email Address
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- FORM -->
+
+
+
+            <form
+
+                class="authentication-form"
+
+                id="authForm"
+
+                novalidate
+
+            >
+
+
+
+                <!-- FULL NAME - SIGN UP ONLY -->
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="signupNameSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input"
+
+                        type="text"
+
+                        id="nameInput"
+
+                        placeholder="Full Name"
+
+                        autocomplete="name"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- PHONE -->
+
+
+
+                <div
+
+                    class="phone-input-section"
+
+                    id="phoneFieldSection"
+
+                >
+
+
+
+                    <input
+
+                        type="tel"
+
+                        id="phoneInput"
+
+                        placeholder="Contact Number"
+
+                        autocomplete="tel"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- EMAIL -->
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="emailFieldSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input"
+
+                        type="email"
+
+                        id="emailInput"
+
+                        placeholder="Email Address"
+
+                        autocomplete="email"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- PASSWORD -->
+
+
+
+                <div class="password-control">
+
+
+
+                    <input
+
+                        class="auth-input password-input"
+
+                        type="password"
+
+                        id="passwordInput"
+
+                        placeholder="Password"
+
+                        autocomplete="current-password"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="password-toggle"
+
+                        type="button"
+
+                        data-target="passwordInput"
+
+                        aria-label="Show password"
+
+                    >
+
+
+
+                        <svg
+
+                            class="eye-open-icon"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+
+                            ></path>
+
+
+
+                            <circle
+
+                                cx="12"
+
+                                cy="12"
+
+                                r="2.8"
+
+                            ></circle>
+
+                        </svg>
+
+
+
+
+
+                        <svg
+
+                            class="eye-closed-icon hidden"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M3 3l18 18"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a9.8 9.8 0 0 0 3-.5"
+
+                            ></path>
+
+                        </svg>
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <!-- CONFIRM PASSWORD - SIGN UP ONLY -->
+
+
+
+                <div
+
+                    class="password-control hidden"
+
+                    id="confirmPasswordSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input password-input"
+
+                        type="password"
+
+                        id="confirmPasswordInput"
+
+                        placeholder="Confirm Password"
+
+                        autocomplete="new-password"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="password-toggle"
+
+                        type="button"
+
+                        data-target="confirmPasswordInput"
+
+                        aria-label="Show confirm password"
+
+                    >
+
+
+
+                        <svg
+
+                            class="eye-open-icon"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+
+                            ></path>
+
+
+
+                            <circle
+
+                                cx="12"
+
+                                cy="12"
+
+                                r="2.8"
+
+                            ></circle>
+
+                        </svg>
+
+
+
+
+
+                        <svg
+
+                            class="eye-closed-icon hidden"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M3 3l18 18"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a9.8 9.8 0 0 0 3-.5"
+
+                            ></path>
+
+                        </svg>
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <!-- FORGOT PASSWORD -->
+
+
+
+                <div
+
+                    class="forgot-row"
+
+                    id="forgotRow"
+
+                >
+
+
+
+                    <button
+
+                        class="forgot-password-button"
+
+                        id="forgotPasswordButton"
+
+                        type="button"
+
+                    >
+
+                        Forgot password?
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <p
+
+                    class="auth-message"
+
+                    id="authMessage"
+
+                ></p>
+
+
+
+
+
+                <button
+
+                    class="auth-submit-button"
+
+                    id="authSubmitButton"
+
+                    type="submit"
+
+                >
+
+                    Login
+
+                </button>
+
+
+
+            </form>
+
+
+
+
+
+            <!-- SOCIAL -->
+
+
+
+            <div class="social-auth form-social-auth">
+
+
+
+                <p>
+
+                    or continue with
+
+                </p>
+
+
+
+
+
+                <div class="social-auth-buttons">
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Google"
+
+                        type="button"
+
+                        aria-label="Continue with Google"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/google-icon.svg"
+
+                            alt="Google"
+
+                        >
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Apple"
+
+                        type="button"
+
+                        aria-label="Continue with Apple"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/apple-icon.svg"
+
+                            alt="Apple"
+
+                        >
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- MOCK GOOGLE / APPLE SIGN IN -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="social-mock-overlay hidden"
+
+            id="socialMockOverlay"
+
+            aria-hidden="true"
+
+        >
+
+
+
+            <div
+
+                class="social-mock-card"
+
+                role="dialog"
+
+                aria-modal="true"
+
+                aria-labelledby="mockProviderTitle"
+
+            >
+
+
+
+                <button
+
+                    class="mock-close-button"
+
+                    id="mockCloseButton"
+
+                    type="button"
+
+                    aria-label="Close"
+
+                >
+
+                    ×
+
+                </button>
+
+
+
+
+
+                <div class="mock-provider-header">
+
+
+
+                    <img
+
+                        src="Assets/google-icon.svg"
+
+                        alt=""
+
+                        id="mockProviderIcon"
+
+                        class="mock-provider-icon"
+
+                    >
+
+
+
+
+
+                    <p class="mock-prototype-label">
+
+                        PROTOTYPE PREVIEW
+
+                    </p>
+
+
+
+
+
+                    <h2 id="mockProviderTitle">
+
+                        Continue with Google
+
+                    </h2>
+
+
+
+
+
+                    <p
+
+                        class="mock-provider-subtitle"
+
+                        id="mockProviderSubtitle"
+
+                    >
+
+                        Choose an account to continue to LARGA.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- GOOGLE MOCK -->
+
+
+
+                <div
+
+                    id="googleMockPanel"
+
+                    class="mock-provider-panel"
+
+                >
+
+
+
+                    <button
+
+                        class="mock-account-option"
+
+                        type="button"
+
+                        data-mock-name="Commuter"
+
+                        data-mock-email="commuter@gmail.com"
+
+                    >
+
+
+
+                        <span class="mock-avatar">
+
+                            C
+
+                        </span>
+
+
+
+                        <span class="mock-account-text">
+
+
+
+                            <strong>
+
+                                Commuter
+
+                            </strong>
+
+
+
+                            <small>
+
+                                commuter@gmail.com
+
+                            </small>
+
+
+
+                        </span>
+
+
+
+                        <span class="mock-chevron">
+
+                            ›
+
+                        </span>
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-account-option"
+
+                        type="button"
+
+                        data-mock-name="Student"
+
+                        data-mock-email="student@gmail.com"
+
+                    >
+
+
+
+                        <span class="mock-avatar">
+
+                            S
+
+                        </span>
+
+
+
+                        <span class="mock-account-text">
+
+
+
+                            <strong>
+
+                                Student
+
+                            </strong>
+
+
+
+                            <small>
+
+                                student@gmail.com
+
+                            </small>
+
+
+
+                        </span>
+
+
+
+                        <span class="mock-chevron">
+
+                            ›
+
+                        </span>
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-secondary-button"
+
+                        id="googleUseAnotherButton"
+
+                        type="button"
+
+                    >
+
+                        Use another account
+
+                    </button>
+
+
+
+
+
+                    <div
+
+                        class="mock-other-account hidden"
+
+                        id="googleOtherAccountSection"
+
+                    >
+
+
+
+                        <input
+
+                            class="mock-input"
+
+                            id="googleOtherEmail"
+
+                            type="email"
+
+                            placeholder="Email address"
+
+                        >
+
+
+
+
+
+                        <button
+
+                            class="mock-primary-button"
+
+                            id="googleOtherContinue"
+
+                            type="button"
+
+                        >
+
+                            Continue
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- APPLE MOCK -->
+
+
+
+                <div
+
+                    id="appleMockPanel"
+
+                    class="mock-provider-panel hidden"
+
+                >
+
+
+
+                    <label
+
+                        class="mock-input-label"
+
+                        for="appleMockEmail"
+
+                    >
+
+                        APPLE ID
+
+                    </label>
+
+
+
+
+
+                    <input
+
+                        class="mock-input"
+
+                        id="appleMockEmail"
+
+                        type="email"
+
+                        placeholder="name@example.com"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="mock-primary-button apple-mock-continue"
+
+                        id="appleMockContinue"
+
+                        type="button"
+
+                    >
+
+                        Continue
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-secondary-button"
+
+                        id="appleMockCancel"
+
+                        type="button"
+
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <p
+
+                    class="mock-error"
+
+                    id="mockError"
+
+                ></p>
+
+
+
+
+
+                <p class="mock-disclaimer">
+
+                    Demo only. No credentials are sent or stored.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- DRIVER PLACEHOLDER -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen driver-screen hidden"
+
+        id="driverScreen"
+
+    >
+
+
+
+        <div class="driver-placeholder">
+
+
+
+            <img
+
+                src="Assets/larga-logo.png"
+
+                alt="LARGA"
+
+                class="driver-logo"
+
+            >
+
+
+
+            <h1>
+
+                Driver Mode
+
+            </h1>
+
+
+
+            <p>
+
+                The commuter application is being developed first.
+
+                Driver tools will be integrated next.
+
+            </p>
+
+
+
+
+
+            <button
+
+                class="main-button"
+
+                id="driverBackButton"
+
+                type="button"
+
+            >
+
+                Return to Role Selection
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- COMMUTER APPLICATION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <div
+
+        class="main-app hidden"
+
+        id="mainApp"
+
+    >
+
+
+
+        <!-- HEADER -->
+
+
+
+        <header class="top-bar">
+
+
+
+            <div>
+
+
+
+                <p class="brand-small">
+
+                    LARGA
+
+                </p>
+
+
+
+                <h2 id="pageTitle">
+
+                    Route Guide
+
+                </h2>
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                class="profile-button"
+
+                id="profileButton"
+
+                type="button"
+
+            >
+
+                G
+
+            </button>
+
+
+
+        </header>
+
+
+
+
+
+
+
+        <main class="app-content">
+
+
+
+
+
+            <!-- ================================================= -->
+
+            <!-- GUIDE -->
+
+            <!-- ================================================= -->
+
+            <section
+                class="page active-page guide-page"
+                id="guidePage"
+            >
+
+                <div class="guide-map-shell">
+
+                    <div
+                        class="guide-map-canvas"
+                        id="guideMapCanvas"
+                    >
+
+                        <div
+                            class="guide-map-world"
+                            id="guideMapWorld"
+                        >
+
+                            <div class="guide-map-road road-one"></div>
+                            <div class="guide-map-road road-two"></div>
+                            <div class="guide-map-road road-three"></div>
+                            <div class="guide-map-road road-four"></div>
+                            <div class="guide-map-road road-five"></div>
+
+                            <svg
+                                class="guide-route-svg"
+                                viewBox="0 0 360 260"
+                                preserveAspectRatio="none"
+                                aria-hidden="true"
+                            >
+                                <g id="guideRouteLayers"></g>
+                            </svg>
+
+                            <div
+                                class="guide-map-stops"
+                                id="guideMapStops"
+                            ></div>
+
+                            <div
+                                class="guide-map-jeeps"
+                                id="guideMapJeeps"
+                            ></div>
+
+                            <div
+                                class="guide-map-journey-markers"
+                                id="guideMapJourneyMarkers"
+                            ></div>
+
+                            <div
+                                class="guide-user-marker hidden"
+                                id="guideUserMarker"
+                                aria-label="Your location"
+                            >
+                                <span></span>
+                            </div>
+
+                        </div>
+
+                        <div class="guide-map-top-row">
+
+                            <div class="guide-map-route-label">
+
+                                <span
+                                    class="guide-map-route-dot"
+                                    id="guideMapRouteDot"
+                                ></span>
+
+                                <div>
+
+                                    <small id="guideMapEyebrow">
+                                        MAP PREVIEW
+                                    </small>
+
+                                    <strong id="guideMapRouteName">
+                                        Select a route
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="guide-map-actions">
+
+                                <button
+                                    class="guide-location-pill"
+                                    id="useLocationButton"
+                                    type="button"
+                                >
+                                    <span>⌖</span>
+                                    <span id="guideLocationText">
+                                        My location
+                                    </span>
+                                </button>
+
+                                <button
+                                    class="guide-map-expand-button"
+                                    id="guideMapExpandButton"
+                                    type="button"
+                                    aria-label="Expand map"
+                                    title="Expand map"
+                                >
+                                    <span id="guideMapExpandIcon">⛶</span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="guide-map-zoom-controls"
+                            aria-label="Map zoom controls"
+                        >
+                            <button
+                                id="guideMapZoomIn"
+                                type="button"
+                                aria-label="Zoom in"
+                            >+</button>
+                            <button
+                                id="guideMapZoomOut"
+                                type="button"
+                                aria-label="Zoom out"
+                            >−</button>
+                        </div>
+
+                        <div
+                            class="guide-map-selection-hint"
+                            id="guideMapSelectionHint"
+                        >
+                            Tap route cards to compare them on the map.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="guide-discovery-panel">
+
+                    <div class="guide-section-heading">
+
+                        <div>
+
+                            <p
+                                class="guide-kicker"
+                                id="guideSectionKicker"
+                            >
+                                DAVAO CITY
+                            </p>
+
+                            <h1 id="guideSectionTitle">
+                                Popular Downtown Routes
+                            </h1>
+
+                            <p
+                                class="guide-trip-summary hidden"
+                                id="guideTripSummary"
+                            ></p>
+
+                        </div>
+
+                        <button
+                            class="guide-header-action"
+                            id="guideHeaderAction"
+                            type="button"
+                            disabled
+                        >
+                            Deselect All
+                        </button>
+
+                    </div>
+
+
+
+                    <div
+                        class="route-carousel"
+                        id="routeCarousel"
+                        aria-label="Popular downtown jeepney routes"
+                    ></div>
+
+
+
+                    <div class="guide-route-search-block">
+
+                        <div
+                            class="guide-mode-switch"
+                            role="group"
+                            aria-label="Guide mode"
+                        >
+                            <button
+                                class="guide-mode-button active-guide-mode"
+                                id="browseRoutesModeButton"
+                                type="button"
+                            >
+                                Browse Routes
+                            </button>
+
+                            <button
+                                class="guide-mode-button"
+                                id="planTripModeButton"
+                                type="button"
+                            >
+                                Plan a Trip
+                            </button>
+                        </div>
+
+
+
+                        <div id="browseRoutesPanel">
+
+                            <label
+                                class="guide-search-label"
+                                for="routeSearchInput"
+                            >
+                                Search all jeepney routes
+                            </label>
+
+                            <div class="guide-search-control">
+
+                                <span class="guide-search-icon">
+                                    ⌕
+                                </span>
+
+                                <input
+                                    id="routeSearchInput"
+                                    type="search"
+                                    placeholder="Route name, landmark, or road"
+                                    autocomplete="off"
+                                >
+
+                                <button
+                                    class="guide-search-clear hidden"
+                                    id="routeSearchClear"
+                                    type="button"
+                                    aria-label="Clear route search"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                            <div
+                                class="guide-search-results hidden"
+                                id="routeSearchResults"
+                            ></div>
+
+                        </div>
+
+
+
+                        <div
+                            class="guide-trip-planner hidden"
+                            id="tripPlannerPanel"
+                        >
+
+                            <div class="guide-trip-inputs">
+
+                                <div class="guide-trip-field">
+                                    <label for="tripFromInput">FROM</label>
+                                    <input
+                                        id="tripFromInput"
+                                        type="text"
+                                        placeholder="Starting point"
+                                        autocomplete="off"
+                                        aria-autocomplete="list"
+                                        aria-controls="guidePlaceResults"
+                                    >
+                                </div>
+
+                                <span class="guide-trip-arrow">→</span>
+
+                                <div class="guide-trip-field">
+                                    <label for="tripToInput">TO</label>
+                                    <input
+                                        id="tripToInput"
+                                        type="text"
+                                        placeholder="Destination"
+                                        autocomplete="off"
+                                        aria-autocomplete="list"
+                                        aria-controls="guidePlaceResults"
+                                    >
+                                </div>
+
+                            </div>
+
+                            <div
+                                class="guide-place-results hidden"
+                                id="guidePlaceResults"
+                                role="listbox"
+                                aria-label="Location suggestions"
+                            ></div>
+
+                            <button
+                                class="guide-find-trip-button"
+                                id="findGuideTripButton"
+                                type="button"
+                            >
+                                Plan My Trip
+                            </button>
+
+                        </div>
+
+                        <p
+                            class="guide-message"
+                            id="guideMessage"
+                        ></p>
+
+                    </div>
+
+                </div>
+
+
+
+                <input
+                    type="hidden"
+                    id="destinationInput"
+                    value=""
+                >
+
+            </section>
+
+
+            <!-- ================================================= -->
+
+            <!-- LIVE -->
+
+            <!-- ================================================= -->
+
+
+
+            <section
+
+                class="page"
+
+                id="livePage"
+
+            >
+
+
+
+                <div class="page-heading">
+
+
+
+                    <p class="eyebrow">
+
+                        LIVE JEEPNEY TRACKING
+
+                    </p>
+
+
+
+                    <h1>
+
+                        Track Jeepneys
+
+                    </h1>
+
+
+
+                    <p>
+
+                        Select the routes you want to see.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="route-filter">
+
+
+
+                    <p class="field-label">
+
+                        SHOW ROUTES
+
+                    </p>
+
+
+
+
+
+                    <label class="checkbox-row">
+
+
+
+                        <input
+
+                            type="checkbox"
+
+                            class="route-checkbox"
+
+                            value="Bajada"
+
+                            checked
+
+                        >
+
+
+
+                        Bajada Route
+
+
+
+                    </label>
+
+
+
+
+
+                    <label class="checkbox-row">
+
+
+
+                        <input
+
+                            type="checkbox"
+
+                            class="route-checkbox"
+
+                            value="Matina"
+
+                        >
+
+
+
+                        Matina Route
+
+
+
+                    </label>
+
+
+
+
+
+                    <label class="checkbox-row">
+
+
+
+                        <input
+
+                            type="checkbox"
+
+                            class="route-checkbox"
+
+                            value="Toril"
+
+                        >
+
+
+
+                        Toril Route
+
+
+
+                    </label>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="mock-map live-map">
+
+
+
+                    <span class="map-label">
+
+                        LIVE MAP
+
+                    </span>
+
+
+
+
+
+                    <div
+
+                        class="live-path path-bajada"
+
+                        data-route="Bajada"
+
+                    ></div>
+
+
+
+                    <div
+
+                        class="live-path path-matina hidden"
+
+                        data-route="Matina"
+
+                    ></div>
+
+
+
+                    <div
+
+                        class="live-path path-toril hidden"
+
+                        data-route="Toril"
+
+                    ></div>
+
+
+
+
+
+                    <div
+
+                        class="live-jeep live-jeep-1"
+
+                        data-route="Bajada"
+
+                    >
+
+                        🚐
+
+                    </div>
+
+
+
+                    <div
+
+                        class="live-jeep live-jeep-2"
+
+                        data-route="Bajada"
+
+                    >
+
+                        🚐
+
+                    </div>
+
+
+
+                    <div
+
+                        class="live-jeep live-jeep-3 hidden"
+
+                        data-route="Matina"
+
+                    >
+
+                        🚐
+
+                    </div>
+
+
+
+                    <div
+
+                        class="live-jeep live-jeep-4 hidden"
+
+                        data-route="Toril"
+
+                    >
+
+                        🚐
+
+                    </div>
+
+
+
+
+
+                    <p
+
+                        class="map-empty-message hidden"
+
+                        id="mapEmptyMessage"
+
+                    >
+
+                        Select a route to view jeepneys.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="nearby-section">
+
+
+
+                    <h3>
+
+                        Nearby Jeepneys
+
+                    </h3>
+
+
+
+                    <div
+
+                        class="nearby-list"
+
+                        id="nearbyJeepneys"
+
+                    ></div>
+
+
+
+                </div>
+
+
+
+            </section>
+
+
+
+
+
+
+
+            <!-- ================================================= -->
+
+            <!-- TRIPS -->
+
+            <!-- ================================================= -->
+
+
+
+            <section
+
+                class="page"
+
+                id="tripsPage"
+
+            >
+
+
+
+                <div
+
+                    class="empty-state"
+
+                    id="noActiveTrip"
+
+                >
+
+
+
+                    <div class="empty-icon">
+
+                        🧭
+
+                    </div>
+
+
+
+                    <h2>
+
+                        No active trip
+
+                    </h2>
+
+
+
+                    <p>
+
+                        Search for a destination in Guide to begin your journey.
+
+                    </p>
+
+
+
+
+
+                    <button
+
+                        class="main-button"
+
+                        id="goToGuideButton"
+
+                        type="button"
+
+                    >
+
+                        Open Route Guide
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="activeTrip"
+
+                >
+
+
+
+                    <div class="page-heading">
+
+
+
+                        <p class="status-live">
+
+                            ● TRIP ACTIVE
+
+                        </p>
+
+
+
+                        <h1 id="activeTripRoute">
+
+                            Bajada Route
+
+                        </h1>
+
+
+
+                        <p id="activeTripDestination">
+
+                            Going to destination
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="mock-map trip-map">
+
+
+
+                        <span class="map-label">
+
+                            ACTIVE TRIP
+
+                        </span>
+
+
+
+                        <div class="trip-route-line"></div>
+
+
+
+                        <div class="map-user-marker">
+
+                            YOU
+
+                        </div>
+
+
+
+                        <div class="trip-jeep">
+
+                            🚐
+
+                        </div>
+
+
+
+                        <div class="map-destination">
+
+                            📍
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="trip-status-card">
+
+
+
+                        <p class="eyebrow">
+
+                            CURRENT STEP
+
+                        </p>
+
+
+
+                        <h2 id="tripInstruction">
+
+                            Walk toward the boarding area
+
+                        </h2>
+
+
+
+                        <p id="tripSubtext">
+
+                            Your jeepney is approximately 3 minutes away.
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <button
+
+                        class="main-button"
+
+                        id="nextTripStepButton"
+
+                        type="button"
+
+                    >
+
+                        Simulate Next Step
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="danger-button"
+
+                        id="endTripButton"
+
+                        type="button"
+
+                    >
+
+                        End Trip
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </section>
+
+
+
+
+
+
+
+            <!-- ================================================= -->
+
+            <!-- SAVED -->
+
+            <!-- ================================================= -->
+
+
+
+            <section
+
+                class="page"
+
+                id="savedPage"
+
+            >
+
+
+
+                <div class="page-heading">
+
+
+
+                    <p class="eyebrow">
+
+                        SAVED
+
+                    </p>
+
+
+
+                    <h1>
+
+                        Your Routes
+
+                    </h1>
+
+
+
+                    <p>
+
+                        Keep your frequently used routes and destinations here.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="quick-places">
+
+
+
+                    <div class="saved-card">
+
+
+
+                        <span>
+
+                            🏠
+
+                        </span>
+
+
+
+                        <strong>
+
+                            Home
+
+                        </strong>
+
+
+
+                        <p>
+
+                            Not set
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="saved-card">
+
+
+
+                        <span>
+
+                            🎓
+
+                        </span>
+
+
+
+                        <strong>
+
+                            School / Work
+
+                        </strong>
+
+
+
+                        <p>
+
+                            Not set
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+                <h3 class="saved-heading">
+
+                    Saved Routes
+
+                </h3>
+
+
+
+
+
+                <div id="savedRoutesContainer">
+
+
+
+                    <div class="empty-saved">
+
+                        You haven't saved any routes yet.
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </section>
+
+
+
+        </main>
+
+
+
+
+
+
+
+        <!-- ================================================= -->
+
+        <!-- ROUTE DETAIL LIQUID GLASS -->
+
+        <!-- ================================================= -->
+
+        <div
+            class="route-detail-overlay"
+            id="routeDetailOverlay"
+            aria-hidden="true"
+        >
+
+            <button
+                class="route-detail-backdrop"
+                id="routeDetailBackdrop"
+                type="button"
+                aria-label="Close route details"
+            ></button>
+
+            <article
+                class="route-detail-glass"
+                id="routeDetailGlass"
+            >
+
+                <button
+                    class="route-detail-close"
+                    id="closeRouteDetailButton"
+                    type="button"
+                    aria-label="Close route details"
+                >
+                    ×
+                </button>
+
+                <div class="route-detail-accent"></div>
+
+                <div class="route-detail-heading">
+
+                    <p
+                        class="route-detail-status"
+                        id="routeDetailStatus"
+                    >
+                        ROUTE REFERENCE
+                    </p>
+
+                    <h2 id="routeName">
+                        Select a route
+                    </h2>
+
+                    <p id="routeDetailSummary">
+                        Choose a route from the Guide page.
+                    </p>
+
+                </div>
+
+                <div class="route-detail-section">
+
+                    <p class="route-detail-label">
+                        FAMOUS LANDMARKS PASSED
+                    </p>
+
+                    <div
+                        class="route-landmark-chips"
+                        id="routeLandmarkChips"
+                    ></div>
+
+                </div>
+
+                <div class="route-detail-section">
+
+                    <p class="route-detail-label">
+                        MAJOR ROADS
+                    </p>
+
+                    <p
+                        class="route-detail-roads"
+                        id="routeDetailRoads"
+                    ></p>
+
+                </div>
+
+                <div class="route-detail-actions">
+
+                    <button
+                        class="route-detail-primary"
+                        id="startTripButton"
+                        type="button"
+                    >
+                        Start Trip
+                    </button>
+
+                    <button
+                        class="route-detail-secondary"
+                        id="saveCurrentRouteButton"
+                        type="button"
+                    >
+                        ☆ Save Route
+                    </button>
+
+                </div>
+
+                <p
+                    class="route-detail-save-message"
+                    id="saveMessage"
+                ></p>
+
+            </article>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+
+        <!-- BOTTOM NAV -->
+
+        <!-- ================================================= -->
+
+
+
+        <nav class="bottom-nav">
+
+
+
+            <button
+
+                class="nav-item active-nav"
+
+                data-page="guide"
+
+                type="button"
+
+            >
+
+                <span>⌕</span>
+
+                <p>Guide</p>
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="nav-item"
+
+                data-page="live"
+
+                type="button"
+
+            >
+
+                <span>◎</span>
+
+                <p>Live</p>
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="nav-item"
+
+                data-page="trips"
+
+                type="button"
+
+            >
+
+                <span>➜</span>
+
+                <p>Trips</p>
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="nav-item"
+
+                data-page="saved"
+
+                type="button"
+
+            >
+
+                <span>☆</span>
+
+                <p>Saved</p>
+
+            </button>
+
+
+
+        </nav>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<script
+
+    src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.3/dist/js/intlTelInput.min.js"
+
+></script>
+
+
+
+<script src="script.js"></script>
+
+
+
+</body>
+
+
+
+</html>
