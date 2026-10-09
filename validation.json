@@ -1,0 +1,21 @@
+{
+  "routes": 52,
+  "referenceCoordinatePoints": 33457,
+  "preservedColors": 35,
+  "newColorCombinations": 17,
+  "largestConsecutivePointGapMeters": 376,
+  "loopEndpointGapMaximumMeters": 15,
+  "simulationSamplesChecked": 1560,
+  "htmlAndCssUnchanged": true,
+  "routeComputationNetworkCalls": 0,
+  "previewCoordinatesChecked": 33457,
+  "guideBrowserRoutesPassed": 52,
+  "liveBrowserRoutesPassed": 52,
+  "liveActiveCardMatchesPassed": 52,
+  "browserErrors": 0,
+  "screenshotIdentitiesMatched": 52,
+  "screenshotComparisonGridPixels": 4,
+  "maximumScreenshotP95DistancePixels": 8,
+  "gpsAndNotificationDeliveryTested": false,
+  "movingVehicleMarkersObserved": 5
+}

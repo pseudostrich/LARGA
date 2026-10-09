@@ -1,0 +1,481 @@
+{
+  "version": "2026-10-10-commutedavao-52-v1",
+  "geometrySource": "https://commutedavao.com/",
+  "excludedBaselineRoutes": [
+    "Acacia",
+    "Cabantian",
+    "Indangan",
+    "Tigatto",
+    "Mandug"
+  ],
+  "routes": [
+    {
+      "id": "route-1",
+      "name": "Route 1",
+      "referenceScreenshot": "Screenshot (39).png",
+      "pointCount": 360,
+      "primary": "#c92f32",
+      "secondary": "#f4f4f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-2",
+      "name": "Route 2",
+      "referenceScreenshot": "Screenshot (40).png",
+      "pointCount": 309,
+      "primary": "#ef7d22",
+      "secondary": "#f7f4ef",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-3",
+      "name": "Route 3",
+      "referenceScreenshot": "Screenshot (41).png",
+      "pointCount": 398,
+      "primary": "#2d8a55",
+      "secondary": "#f4f4f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-4",
+      "name": "Route 4",
+      "referenceScreenshot": "Screenshot (42).png",
+      "pointCount": 316,
+      "primary": "#f7f7f5",
+      "secondary": "#cf3538",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-5",
+      "name": "Route 5",
+      "referenceScreenshot": "Screenshot (43).png",
+      "pointCount": 306,
+      "primary": "#168b8d",
+      "secondary": "#f4f4f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-6",
+      "name": "Route 6",
+      "referenceScreenshot": "Screenshot (44).png",
+      "pointCount": 312,
+      "primary": "#f2f2ef",
+      "secondary": "#ee7c27",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-7",
+      "name": "Route 7",
+      "referenceScreenshot": "Screenshot (45).png",
+      "pointCount": 323,
+      "primary": "#d6bb3c",
+      "secondary": "#74777b",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-8",
+      "name": "Route 8",
+      "referenceScreenshot": "Screenshot (46).png",
+      "pointCount": 107,
+      "primary": "#70777f",
+      "secondary": "#f5f5f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-9",
+      "name": "Route 9",
+      "referenceScreenshot": "Screenshot (47).png",
+      "pointCount": 303,
+      "primary": "#e4bd25",
+      "secondary": "#f6f5ee",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-10",
+      "name": "Route 10",
+      "referenceScreenshot": "Screenshot (48).png",
+      "pointCount": 444,
+      "primary": "#2559ad",
+      "secondary": "#f4f4f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-11",
+      "name": "Route 11",
+      "referenceScreenshot": "Screenshot (49).png",
+      "pointCount": 265,
+      "primary": "#855b3c",
+      "secondary": "#f5f4f0",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-12",
+      "name": "Route 12",
+      "referenceScreenshot": "Screenshot (50).png",
+      "pointCount": 304,
+      "primary": "#ef9f2d",
+      "secondary": "#f1c94b",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-13",
+      "name": "Route 13",
+      "referenceScreenshot": "Screenshot (51).png",
+      "pointCount": 315,
+      "primary": "#c93d3d",
+      "secondary": "#3d8a58",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "route-14",
+      "name": "Route 14",
+      "referenceScreenshot": "Screenshot (52).png",
+      "pointCount": 169,
+      "primary": "#854d0e",
+      "secondary": "#99f6e4",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "route-15",
+      "name": "Route 15",
+      "referenceScreenshot": "Screenshot (53).png",
+      "pointCount": 221,
+      "primary": "#7e22ce",
+      "secondary": "#a5f3fc",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "bago-aplaya",
+      "name": "Bago Aplaya",
+      "referenceScreenshot": "Screenshot (12).png",
+      "pointCount": 725,
+      "primary": "#c7423f",
+      "secondary": "#2f8b56",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "bangkal",
+      "name": "Bangkal",
+      "referenceScreenshot": "Screenshot (13).png",
+      "pointCount": 611,
+      "primary": "#183153",
+      "secondary": "#f2a68d",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "obrero",
+      "name": "Bo. Obrero",
+      "referenceScreenshot": "Screenshot (14).png",
+      "pointCount": 262,
+      "primary": "#246c4a",
+      "secondary": "#f4f4f2",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "buhangin-dacudao",
+      "name": "Buhangin via Dacudao",
+      "referenceScreenshot": "Screenshot (15).png",
+      "pointCount": 331,
+      "primary": "#d8b532",
+      "secondary": "#f3f1e9",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "buhangin-jp-laurel",
+      "name": "Buhangin via JP Laurel",
+      "referenceScreenshot": "Screenshot (16).png",
+      "pointCount": 575,
+      "primary": "#d8b532",
+      "secondary": "#f3f1e9",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "bunawan-buhangin",
+      "name": "Bunawan via Buhangin",
+      "referenceScreenshot": "Screenshot (17).png",
+      "pointCount": 1150,
+      "primary": "#74499a",
+      "secondary": "#f3f0f6",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "bunawan-sasa",
+      "name": "Bunawan via Sasa",
+      "referenceScreenshot": "Screenshot (18).png",
+      "pointCount": 1153,
+      "primary": "#74499a",
+      "secondary": "#f3f0f6",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "calinan",
+      "name": "Calinan",
+      "referenceScreenshot": "Screenshot (19).png",
+      "pointCount": 1423,
+      "primary": "#006d77",
+      "secondary": "#e9c46a",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "camp-catitipan",
+      "name": "Camp Catitipan via JP Laurel",
+      "referenceScreenshot": "Screenshot (20).png",
+      "pointCount": 621,
+      "primary": "#d7b52e",
+      "secondary": "#f2f0e8",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "catalunan-grande",
+      "name": "Catalunan Grande",
+      "referenceScreenshot": "Screenshot (21).png",
+      "pointCount": 698,
+      "primary": "#d45d92",
+      "secondary": "#f7f1f4",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "ecoland-sm",
+      "name": "Ecoland",
+      "referenceScreenshot": "Screenshot (22).png",
+      "pointCount": 399,
+      "primary": "#e2bd2b",
+      "secondary": "#cb3f3f",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "el-rio",
+      "name": "El Rio",
+      "referenceScreenshot": "Screenshot (23).png",
+      "pointCount": 526,
+      "primary": "#2e6dad",
+      "secondary": "#dfc12f",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "emily-homes",
+      "name": "Emily Homes",
+      "referenceScreenshot": "Screenshot (24).png",
+      "pointCount": 696,
+      "primary": "#9d174d",
+      "secondary": "#a7f3d0",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "jade-valley",
+      "name": "Jade Valley",
+      "referenceScreenshot": "Screenshot (25).png",
+      "pointCount": 634,
+      "primary": "#6b21a8",
+      "secondary": "#fde68a",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "lasang-buhangin",
+      "name": "Lasang via Buhangin",
+      "referenceScreenshot": "Screenshot (26).png",
+      "pointCount": 1334,
+      "primary": "#8e9d38",
+      "secondary": "#e1bf35",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "lasang-sasa",
+      "name": "Lasang via Sasa",
+      "referenceScreenshot": "Screenshot (27).png",
+      "pointCount": 1337,
+      "primary": "#8e9d38",
+      "secondary": "#e1bf35",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "maa-agdao",
+      "name": "Maa - Agdao",
+      "referenceScreenshot": "Screenshot (28).png",
+      "pointCount": 715,
+      "primary": "#0f766e",
+      "secondary": "#fda4af",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "maa",
+      "name": "Maa - Bankerohan",
+      "referenceScreenshot": "Screenshot (29).png",
+      "pointCount": 468,
+      "primary": "#d8b62a",
+      "secondary": "#1d242b",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "magtuod",
+      "name": "Magtuod",
+      "referenceScreenshot": "Screenshot (30).png",
+      "pointCount": 772,
+      "primary": "#92400e",
+      "secondary": "#93c5fd",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "matina",
+      "name": "Matina",
+      "referenceScreenshot": "Screenshot (31).png",
+      "pointCount": 527,
+      "primary": "#4338ca",
+      "secondary": "#fdba74",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "matina-aplaya",
+      "name": "Matina Aplaya",
+      "referenceScreenshot": "Screenshot (32).png",
+      "pointCount": 689,
+      "primary": "#047857",
+      "secondary": "#ddd6fe",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "matina-crossing",
+      "name": "Matina Crossing",
+      "referenceScreenshot": "Screenshot (33).png",
+      "pointCount": 496,
+      "primary": "#e3bd31",
+      "secondary": "#2d66b0",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "matina-pangi",
+      "name": "Matina Pangi",
+      "referenceScreenshot": "Screenshot (34).png",
+      "pointCount": 732,
+      "primary": "#4f9b45",
+      "secondary": "#e7c94b",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "mintal",
+      "name": "Mintal",
+      "referenceScreenshot": "Screenshot (35).png",
+      "pointCount": 934,
+      "primary": "#be123c",
+      "secondary": "#bae6fd",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "panacan-sm",
+      "name": "Panacan - SM City Davao",
+      "referenceScreenshot": "Screenshot (37).png",
+      "pointCount": 1174,
+      "primary": "#7a593c",
+      "secondary": "#f3f2ee",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "panacan-cabaguio",
+      "name": "Panacan via Cabaguio",
+      "referenceScreenshot": "Screenshot (36).png",
+      "pointCount": 832,
+      "primary": "#7a593c",
+      "secondary": "#f3f2ee",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "puan",
+      "name": "Puan",
+      "referenceScreenshot": "Screenshot (38).png",
+      "pointCount": 741,
+      "primary": "#0369a1",
+      "secondary": "#fbcfe8",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "sasa-cabaguio",
+      "name": "Sasa via Cabaguio",
+      "referenceScreenshot": "Screenshot (54).png",
+      "pointCount": 875,
+      "primary": "#2d62a3",
+      "secondary": "#f2f2ef",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "sasa-jp-laurel",
+      "name": "Sasa via JP Laurel",
+      "referenceScreenshot": "Screenshot (55).png",
+      "pointCount": 784,
+      "primary": "#2d62a3",
+      "secondary": "#f2f2ef",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "sasa-r-castillo",
+      "name": "Sasa via R. Castillo",
+      "referenceScreenshot": "Screenshot (56).png",
+      "pointCount": 717,
+      "primary": "#2d62a3",
+      "secondary": "#f2f2ef",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "talomo",
+      "name": "Talomo",
+      "referenceScreenshot": "Screenshot (57).png",
+      "pointCount": 799,
+      "primary": "#9f1239",
+      "secondary": "#d9f99d",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "tibungco-buhangin",
+      "name": "Tibungco via Buhangin",
+      "referenceScreenshot": "Screenshot (58).png",
+      "pointCount": 801,
+      "primary": "#3730a3",
+      "secondary": "#fcd34d",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "tibungco-cabaguio",
+      "name": "Tibungco via Cabaguio",
+      "referenceScreenshot": "Screenshot (59).png",
+      "pointCount": 892,
+      "primary": "#115e59",
+      "secondary": "#f9a8d4",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "tibungco-r-castillo",
+      "name": "Tibungco via R. Castillo",
+      "referenceScreenshot": "Screenshot (60).png",
+      "pointCount": 788,
+      "primary": "#075985",
+      "secondary": "#c4b5fd",
+      "colorSource": "custom-larga-combination"
+    },
+    {
+      "id": "toril",
+      "name": "Toril",
+      "referenceScreenshot": "Screenshot (61).png",
+      "pointCount": 1037,
+      "primary": "#2c8a4c",
+      "secondary": "#f3f3ee",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "ulas",
+      "name": "Ulas",
+      "referenceScreenshot": "Screenshot (62).png",
+      "pointCount": 983,
+      "primary": "#285fa8",
+      "secondary": "#cb3838",
+      "colorSource": "preserved-baseline"
+    },
+    {
+      "id": "wa-an",
+      "name": "Wa-an",
+      "referenceScreenshot": "Screenshot (63).png",
+      "pointCount": 774,
+      "primary": "#701a75",
+      "secondary": "#fed7aa",
+      "colorSource": "custom-larga-combination"
+    }
+  ]
+}
