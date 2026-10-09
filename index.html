@@ -2496,7 +2496,7 @@
                                 type="button"
                             >
                                 Plan My Trip
-                            </button>
+                            </button><button type="button" class="guide-save-trip-button hidden" id="saveSuggestedTripButton">Save Trip</button>
 
                         </div>
 
@@ -2543,7 +2543,7 @@
                     </h1>
 
                     <p>
-                        Pick one route to see simulated live jeepneys and arrival estimates.
+                        Pick one route to see jeepneys and arrival estimates.
                     </p>
                 </div>
 
@@ -2560,20 +2560,13 @@
                                 Live Routes
                             </h2>
                         </div>
-
-                        <span
-                            class="live-demo-badge"
-                            title="Vehicle positions are simulated for this prototype."
-                        >
-                            DEMO
-                        </span>
                     </div>
 
 
                     <div
                         class="live-route-carousel"
                         id="liveRouteCarousel"
-                        aria-label="Live route selection"
+                        aria-label="Live route selection" tabindex="0"
                     ></div>
 
 
@@ -2628,7 +2621,7 @@
                     <div
                         class="live-google-map"
                         id="liveGoogleMap"
-                        aria-label="Map showing simulated live jeepney locations"
+                        aria-label="Map showing jeepney locations"
                     ></div>
 
 
@@ -2692,7 +2685,7 @@
                         <span class="live-legend-dot"></span>
 
                         <span id="liveVehicleCountLabel">
-                            0 simulated jeepneys
+                            0 jeepneys
                         </span>
                     </div>
 
@@ -2778,17 +2771,13 @@
                                         Route 1
                                     </strong>
 
-                                    <span class="live-simulated-label">
-                                        SIMULATED
-                                    </span>
-                                </div>
-
                                 <span
                                     class="live-nearest-plate"
                                     id="liveNearestPlate"
                                 >
                                     LJR 4821
                                 </span>
+                                </div>
 
                                 <small
                                     id="liveNearestDistance"
@@ -2868,11 +2857,6 @@
                 </section>
 
 
-                <p class="live-prototype-note">
-                    Prototype simulation. Vehicle locations, plate numbers, and ETAs are generated for demonstration and are not connected to actual jeepneys.
-                </p>
-
-
                 <div
                     class="larga-live-toast hidden"
                     id="largaLiveToast"
@@ -2906,13 +2890,12 @@
 
 
 
-            <section
-
-                class="page"
-
-                id="tripsPage"
-
-            >
+            <section class="page trips-library-page" id="tripsPage">
+ <div class="page-heading"><p class="eyebrow">YOUR JOURNEYS</p><h1>Trips</h1><p>Keep your routes and plans ready for school, work, or wherever you go.</p></div>
+ <button type="button" class="main-button" id="newSavedTripButton">Plan a new trip</button>
+ <p id="tripsLibraryStatus" class="guide-message" role="status"></p>
+ <div id="savedRoutesContainer"></div>
+ <div class="legacy-trip-view" aria-hidden="true">
 
 
 
@@ -3136,7 +3119,8 @@
 
 
 
-            </section>
+            </div>
+</section>
 
 
 
@@ -3152,157 +3136,17 @@
 
 
 
-            <section
+            <section class="page discover-page" id="discoverPage">
+ <div class="page-heading"><p class="eyebrow">EXPLORE DAVAO</p><h1>Discover</h1><p>Find a place and plan how to get there.</p></div>
+ <label class="discover-search-label" for="discoverSearchInput">Search places</label>
+ <input id="discoverSearchInput" class="discover-search-input" type="search" placeholder="Malls, restaurants, parks…" autocomplete="off" aria-controls="discoverResults">
+ <div class="discover-categories"><button type="button" data-discover-query="mall Davao">Malls</button><button type="button" data-discover-query="restaurant Davao">Food</button><button type="button" data-discover-query="park Davao">Parks</button><button type="button" data-discover-query="university Davao">Schools</button></div>
+ <p id="discoverStatus" class="guide-message" role="status">Search for a place to explore.</p><div id="discoverResults"></div>
+</section>
 
-                class="page"
 
-                id="savedPage"
 
-            >
-
-
-
-                <div class="page-heading">
-
-
-
-                    <p class="eyebrow">
-
-                        SAVED
-
-                    </p>
-
-
-
-                    <h1>
-
-                        Your Routes
-
-                    </h1>
-
-
-
-                    <p>
-
-                        Keep your frequently used routes and destinations here.
-
-                    </p>
-
-
-
-                </div>
-
-
-
-
-
-                <div class="quick-places">
-
-
-
-                    <div class="saved-card">
-
-
-
-                        <span>
-
-                            🏠
-
-                        </span>
-
-
-
-                        <strong>
-
-                            Home
-
-                        </strong>
-
-
-
-                        <p>
-
-                            Not set
-
-                        </p>
-
-
-
-                    </div>
-
-
-
-
-
-                    <div class="saved-card">
-
-
-
-                        <span>
-
-                            🎓
-
-                        </span>
-
-
-
-                        <strong>
-
-                            School / Work
-
-                        </strong>
-
-
-
-                        <p>
-
-                            Not set
-
-                        </p>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-
-
-                <h3 class="saved-heading">
-
-                    Saved Routes
-
-                </h3>
-
-
-
-
-
-                <div id="savedRoutesContainer">
-
-
-
-                    <div class="empty-saved">
-
-                        You haven't saved any routes yet.
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </section>
-
-
-
-        </main>
+        </main><div class="trip-save-overlay hidden" id="tripSaveOverlay"><form id="tripSaveForm" class="trip-save-dialog" role="dialog" aria-modal="true" aria-labelledby="tripSaveTitle"><h2 id="tripSaveTitle">Save your trip</h2><label for="tripLabelInput">Trip label</label><input id="tripLabelInput" maxlength="40" placeholder="e.g. School, Work, Gym" autocomplete="off"><div class="trip-label-presets"><button type="button" data-trip-label="School">School</button><button type="button" data-trip-label="Work">Work</button><button type="button" data-trip-label="Gym">Gym</button><button type="button" data-trip-label="Home">Home</button></div><p id="tripSaveStatus" role="status"></p><div class="trip-save-actions"><button type="button" id="cancelTripSaveButton">Cancel</button><button type="submit" class="main-button">Save</button></div></form></div>
 
 
 
@@ -3443,7 +3287,7 @@
 
             >
 
-                <span>⌕</span>
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
 
                 <p>Guide</p>
 
@@ -3497,15 +3341,13 @@
 
                 class="nav-item"
 
-                data-page="saved"
+                data-page="discover"
 
                 type="button"
 
             >
 
-                <span>☆</span>
-
-                <p>Saved</p>
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><p>Discover</p>
 
             </button>
 

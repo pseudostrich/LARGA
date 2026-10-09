@@ -2421,8 +2421,8 @@ window.addEventListener(
             trips:
                 get("tripsPage"),
 
-            saved:
-                get("savedPage")
+            discover:
+                get("discoverPage")
 
         };
 
@@ -2438,8 +2438,8 @@ window.addEventListener(
             trips:
                 "Trips",
 
-            saved:
-                "Saved"
+            discover:
+                "Discover"
 
         };
 
@@ -4384,9 +4384,9 @@ window.addEventListener(
                         <span class="journey-ride-label">${rideLabel}</span>
                         <h3>${route.name}</h3>
                         <div class="journey-leg-copy">
-                            <span><b>Board</b>${leg.board}</span>
+                            <span><b>${index === 0 && plan.endpoints?.[0]?.location ? 'Board near' : 'Board'}</b>${escapePlannerText(leg.board)}</span>
                             <span class="journey-leg-arrow">↓</span>
-                            <span><b>Get off</b>${leg.alight}</span>
+                            <span><b>${index === plan.legs.length - 1 && plan.endpoints?.[1]?.location ? 'Get off near' : 'Get off'}</b>${escapePlannerText(leg.alight)}</span>
                         </div>
                     </button>
                     <button
@@ -4454,13 +4454,13 @@ window.addEventListener(
                                 <h3>${route.name}</h3>
                                 <div class="journey-leg-copy">
                                     <span>
-                                        <b>Board</b>
-                                        ${plan.start}
+                                        <b>${plan.endpoints?.[0]?.location ? 'Board near' : 'Board'}</b>
+                                        ${escapePlannerText(plan.start)}
                                     </span>
                                     <span class="journey-leg-arrow">↓</span>
                                     <span>
-                                        <b>Get off</b>
-                                        ${plan.end}
+                                        <b>${plan.endpoints?.[1]?.location ? 'Get off near' : 'Get off'}</b>
+                                        ${escapePlannerText(plan.end)}
                                     </span>
                                 </div>
                             </button>
@@ -4843,7 +4843,7 @@ window.addEventListener(
                 show(guideGoogleMap);
 
                 guideMessage.textContent =
-                    "Google Maps Demo Key is active. Guide and Live use the same 52 stored route paths.";
+                    "Guide and Live use the same 52 stored route paths.";
 
                 renderGuideMapRoutes();
             }
@@ -5222,12 +5222,32 @@ window.addEventListener(
                 }
             );
 
+            if (currentTripPlan?.endpoints) {
+                currentTripPlan.endpoints.forEach(function (endpoint, index) {
+                    if (!endpoint.location) return;
+                    const label = document.createElement('div');
+                    label.className = 'google-planner-place-marker';
+                    label.textContent = index === 0 ? 'START' : 'DESTINATION';
+                    const marker = new GoogleAdvancedMarkerElement({map: googleGuideMap,
+                        position: endpoint.location, title: endpoint.label, zIndex: 100});
+                    marker.append(label);
+                    googleRouteMarkers.push(marker);
+                    bounds.extend(endpoint.location);
+                });
+            }
             if (
                 successfulRoutes > 0 &&
                 !bounds.isEmpty()
             ) {
+                // Show the trip area when both endpoints are geolocated;
+                // the full stored routes remain drawn beyond the viewport.
+                let tripBounds = bounds;
+                if (currentTripPlan?.endpoints?.every(endpoint => endpoint.location)) {
+                    tripBounds = new GoogleLatLngBounds();
+                    currentTripPlan.endpoints.forEach(endpoint => tripBounds.extend(endpoint.location));
+                }
                 googleGuideMap.fitBounds(
-                    bounds,
+                    tripBounds,
                     58
                 );
 
@@ -5344,6 +5364,7 @@ window.addEventListener(
         }
 
         function renderJourneyMapMarkers(plan) {
+            if (plan.coordinateMatched) return;
             const markerPositions = plan.legs.length === 1
                 ? [[13, 78], [84, 25]]
                 : plan.legs.length === 2
@@ -5362,15 +5383,15 @@ window.addEventListener(
 
                 if (index === 0) {
                     marker.classList.add("journey-start-marker");
-                    marker.innerHTML = `<b>START</b><span>${labels[index]}</span>`;
+                    marker.innerHTML = `<b>START</b><span>${escapePlannerText(labels[index])}</span>`;
                 }
                 else if (index === labels.length - 1) {
                     marker.classList.add("journey-end-marker");
-                    marker.innerHTML = `<b>DESTINATION</b><span>${labels[index]}</span>`;
+                    marker.innerHTML = `<b>DESTINATION</b><span>${escapePlannerText(labels[index])}</span>`;
                 }
                 else {
                     marker.classList.add("journey-transfer-marker");
-                    marker.innerHTML = `<b>TRANSFER ${index}</b><span>${labels[index]}</span>`;
+                    marker.innerHTML = `<b>TRANSFER ${index}</b><span>${escapePlannerText(labels[index])}</span>`;
                 }
 
                 guideMapJourneyMarkers.appendChild(marker);
@@ -5413,6 +5434,7 @@ window.addEventListener(
         }
 
         function clearExpandedCardGeometry(card) {
+            if (card.classList.contains('live-route-card')) card.classList.remove('guide-route-card');
             [
                 "position",
                 "left",
@@ -5741,6 +5763,7 @@ window.addEventListener(
             card.appendChild(routeDetailGlass);
 
             card.classList.add("route-card-expanded", "route-card-morphing");
+            if (card.classList.contains('live-route-card')) card.classList.add('guide-route-card');
             setExpandedCardGeometry(card, target);
             routeDetailAnimating = true;
 
@@ -6133,13 +6156,180 @@ window.addEventListener(
         let plannerCurrentLocationSelected = false;
         let plannerCurrentLocationCoordinates = null;
 
+
+        // Google Places data lives only in this page's memory, never browser storage.
+        const plannerSelectedPlaces = new Map();
+        const plannerPlaceSessions = new Map();
+        const plannerPlaceSelectionsPending = new Set();
+        let plannerPlacesLibraryPromise = null;
+        let plannerSuggestionTimer = null;
+        let plannerSuggestionGeneration = 0;
+        const PLANNER_ROUTE_RADIUS_METERS = 500;
+
+        function escapePlannerText(value) {
+            return String(value).replace(/[&<>"']/g, character =>
+                ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[character]));
+        }
+
+        async function loadPlannerPlacesLibrary() {
+            if (!plannerPlacesLibraryPromise) {
+                plannerPlacesLibraryPromise = (async function () {
+                    await loadGoogleMapsDemoKey();
+                    if (!hasGoogleMapsDemoKey()) throw new Error('Maps key unavailable');
+                    await loadGoogleMapsScript();
+                    return google.maps.importLibrary('places');
+                })().catch(function (error) {
+                    plannerPlacesLibraryPromise = null;
+                    throw error;
+                });
+            }
+            return plannerPlacesLibraryPromise;
+        }
+
+        function getPlannerEndpoint(input) {
+            if (input === tripFromInput && plannerCurrentLocationSelected &&
+                input.value === CURRENT_LOCATION_VALUE && plannerCurrentLocationCoordinates) {
+                return {label: CURRENT_LOCATION_VALUE, location: {
+                    lat: plannerCurrentLocationCoordinates.latitude,
+                    lng: plannerCurrentLocationCoordinates.longitude
+                }, source: 'gps'};
+            }
+            const selected = plannerSelectedPlaces.get(input);
+            if (selected && selected.label === input.value) return selected;
+            const landmark = resolveGuidePlace(input.value);
+            return landmark ? {label: landmark, source: 'landmark'} : null;
+        }
+
+        // Minimum straight-line distance to segments, not just route vertices.
+        // This identifies nearby route corridors, not verified walking paths/stops.
+        function plannerRouteDistance(route, location) {
+            const coordinates = route.coordinates || [];
+            const xScale = 111195 * Math.cos(location.lat * Math.PI / 180);
+            const yScale = 111195;
+            let minimum = Infinity;
+            for (let i = 1; i < coordinates.length; i++) {
+                const ax = (coordinates[i-1][0] - location.lng) * xScale;
+                const ay = (coordinates[i-1][1] - location.lat) * yScale;
+                const bx = (coordinates[i][0] - location.lng) * xScale;
+                const by = (coordinates[i][1] - location.lat) * yScale;
+                const dx = bx-ax, dy = by-ay, lengthSquared = dx*dx + dy*dy;
+                const t = lengthSquared ? Math.max(0, Math.min(1, -(ax*dx+ay*dy)/lengthSquared)) : 0;
+                minimum = Math.min(minimum, Math.hypot(ax+t*dx, ay+t*dy));
+            }
+            return minimum;
+        }
+
+        function routeServesPlannerEndpoint(route, endpoint) {
+            return endpoint.location
+                ? plannerRouteDistance(route, endpoint.location) <= PLANNER_ROUTE_RADIUS_METERS
+                : routeServesGuidePlace(route, endpoint.label);
+        }
+
+        function addPlannerSuggestionStatus(container, message) {
+            container.textContent = message;
+            container.className = 'guide-place-empty';
+            container.setAttribute('role', 'status');
+        }
+
+        function scheduleGooglePlaceSuggestions(input) {
+            clearTimeout(plannerSuggestionTimer);
+            const generation = ++plannerSuggestionGeneration;
+            const query = input.value.trim();
+            if (query.length < 2 || plannerSelectedPlaces.get(input)?.label === input.value ||
+                (input === tripFromInput && plannerCurrentLocationSelected)) return;
+            const container = document.createElement('div');
+            container.className = 'guide-google-place-results';
+            guidePlaceResults.prepend(container);
+            addPlannerSuggestionStatus(container, 'Searching Google Maps…');
+            plannerSuggestionTimer = setTimeout(async function () {
+                try {
+                    const library = await loadPlannerPlacesLibrary();
+                    if (generation !== plannerSuggestionGeneration) return;
+                    if (!plannerPlaceSessions.has(input)) {
+                        plannerPlaceSessions.set(input, new library.AutocompleteSessionToken());
+                    }
+                    const {suggestions} = await library.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+                        input: query,
+                        sessionToken: plannerPlaceSessions.get(input),
+                        locationBias: {center: DAVAO_MAP_CENTER, radius: 30000},
+                        includedRegionCodes: ['ph'], language: 'en', region: 'ph'
+                    });
+                    if (generation !== plannerSuggestionGeneration || activeGuidePlaceInput !== input ||
+                        input.value.trim() !== query || !container.isConnected) return;
+                    container.innerHTML = '';
+                    container.className = 'guide-google-place-results';
+                    container.removeAttribute('role');
+                    const predictions = suggestions.map(item => item.placePrediction).filter(Boolean);
+                    if (!predictions.length) {
+                        addPlannerSuggestionStatus(container, 'No Google Maps places found. Try a name or address.');
+                        return;
+                    }
+                    for (const prediction of predictions) {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'guide-place-result guide-google-place-result';
+                        button.setAttribute('role', 'option');
+                        button.innerHTML = '<span class="guide-place-icon">⌖</span><span class="guide-place-copy"><strong></strong><small></small></span><span class="guide-place-chevron">›</span>';
+                        button.querySelector('strong').textContent = prediction.mainText?.toString() || prediction.text.toString();
+                        button.querySelector('small').textContent = prediction.secondaryText?.toString() || 'Google Maps place';
+                        button.addEventListener('click', async function () {
+                            const selectedText = input.value;
+                            const selectionGeneration = plannerSuggestionGeneration;
+                            plannerPlaceSelectionsPending.add(input);
+                            container.querySelectorAll('button').forEach(item => item.disabled = true);
+                            guideMessage.textContent = 'Loading the selected place…';
+                            try {
+                                const place = prediction.toPlace();
+                                await place.fetchFields({fields: ['id', 'displayName', 'formattedAddress', 'location']});
+                                if (selectionGeneration !== plannerSuggestionGeneration || input.value !== selectedText) return;
+                                if (!place.location) throw new Error('Place has no coordinates');
+                                const endpoint = {
+                                    label: place.displayName || prediction.text.toString(),
+                                    address: place.formattedAddress || '', placeId: place.id,
+                                    location: {lat: place.location.lat(), lng: place.location.lng()}, source: 'google'
+                                };
+                                plannerSelectedPlaces.set(input, endpoint);
+                                input.value = endpoint.label;
+                                if (input === tripFromInput) plannerCurrentLocationSelected = false;
+                                closeGuidePlaceResults();
+                                guideMessage.textContent = endpoint.label + ' selected. Choose the other place, then plan your trip.';
+                            } catch (error) {
+                                if (selectionGeneration === plannerSuggestionGeneration) {
+                                    guideMessage.textContent = 'Could not load that place. Try again or choose a saved landmark.';
+                                    container.querySelectorAll('button').forEach(item => item.disabled = false);
+                                }
+                            } finally {
+                                plannerPlaceSessions.delete(input);
+                                plannerPlaceSelectionsPending.delete(input);
+                            }
+                        });
+                        container.appendChild(button);
+                    }
+                    const attribution = document.createElement('div');
+                    attribution.className = 'guide-places-attribution';
+                    attribution.textContent = 'Google Maps';
+                    attribution.setAttribute('translate', 'no');
+                    container.appendChild(attribution);
+                } catch (error) {
+                    if (generation === plannerSuggestionGeneration && container.isConnected) {
+                        addPlannerSuggestionStatus(container, 'Google place search is unavailable. You can still choose saved landmarks.');
+                    }
+                }
+            }, 300);
+        }
+
         function closeGuidePlaceResults() {
+            clearTimeout(plannerSuggestionTimer);
+            ++plannerSuggestionGeneration;
+            [tripFromInput, tripToInput].forEach(input => input.setAttribute("aria-expanded", "false"));
             hide(guidePlaceResults);
             guidePlaceResults.innerHTML = "";
             activeGuidePlaceInput = null;
         }
 
         function setGuidePlaceValue(input, place) {
+            plannerSelectedPlaces.delete(input);
+            plannerPlaceSessions.delete(input);
             input.value = place;
 
             if (input === tripFromInput) {
@@ -6327,15 +6517,18 @@ window.addEventListener(
             ) {
                 guidePlaceResults.innerHTML = `
                     <div class="guide-place-empty">
-                        No supported landmark matches that search.
+                        No saved landmark matches that search.
                     </div>
                 `;
             }
 
             show(guidePlaceResults);
+            input.setAttribute("aria-expanded", "true");
+            scheduleGooglePlaceSuggestions(input);
         }
 
         function requestPlannerCurrentLocation() {
+            plannerSelectedPlaces.delete(tripFromInput);
             closeGuidePlaceResults();
 
             guideMessage.textContent =
@@ -6388,7 +6581,7 @@ window.addEventListener(
                         "Location active";
 
                     guideMessage.textContent =
-                        "Current location selected. Choose the nearest supported landmark for route matching while the planner database is being expanded.";
+                        "Current location selected. Choose your destination, then plan your trip.";
 
                     console.log(
                         "Planner location:",
@@ -6430,6 +6623,8 @@ window.addEventListener(
                 input.addEventListener(
                     "input",
                     function () {
+                        plannerSelectedPlaces.delete(input);
+                        if (currentTripPlan) resetTripPlanView();
 
                         if (
                             input === tripFromInput &&
@@ -6463,6 +6658,20 @@ window.addEventListener(
                 }
             }
         );
+
+        guidePlaceResults.addEventListener('keydown', function (event) {
+            const buttons = Array.from(guidePlaceResults.querySelectorAll('button:not(:disabled)'));
+            const index = buttons.indexOf(document.activeElement);
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+                const next = (index + (event.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+                buttons[next]?.focus();
+            } else if (event.key === 'Escape') {
+                const input = activeGuidePlaceInput;
+                input?.focus();
+                closeGuidePlaceResults();
+            }
+        });
 
         function resolveGuidePlace(input) {
             const normalizedInput =
@@ -6599,16 +6808,10 @@ window.addEventListener(
             startInput,
             endInput
         ) {
-            const start =
-                resolveGuidePlace(
-                    startInput
-                );
-
-            const end =
-                resolveGuidePlace(
-                    endInput
-                );
-
+            const startEndpoint = getPlannerEndpoint(tripFromInput);
+            const endEndpoint = getPlannerEndpoint(tripToInput);
+            const start = startEndpoint?.label;
+            const end = endEndpoint?.label;
             if (!start || !end) {
                 return {
                     error:
@@ -6617,8 +6820,10 @@ window.addEventListener(
             }
 
             if (
-                canonicalGuidePlace(start) ===
-                canonicalGuidePlace(end)
+                (startEndpoint.placeId && startEndpoint.placeId === endEndpoint.placeId) ||
+                (startEndpoint.location && endEndpoint.location
+                    ? haversineMeters(startEndpoint.location, endEndpoint.location) < 20
+                    : canonicalGuidePlace(start) === canonicalGuidePlace(end))
             ) {
                 return {
                     error:
@@ -6629,10 +6834,7 @@ window.addEventListener(
             const startingRoutes =
                 guideRouteCatalog
                     .filter(function (route) {
-                        return routeServesGuidePlace(
-                            route,
-                            start
-                        );
+                        return routeServesPlannerEndpoint(route, startEndpoint);
                     })
                     .sort(function (a, b) {
                         return (
@@ -6644,10 +6846,7 @@ window.addEventListener(
             const endingRoutes =
                 guideRouteCatalog
                     .filter(function (route) {
-                        return routeServesGuidePlace(
-                            route,
-                            end
-                        );
+                        return routeServesPlannerEndpoint(route, endEndpoint);
                     })
                     .sort(function (a, b) {
                         return (
@@ -6659,10 +6858,7 @@ window.addEventListener(
             const directRoutes =
                 startingRoutes
                     .filter(function (route) {
-                        return routeServesGuidePlace(
-                            route,
-                            end
-                        );
+                        return routeServesPlannerEndpoint(route, endEndpoint);
                     })
                     .sort(function (a, b) {
                         return (
@@ -6705,6 +6901,10 @@ window.addEventListener(
                 };
             }
 
+            if (!startingRoutes.length || !endingRoutes.length) {
+                return {error: 'No stored jeepney route was found within 500 m of ' +
+                    (!startingRoutes.length ? start : end) + '. Try a nearby landmark or another location.'};
+            }
             const twoRideCandidates = [];
 
             startingRoutes.forEach(
@@ -6946,6 +7146,7 @@ window.addEventListener(
 
 
         function applyTripPlan(plan) {
+            show(get("saveSuggestedTripButton"));
             currentTripPlan = plan;
             focusedJourneyRouteId = null;
             selectedGuideRouteIds = new Set(plan.legs.map(function (leg) {
@@ -6980,6 +7181,7 @@ window.addEventListener(
         }
 
         function resetTripPlanView() {
+            hide(get("saveSuggestedTripButton"));
             currentTripPlan = null;
             focusedJourneyRouteId = null;
             selectedGuideRouteIds.clear();
@@ -7002,11 +7204,12 @@ window.addEventListener(
             guidePageElement.classList.toggle("trip-planner-mode", planning);
 
             if (!planning) {
+                closeGuidePlaceResults();
                 resetTripPlanView();
             }
             else {
                 guideMessage.textContent =
-                    "Choose a starting point and destination. Downtown routes are prioritized, then LARGA checks other routes that serve the same locations.";
+                    "Search for a place or address, or choose a saved landmark. Select a suggestion for each trip location.";
             }
         }
 
@@ -7019,26 +7222,36 @@ window.addEventListener(
         });
 
         findGuideTripButton.addEventListener("click", function () {
-            if (
-                plannerCurrentLocationSelected ||
-                normalizeGuideText(tripFromInput.value) === normalizeGuideText(CURRENT_LOCATION_VALUE)
-            ) {
-                guideMessage.textContent = "Current location is active. Route matching from live GPS will be enabled with the Google Maps integration. For now, choose the nearest supported landmark as your starting point.";
-                tripFromInput.focus();
-                renderGuidePlaceResults(tripFromInput);
+            if (plannerPlaceSelectionsPending.size) {
+                guideMessage.textContent = 'Wait for the selected place to finish loading.';
                 return;
             }
-
             const plan = findGuideTripPlan(tripFromInput.value, tripToInput.value);
             if (plan.error) {
                 guideMessage.textContent = plan.error;
                 return;
             }
+            const endpoints = [getPlannerEndpoint(tripFromInput), getPlannerEndpoint(tripToInput)];
+            plan.endpoints = endpoints;
+            plan.coordinateMatched = endpoints.some(endpoint => endpoint.location);
+            closeGuidePlaceResults();
             applyTripPlan(plan);
+            if (plan.coordinateMatched) {
+                guideMessage.textContent = 'Suggested route corridors pass within 500 m of your selected places. Distances are straight-line estimates; check walking access, boarding points and travel direction. Transfers use saved landmarks.';
+            }
         });
 
         [tripFromInput, tripToInput].forEach(function (input) {
             input.addEventListener("keydown", function (event) {
+                if (event.key === 'Escape') {
+                    closeGuidePlaceResults();
+                    return;
+                }
+                if (event.key === 'ArrowDown' && activeGuidePlaceInput === input) {
+                    event.preventDefault();
+                    guidePlaceResults.querySelector('button:not(:disabled)')?.focus();
+                    return;
+                }
                 if (event.key === "Enter") {
                     event.preventDefault();
                     findGuideTripButton.click();
@@ -7109,23 +7322,12 @@ window.addEventListener(
         const activeTripRoute = get("activeTripRoute");
         const activeTripDestination = get("activeTripDestination");
 
-        startTripButton.addEventListener("click", function () {
+        startTripButton.addEventListener('click', function () {
             if (!selectedGuideRoute) return;
-
-            if (currentTripPlan) {
-                activeTripRoute.textContent = `${currentTripPlan.legs.length}-ride journey`;
-                activeTripDestination.textContent = `${currentTripPlan.start} → ${currentTripPlan.end}`;
-            }
-            else {
-                activeTripRoute.textContent = selectedGuideRoute.name;
-                activeTripDestination.textContent = "Following " + selectedGuideRoute.short;
-            }
-
-            hide(noActiveTrip);
-            show(activeTrip);
-            resetTripSteps();
+            const routeId = selectedGuideRoute.id;
             closeRouteDetail(true);
-            openPage("trips");
+            openPage('live');
+            selectLiveRoute(routeId, {fitMap:true, announce:true});
         });
 
         // Mouse drag for desktop. Pointer capture only starts after the
@@ -8159,11 +8361,10 @@ window.addEventListener(
                     function (route) {
                         const card =
                             document.createElement(
-                                "button"
+                                "article"
                             );
 
-                        card.type =
-                            "button";
+
 
                         card.className =
                             "live-route-card";
@@ -8186,6 +8387,7 @@ window.addEventListener(
                         );
 
                         card.innerHTML = `
+                            <button type="button" class="live-route-select route-card-select-area" aria-label="Track ${route.name}">
                             <span class="live-route-card-kicker">
                                 ${route.downtown ? "DOWNTOWN" : "CITY ROUTE"}
                             </span>
@@ -8202,9 +8404,11 @@ window.addEventListener(
                                 <i></i>
                                 ${getLiveVehicleCount(route)} active
                             </span>
+                            </button>
+                            <button type="button" class="live-route-more route-card-more" aria-label="Learn more about ${route.name}">Learn More</button>
                         `;
 
-                        card.addEventListener(
+                        card.querySelector(".live-route-select").addEventListener(
                             "click",
                             function () {
                                 selectLiveRoute(
@@ -8220,6 +8424,9 @@ window.addEventListener(
                             }
                         );
 
+                        card.querySelector('.live-route-more').addEventListener('click', function () {
+                            openRouteDetail(route.id, card);
+                        });
                         liveRouteCarousel.appendChild(
                             card
                         );
@@ -8432,6 +8639,103 @@ window.addEventListener(
         }
 
 
+
+        let liveNotificationGeneration = 0;
+        let liveSelectedVehiclePanel = null;
+
+        function cancelLiveNotification() {
+            ++liveNotificationGeneration;
+            liveNotificationSubscription = null;
+            liveNotifyStatus.textContent = 'Arrival alert cancelled.';
+            liveNotifyButton.classList.remove('is-armed');
+            liveNotifyButton.textContent = '♢ Notify me';
+            updateLiveMarkerSelection();
+            showLiveToast('Alert cancelled', 'You will no longer receive this arrival alert.');
+        }
+
+        function toggleLiveNotification(vehicleId) {
+            if (liveNotificationSubscription?.vehicleId === vehicleId) cancelLiveNotification();
+            else armLiveNotification(vehicleId);
+        }
+
+        function renderSelectedLiveVehiclePanel() {
+            if (!liveSelectedVehiclePanel) {
+                liveSelectedVehiclePanel = document.createElement('div');
+                liveSelectedVehiclePanel.className = 'live-selected-vehicle-panel hidden';
+                liveSelectedVehiclePanel.setAttribute('role', 'region');
+                liveSelectedVehiclePanel.setAttribute('aria-label', 'Selected jeepney details');
+                document.querySelector('#livePage .live-map-section').appendChild(liveSelectedVehiclePanel);
+            }
+            const vehicle = liveVehicles.find(item => item.id === selectedLiveVehicleId);
+            if (!vehicle) { hide(liveSelectedVehiclePanel); return; }
+            const route = getLiveRouteById(activeLiveRouteId);
+            if (liveSelectedVehiclePanel.dataset.vehicleId !== vehicle.id) {
+                liveSelectedVehiclePanel.dataset.vehicleId = vehicle.id;
+                liveSelectedVehiclePanel.innerHTML = '<button type="button" class="live-panel-close" aria-label="Close jeepney details">×</button><span class="live-popover-route"></span><strong class="live-popover-plate"></strong><span class="live-popover-status">ETA to your boarding point</span><b class="live-panel-eta"></b><button type="button" class="live-popover-notify"></button>';
+                liveSelectedVehiclePanel.querySelector('.live-panel-close').addEventListener('click', function (event) {
+                    event.stopPropagation(); selectedLiveVehicleId = null; updateLiveTrackingPanels();
+                });
+                liveSelectedVehiclePanel.querySelector('.live-popover-notify').addEventListener('click', function (event) {
+                    event.stopPropagation(); toggleLiveNotification(vehicle.id);
+                });
+                liveSelectedVehiclePanel.addEventListener('click', event => event.stopPropagation(), {once:true});
+            }
+            liveSelectedVehiclePanel.querySelector('.live-popover-route').textContent = route?.name || '';
+            liveSelectedVehiclePanel.querySelector('.live-popover-plate').textContent = vehicle.plate;
+            const eta = getLiveVehicleEtaMinutes(vehicle);
+            liveSelectedVehiclePanel.querySelector('.live-panel-eta').textContent = eta === null ? 'Enable location for ETA' : formatLiveEta(eta) + ' min';
+            liveSelectedVehiclePanel.querySelector('.live-popover-notify').textContent = liveNotificationSubscription?.vehicleId === vehicle.id ? 'Cancel notification' : '♢ Notify me';
+            show(liveSelectedVehiclePanel);
+        }
+
+        // Mouse wheel, keyboard navigation and mouse dragging complement touch swipes.
+        function scrollLiveRouteCards(direction) {
+            const card = liveRouteCarousel.querySelector('.live-route-card');
+            liveRouteCarousel.scrollBy({left: direction * ((card?.getBoundingClientRect().width || 180) + 12), behavior:'smooth'});
+        }
+        liveRouteCarousel.addEventListener('keydown', function (event) {
+            if (event.target !== liveRouteCarousel) return;
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                event.preventDefault(); scrollLiveRouteCards(event.key === 'ArrowRight' ? 1 : -1);
+            }
+        });
+        liveRouteCarousel.addEventListener('wheel', function (event) {
+            if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+            const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? liveRouteCarousel.clientWidth : 1);
+            const maximum = liveRouteCarousel.scrollWidth - liveRouteCarousel.clientWidth;
+            const next = Math.max(0, Math.min(maximum, liveRouteCarousel.scrollLeft + delta));
+            if (next !== liveRouteCarousel.scrollLeft) {
+                event.preventDefault(); liveRouteCarousel.scrollLeft = next;
+            }
+        }, {passive:false});
+        let liveCardDrag = null;
+        let suppressLiveCardClick = false;
+        liveRouteCarousel.addEventListener('pointerdown', function (event) {
+            if (event.pointerType !== 'mouse' || event.button !== 0) return;
+            suppressLiveCardClick = false;
+            liveCardDrag = {id:event.pointerId, x:event.clientX, left:liveRouteCarousel.scrollLeft, moved:false};
+        });
+        liveRouteCarousel.addEventListener('pointermove', function (event) {
+            if (!liveCardDrag || event.pointerId !== liveCardDrag.id) return;
+            const delta = event.clientX - liveCardDrag.x;
+            if (Math.abs(delta) > 5) liveCardDrag.moved = true;
+            if (liveCardDrag.moved) {
+                liveRouteCarousel.setPointerCapture(event.pointerId);
+                liveRouteCarousel.scrollLeft = liveCardDrag.left - delta;
+                event.preventDefault();
+            }
+        });
+        liveRouteCarousel.addEventListener('pointerup', function (event) {
+            if (!liveCardDrag) return;
+            suppressLiveCardClick = liveCardDrag.moved;
+            if (liveRouteCarousel.hasPointerCapture(event.pointerId)) liveRouteCarousel.releasePointerCapture(event.pointerId);
+            liveCardDrag = null;
+        });
+        liveRouteCarousel.addEventListener('pointercancel', () => {liveCardDrag = null;});
+        liveRouteCarousel.addEventListener('click', function (event) {
+            if (suppressLiveCardClick) {event.preventDefault(); event.stopPropagation(); suppressLiveCardClick = false;}
+        }, true);
+
         function createLiveJeepneyMarkerContent(
             vehicle,
             route
@@ -8456,7 +8760,7 @@ window.addEventListener(
                 <button
                     class="live-jeepney-marker-button"
                     type="button"
-                    aria-label="${route.name}, simulated jeepney ${vehicle.plate}"
+                    aria-label="${route.name}, jeepney ${vehicle.plate}"
                 >
                     <span class="live-jeepney-vehicle">
                         <span class="live-jeep-roof"></span>
@@ -8472,10 +8776,6 @@ window.addEventListener(
                     <div class="live-popover-top">
                         <span class="live-popover-route">
                             ${route.name}
-                        </span>
-
-                        <span class="live-popover-simulated">
-                            SIMULATED
                         </span>
                     </div>
 
@@ -8525,7 +8825,7 @@ window.addEventListener(
                             ? null
                             : vehicle.id;
 
-                    updateLiveMarkerSelection();
+                    updateLiveTrackingPanels();
                 }
             );
 
@@ -8545,9 +8845,7 @@ window.addEventListener(
 
                     updateLiveMarkerSelection();
 
-                    armLiveNotification(
-                        vehicle.id
-                    );
+                    toggleLiveNotification(vehicle.id);
                 }
             );
 
@@ -8556,6 +8854,7 @@ window.addEventListener(
 
 
         function updateLiveMarkerSelection() {
+            renderSelectedLiveVehiclePanel();
             liveVehicleMarkers.forEach(
                 function (record) {
                     const isSelected =
@@ -8569,6 +8868,8 @@ window.addEventListener(
                             isSelected
                         );
 
+                    record.content.classList.toggle('is-muted', !!selectedLiveVehicleId && !isSelected);
+                    record.marker.zIndex = isSelected ? 100 : 50 + record.vehicle.markerIndex;
                     const etaElement =
                         record.content.querySelector(
                             "[data-live-marker-eta]"
@@ -8701,7 +9002,7 @@ window.addEventListener(
                                     route.name +
                                     " • " +
                                     vehicle.plate +
-                                    " • simulated",
+                                    "",
 
                                 zIndex:
                                     50 +
@@ -8963,7 +9264,7 @@ window.addEventListener(
                         selectedLiveVehicleId =
                             null;
 
-                        updateLiveMarkerSelection();
+                        updateLiveTrackingPanels();
                     }
                 );
 
@@ -9066,7 +9367,7 @@ window.addEventListener(
 
                 liveVehicleCountLabel.textContent =
                     liveVehicles.length +
-                    " simulated jeepney" +
+                    " jeepney" +
                     (
                         liveVehicles.length === 1
                             ? ""
@@ -9126,12 +9427,14 @@ window.addEventListener(
                 return;
             }
 
+            ++liveNotificationGeneration;
             activeLiveRouteId =
                 route.id;
 
             liveNotificationSubscription =
                 null;
 
+            liveNotifyButton.textContent = "♢ Notify me";
             liveNotifyStatus.textContent =
                 "Choose an alert time for this jeepney.";
 
@@ -9158,6 +9461,7 @@ window.addEventListener(
                 liveRouteCarousel.scrollLeft = 0;
             }
             updateLiveRouteCardSelection();
+            if (options?.announce) liveRouteCarousel.querySelector('[data-route-id="' + route.id + '"]')?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
 
             if (
                 options &&
@@ -9391,6 +9695,8 @@ window.addEventListener(
                 )
                 .sort(
                     function (a, b) {
+                        if (a.vehicle.id === selectedLiveVehicleId) return -1;
+                        if (b.vehicle.id === selectedLiveVehicleId) return 1;
                         return (
                             a.eta -
                             b.eta
@@ -9432,6 +9738,7 @@ window.addEventListener(
 
                     row.className =
                         "live-vehicle-row";
+                    row.classList.toggle("is-muted", !!selectedLiveVehicleId);
 
                     row.innerHTML = `
                         <span
@@ -9443,7 +9750,7 @@ window.addEventListener(
 
                         <span class="live-list-copy">
                             <strong>${record.vehicle.plate}</strong>
-                            <small>SIMULATED • ${record.vehicle.speedKph} km/h</small>
+                            <small>${record.vehicle.speedKph} km/h</small>
                         </span>
 
                         <span class="live-list-eta">
@@ -9458,7 +9765,7 @@ window.addEventListener(
                             selectedLiveVehicleId =
                                 record.vehicle.id;
 
-                            updateLiveMarkerSelection();
+                            updateLiveTrackingPanels();
 
                             const markerRecord =
                                 liveVehicleMarkers.find(
@@ -9516,6 +9823,9 @@ window.addEventListener(
 
             const nearest =
                 sorted[0];
+            const selected = nearest.vehicle.id === selectedLiveVehicleId;
+            liveNearestSection.querySelector('.live-section-kicker').textContent = selected ? 'SELECTED JEEPNEY' : 'NEAREST JEEPNEY';
+            liveNearestSection.querySelector('h2').textContent = selected ? 'Your selected ride' : 'Your next ride';
 
             liveNearestEta.textContent =
                 formatLiveEta(
@@ -9557,6 +9867,7 @@ window.addEventListener(
                 );
             }
 
+            liveNotifyButton.textContent = liveNotificationSubscription?.vehicleId === nearest.vehicle.id ? 'Cancel notification' : '♢ Notify me';
             checkLiveNotification(
                 sorted
             );
@@ -9644,6 +9955,7 @@ window.addEventListener(
         async function armLiveNotification(
             vehicleId
         ) {
+            const generation = ++liveNotificationGeneration;
             if (
                 !liveUserCoordinates
             ) {
@@ -9681,6 +9993,7 @@ window.addEventListener(
             const permission =
                 await requestLiveNotificationPermission();
 
+            if (generation !== liveNotificationGeneration || chosenRecord.vehicle.routeId && chosenRecord.vehicle.routeId !== activeLiveRouteId) return;
             liveNotificationSubscription = {
                 vehicleId:
                     chosenRecord.vehicle.id,
@@ -9715,6 +10028,7 @@ window.addEventListener(
                     " before arrival."
                 );
 
+            updateLiveTrackingPanels();
             showLiveToast(
                 "Arrival alert set",
                 chosenRecord.vehicle.plate +
@@ -10048,9 +10362,7 @@ window.addEventListener(
                     return;
                 }
 
-                armLiveNotification(
-                    sorted[0].vehicle.id
-                );
+                toggleLiveNotification(sorted[0].vehicle.id);
             }
         );
 
@@ -10067,9 +10379,7 @@ window.addEventListener(
                     if (
                         sorted.length
                     ) {
-                        armLiveNotification(
-                            sorted[0].vehicle.id
-                        );
+                        armLiveNotification(liveNotificationSubscription.vehicleId);
                     }
                 }
             }
@@ -10080,184 +10390,190 @@ window.addEventListener(
         // SAVED ROUTES
         // ==================================================
 
-        const savedRoutesContainer =
-            get(
-                "savedRoutesContainer"
-            );
-
-
-        const savedRoutes =
-            [];
-
-
-        saveCurrentRouteButton.addEventListener(
-            "click",
-            function () {
-
-                if (
-                    !selectedGuideRoute
-                ) {
-
-                    saveMessage.textContent =
-                        "Select a route first.";
-
-                    return;
-
-                }
-
-
-                const destination =
-                    destinationInput
-                        .value
-                        .trim();
-
-
-                const route =
-                    routeName.textContent;
-
-
-                const alreadySaved =
-                    savedRoutes.some(
-                        function (
-                            item
-                        ) {
-
-                            return (
-
-                                item.route ===
-                                route &&
-
-                                item.destination ===
-                                destination
-
-                            );
-
-                        }
-                    );
-
-
-                if (
-                    alreadySaved
-                ) {
-
-                    saveMessage.textContent =
-                        "This route is already saved.";
-
-
-                    return;
-
-                }
-
-
-                savedRoutes.push(
-                    {
-
-                        route:
-                            route,
-
-                        destination:
-                            destination
-
-                    }
-                );
-
-
-                renderSavedRoutes();
-
-
-                saveCurrentRouteButton.textContent =
-                    "✓ Route Saved";
-
-
-                if (
-                    isGuest
-                ) {
-
-                    saveMessage.textContent =
-                        "Saved for this session. Sign in for permanent saving.";
-
-                }
-
-                else {
-
-                    saveMessage.textContent =
-                        "Route saved.";
-
-                }
-
-            }
-        );
-
-
-        function renderSavedRoutes() {
-
-            savedRoutesContainer.innerHTML =
-                "";
-
-
-            if (
-                savedRoutes.length === 0
-            ) {
-
-                savedRoutesContainer.innerHTML =
-                    `
-                    <div class="empty-saved">
-                        You haven't saved any routes yet.
-                    </div>
-                    `;
-
-
-                return;
-
-            }
-
-
-            savedRoutes.forEach(
-                function (
-                    item
-                ) {
-
-                    const routeItem =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    routeItem.className =
-                        "saved-route-item";
-
-
-                    routeItem.innerHTML =
-                        `
-                        <div>
-
-                            <strong>
-                                ${item.route}
-                            </strong>
-
-                            <p>
-                                ${item.destination}
-                            </p>
-
-                        </div>
-
-                        <span>
-                            ★
-                        </span>
-                        `;
-
-
-                    savedRoutesContainer
-                        .appendChild(
-                            routeItem
-                        );
-
-                }
-            );
-
+        const TRIPS_STORAGE_KEY = 'larga-saved-trips-v1';
+        const savedRoutesContainer = get('savedRoutesContainer');
+        const tripsLibraryStatus = get('tripsLibraryStatus');
+        const tripSaveOverlay = get('tripSaveOverlay');
+        const tripLabelInput = get('tripLabelInput');
+        let pendingSavedTrip = null;
+        let tripSaveReturnFocus = null;
+        let savedTrips = [];
+        const savedPlaceDisplayCache = new Map();
+        try {
+            const stored = JSON.parse(localStorage.getItem(TRIPS_STORAGE_KEY) || '[]');
+            if (Array.isArray(stored)) savedTrips = stored.filter(item => item && typeof item.id === 'string' && typeof item.label === 'string' && ['route','plan'].includes(item.type) && (item.type === 'route' ? !!getRouteById(item.routeId) : Array.isArray(item.legs) && item.legs.length > 0 && item.legs.every(leg => leg && !!getRouteById(leg.routeId)) && Array.isArray(item.endpoints) && item.endpoints.length === 2 && item.endpoints.every(endpoint => endpoint && (endpoint.source === 'google' ? typeof endpoint.placeId === 'string' && endpoint.placeId.length > 0 : endpoint.source === 'landmark' ? typeof endpoint.label === 'string' : endpoint.source === 'gps' && endpoint.location && Number.isFinite(endpoint.location.lat) && Number.isFinite(endpoint.location.lng)))));
+        } catch (error) { tripsLibraryStatus.textContent = 'Saved trips could not be loaded from this browser.'; }
+
+        function persistSavedTrips() {
+            try { localStorage.setItem(TRIPS_STORAGE_KEY, JSON.stringify(savedTrips)); return true; }
+            catch (error) { tripsLibraryStatus.textContent = 'Browser storage is unavailable. Changes will last for this session.'; return false; }
         }
 
+        function savedEndpointDescriptor(endpoint) {
+            // Google content is refreshed on reopening; only place IDs persist.
+            if (endpoint.source === 'google') return {source:'google', placeId:endpoint.placeId};
+            if (endpoint.source === 'gps') return {source:'gps', label:'Saved starting point', location:endpoint.location};
+            return {source:'landmark', label:endpoint.label};
+        }
 
+        function prepareSavedPlan(plan) {
+            const endpoints = plan.endpoints || [getPlannerEndpoint(tripFromInput),getPlannerEndpoint(tripToInput)];
+            if (endpoints.some(endpoint => !endpoint)) throw new Error('Choose both trip locations first.');
+            endpoints.forEach(endpoint => {if (endpoint.placeId) savedPlaceDisplayCache.set(endpoint.placeId, endpoint.label);});
+            return {type:'plan', label:'My trip', endpoints:endpoints.map(savedEndpointDescriptor),
+                transfers:plan.transfers.slice(), legs:plan.legs.map((leg,index) => ({routeId:leg.route.id,
+                    board:index === 0 ? null : leg.board, alight:index === plan.legs.length-1 ? null : leg.alight})),
+                alternatives:(plan.alternativeDirectRoutes || []).map(route=>route.id)};
+        }
+
+        function openTripSaveDialog(record, editingId) {
+            pendingSavedTrip = {...record, editingId};
+            tripSaveReturnFocus = document.activeElement;
+            get('tripSaveTitle').textContent = editingId ? 'Edit trip label' : 'Save your trip';
+            tripLabelInput.value = record.label || '';
+            get('tripSaveStatus').textContent = '';
+            show(tripSaveOverlay); tripLabelInput.focus(); tripLabelInput.select();
+        }
+        function closeTripSaveDialog() {
+            hide(tripSaveOverlay); pendingSavedTrip = null; tripSaveReturnFocus?.focus();
+        }
+        get('cancelTripSaveButton').addEventListener('click', closeTripSaveDialog);
+        tripSaveOverlay.addEventListener('click', event => {if (event.target === tripSaveOverlay) closeTripSaveDialog();});
+        tripSaveOverlay.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {event.preventDefault();closeTripSaveDialog();}
+            if (event.key === 'Tab') {
+                const controls=Array.from(tripSaveOverlay.querySelectorAll('input,button'));
+                if (event.shiftKey && document.activeElement===controls[0]) {event.preventDefault();controls.at(-1).focus();}
+                else if (!event.shiftKey && document.activeElement===controls.at(-1)) {event.preventDefault();controls[0].focus();}
+            }
+        });
+        document.querySelectorAll('[data-trip-label]').forEach(button => button.addEventListener('click', () => {tripLabelInput.value=button.dataset.tripLabel;tripLabelInput.focus();}));
+        get('tripSaveForm').addEventListener('submit', function(event) {
+            event.preventDefault(); if (!pendingSavedTrip) return;
+            const label=tripLabelInput.value.trim().slice(0,40);
+            if (!label) {get('tripSaveStatus').textContent='Enter a label for this trip.';tripLabelInput.focus();return;}
+            const {editingId,...record}=pendingSavedTrip;
+            const item={...record,label,id:editingId || ('trip-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8))};
+            const existing=savedTrips.findIndex(candidate=>candidate.id===editingId);
+            if (existing>=0) savedTrips[existing]=item; else savedTrips.unshift(item);
+            const persisted=persistSavedTrips();renderSavedRoutes();closeTripSaveDialog();
+            tripsLibraryStatus.textContent=persisted ? 'Trip saved on this browser.' : 'Trip saved for this session; browser storage is unavailable.';
+            if (record.type==='route') {saveCurrentRouteButton.textContent='✓ Route Saved';saveMessage.textContent='Saved in Trips.';}
+            else guideMessage.textContent='Trip saved in Trips as '+label+'.';
+        });
+        saveCurrentRouteButton.addEventListener('click', function() {
+            if (selectedGuideRoute) openTripSaveDialog({type:'route',routeId:selectedGuideRoute.id,label:selectedGuideRoute.name});
+        });
+        get('saveSuggestedTripButton').addEventListener('click', function() {
+            if (!currentTripPlan) return;
+            try {openTripSaveDialog(prepareSavedPlan(currentTripPlan));}
+            catch (error) {guideMessage.textContent=error.message;}
+        });
+        get('newSavedTripButton').addEventListener('click', () => {openPage('guide');setGuideMode('plan');currentTripPlan=null;resetTripPlanView();plannerSelectedPlaces.clear();plannerCurrentLocationSelected=false;tripFromInput.value='';tripToInput.value='';closeGuidePlaceResults();tripFromInput.focus();});
+
+        async function resolveSavedEndpoint(endpoint) {
+            if (endpoint.source==='google') {
+                if (!endpoint.placeId) throw new Error('This saved place is unavailable.');
+                const {Place}=await loadPlannerPlacesLibrary();
+                const place=new Place({id:endpoint.placeId});
+                await place.fetchFields({fields:['id','displayName','location']});
+                if (!place.location) throw new Error('This saved place has no location.');
+                savedPlaceDisplayCache.set(endpoint.placeId,place.displayName || 'Google Maps place');
+                return {source:'google',placeId:place.id,label:place.displayName || 'Google Maps place',location:{lat:place.location.lat(),lng:place.location.lng()}};
+            }
+            if (endpoint.source==='gps') {
+                if (!Number.isFinite(endpoint.location?.lat) || !Number.isFinite(endpoint.location?.lng)) throw new Error('This saved starting point is unavailable.');
+                return {...endpoint};
+            }
+            return {source:'landmark',label:endpoint.label};
+        }
+
+        async function openSavedTrip(item,button) {
+            button.disabled=true;tripsLibraryStatus.textContent='Opening trip…';
+            try {
+                if (item.type==='route') {
+                    openPage('guide');setGuideMode('browse');
+                    selectedGuideRoute=getRouteById(item.routeId);selectedGuideRouteIds=new Set([item.routeId]);
+                    routeSearchInput.value=selectedGuideRoute.name;renderGuideMapRoutes();syncGuideCards();
+                    guideMessage.textContent=item.label+' • '+selectedGuideRoute.name;
+                } else {
+                    const endpoints=await Promise.all(item.endpoints.map(resolveSavedEndpoint));
+                    const plan={start:endpoints[0].label,end:endpoints[1].label,transfers:item.transfers || [],endpoints,
+                        coordinateMatched:endpoints.some(endpoint=>endpoint.location),
+                        legs:item.legs.map((leg,index)=>({route:getRouteById(leg.routeId),board:index===0?endpoints[0].label:leg.board,alight:index===item.legs.length-1?endpoints[1].label:leg.alight})),
+                        alternativeDirectRoutes:(item.alternatives || []).map(getRouteById).filter(Boolean)};
+                    openPage('guide');setGuideMode('plan');plannerCurrentLocationSelected=false;
+                    [tripFromInput,tripToInput].forEach((input,index)=>{input.value=endpoints[index].label;plannerSelectedPlaces.set(input,endpoints[index]);});
+                    closeGuidePlaceResults();applyTripPlan(plan);renderSavedRoutes();
+                    guideMessage.textContent='Saved trip: '+item.label+(plan.coordinateMatched ? '. Check walking access, boarding points and travel direction.' : '.');
+                }
+                tripsLibraryStatus.textContent='';
+            } catch(error) {tripsLibraryStatus.textContent='Could not open this trip. Check your connection and try again.';}
+            finally {button.disabled=false;}
+        }
+
+        function renderSavedRoutes() {
+            savedRoutesContainer.innerHTML='';
+            if (!savedTrips.length) {const empty=document.createElement('div');empty.className='empty-saved';empty.textContent='No saved trips yet. Save a route from Learn More or save a suggested trip in Plan a Trip.';savedRoutesContainer.appendChild(empty);return;}
+            savedTrips.forEach(item=>{
+                const card=document.createElement('article');card.className='saved-trip-card';card.dataset.tripId=item.id;
+                const tag=document.createElement('span');tag.className='saved-trip-kind';tag.textContent=item.type==='plan'?'TRIP PLAN':'ROUTE';
+                const title=document.createElement('h2');title.textContent=item.label;
+                const description=document.createElement('p');description.textContent=item.type==='route'?getRouteById(item.routeId).name:item.legs.map(leg=>getRouteById(leg.routeId).name).join(' → ');
+                card.append(tag,title,description);
+                if (item.type==='plan') {const locations=document.createElement('small');locations.textContent=item.endpoints.map(endpoint=>endpoint.source==='google'?(savedPlaceDisplayCache.get(endpoint.placeId)||'Google Maps place'):endpoint.label).join(' → ');card.appendChild(locations);}
+                const actions=document.createElement('div');actions.className='saved-trip-actions';
+                const open=document.createElement('button');open.type='button';open.textContent=item.type==='plan'?'Open plan':'View route';open.addEventListener('click',()=>openSavedTrip(item,open));
+                const live=document.createElement('button');live.type='button';live.textContent='Track in Live';live.addEventListener('click',()=>{openPage('live');selectLiveRoute(item.type==='route'?item.routeId:item.legs[0].routeId,{fitMap:true,announce:true});});
+                const label=document.createElement('button');label.type='button';label.textContent='Edit label';label.addEventListener('click',()=>openTripSaveDialog(item,item.id));
+                const remove=document.createElement('button');remove.type='button';remove.className='saved-trip-delete';remove.textContent='Delete';remove.setAttribute('aria-label','Delete '+item.label);remove.addEventListener('click',()=>{savedTrips=savedTrips.filter(candidate=>candidate.id!==item.id);persistSavedTrips();renderSavedRoutes();});
+                actions.append(open,live,label,remove);card.appendChild(actions);savedRoutesContainer.appendChild(card);
+            });
+        }
+        renderSavedRoutes();
+
+        const discoverInput=get('discoverSearchInput'),discoverResults=get('discoverResults'),discoverStatus=get('discoverStatus');
+        let discoverTimer=null,discoverGeneration=0,discoverSession=null;
+        function useDiscoveredPlace(endpoint) {
+            ++discoverGeneration;clearTimeout(discoverTimer);discoverSession=null;
+            openPage('guide');setGuideMode('plan');resetTripPlanView();
+            tripToInput.value=endpoint.label;plannerSelectedPlaces.set(tripToInput,endpoint);
+            closeGuidePlaceResults();guideMessage.textContent=endpoint.label+' selected. Choose your starting point.';tripFromInput.focus();
+        }
+        function searchDiscoverPlaces() {
+            clearTimeout(discoverTimer);const generation=++discoverGeneration,query=discoverInput.value.trim();discoverResults.innerHTML='';
+            if (query.length<2) {discoverStatus.textContent='Search for a place to explore.';return;}
+            discoverStatus.textContent='Searching places…';
+            discoverTimer=setTimeout(async()=>{
+                try {
+                    const library=await loadPlannerPlacesLibrary();if(generation!==discoverGeneration)return;
+                    discoverSession ||= new library.AutocompleteSessionToken();
+                    const {suggestions}=await library.AutocompleteSuggestion.fetchAutocompleteSuggestions({input:query,sessionToken:discoverSession,locationBias:{center:DAVAO_MAP_CENTER,radius:30000},includedRegionCodes:['ph'],language:'en',region:'ph'});
+                    if(generation!==discoverGeneration)return;
+                    const predictions=suggestions.map(item=>item.placePrediction).filter(Boolean);
+                    discoverStatus.textContent=predictions.length?'Select a place to plan your trip.':'No places found. Try another name.';
+                    for(const prediction of predictions) {
+                        const button=document.createElement('button');button.type='button';button.className='discover-place-result';
+                        const name=document.createElement('strong'),address=document.createElement('small');name.textContent=prediction.mainText?.toString()||prediction.text.toString();address.textContent=prediction.secondaryText?.toString()||'';button.append(name,address);
+                        button.addEventListener('click',async()=>{
+                            button.disabled=true;discoverStatus.textContent='Loading place…';
+                            try {const place=prediction.toPlace();await place.fetchFields({fields:['id','displayName','location']});
+                                if(generation!==discoverGeneration)return;
+                                if(!place.location)throw Error('No location');useDiscoveredPlace({source:'google',placeId:place.id,label:place.displayName||prediction.text.toString(),location:{lat:place.location.lat(),lng:place.location.lng()}});
+                            } catch(error) {if(generation===discoverGeneration)discoverStatus.textContent='Could not load this place. Try again.';}
+                            finally{discoverSession=null;button.disabled=false;}
+                        });discoverResults.appendChild(button);
+                    }
+                    if(predictions.length){const attribution=document.createElement('div');attribution.className='guide-places-attribution';attribution.textContent='Google Maps';attribution.setAttribute('translate','no');discoverResults.appendChild(attribution);}
+                } catch(error) {
+                    if(generation!==discoverGeneration)return;
+                    discoverStatus.textContent='Google place search is unavailable. Choose a saved route landmark instead.';
+                    guidePlaces.filter(place=>normalizeGuideText(place).includes(normalizeGuideText(query))).slice(0,10).forEach(place=>{const button=document.createElement('button');button.type='button';button.className='discover-place-result';button.textContent=place;button.addEventListener('click',()=>useDiscoveredPlace({source:'landmark',label:place}));discoverResults.appendChild(button);});
+                }
+            },300);
+        }
+        discoverInput.addEventListener('input',searchDiscoverPlaces);
+        document.querySelectorAll('[data-discover-query]').forEach(button=>button.addEventListener('click',()=>{discoverInput.value=button.dataset.discoverQuery;searchDiscoverPlaces();}));
 
         // ==================================================
         // INITIAL STATE

@@ -11400,3 +11400,91 @@ button {
     }
 }
 
+
+/* Existing planner layout, with separate Google Maps predictions. */
+.guide-google-place-results { border-bottom: 1px solid #d8dee4; }
+.guide-places-attribution { padding: 10px 14px; text-align: right; font: 400 13px/18px Arial, sans-serif; color: #5f6368; white-space: nowrap; }
+.guide-place-result:disabled { opacity: .6; cursor: wait; }
+.google-planner-place-marker { background: #fff; color: #172329; border: 2px solid #ed6b32; border-radius: 12px; padding: 6px 9px; font: 700 10px/14px Arial, sans-serif; box-shadow: 0 2px 6px #0003; }
+
+/* Live revisions: compact header, accessible cards, stable selected vehicle panel. */
+#livePage .live-intro { padding-top: 12px; padding-bottom: 10px; }
+#livePage .live-intro .eyebrow { margin-bottom: 5px; }
+#livePage .live-intro h1 { margin: 0 0 6px; font-size: 27px; line-height: 1.08; }
+#livePage .live-intro > p:last-child { margin: 0; font-size: 10px; line-height: 1.4; }
+.live-route-carousel { min-width: 0; max-width: 100%; touch-action: pan-x pan-y; scrollbar-width: thin; scrollbar-color: #c5cbd2 transparent; user-select: none; }
+.live-route-carousel::-webkit-scrollbar { display: block; height: 4px; }
+.live-route-carousel::-webkit-scrollbar-thumb { background: #c5cbd2; border-radius: 4px; }
+.live-route-card { min-height: 164px; padding: 0; display: flex; flex-direction: column; }
+.live-route-select { width: 100%; flex: 1; padding: 15px 15px 8px; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.live-route-select:focus-visible, .live-route-more:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
+.live-route-more { position: relative; z-index: 2; margin: 4px 12px 12px; padding: 8px; border: 1px solid #ffffff70; border-radius: 14px; color: inherit; background: #ffffff35; font: 700 9px/1.2 var(--montserrat); cursor: pointer; }
+.live-route-card strong { white-space: normal; overflow-wrap: anywhere; }
+.live-carousel-controls { display: flex; justify-content: center; align-items: center; gap: 14px; margin: -3px 20px 8px; color: #737b85; font-size: 9px; }
+.live-carousel-controls button { width: 27px; height: 27px; border: 1px solid #d9dee4; border-radius: 50%; background: #fff; font-size: 21px; color: #333b46; cursor: pointer; }
+.live-jeepney-marker-shell .live-jeepney-popover { display: none; }
+.live-selected-vehicle-panel { position: absolute; z-index: 55; left: 12px; bottom: 36px; width: min(235px, calc(100% - 24px)); box-sizing: border-box; max-height: calc(100% - 94px); overflow-y: auto; padding: 14px; border: 1px solid #e0e4e9; border-radius: 18px; background: #fffffff5; box-shadow: 0 7px 22px #19243130; }
+.live-selected-vehicle-panel .live-popover-route { display: block; padding-right: 28px; }
+.live-selected-vehicle-panel .live-popover-plate { margin: 7px 0; font-size: 21px; }
+.live-selected-vehicle-panel .live-popover-status { font-size: 10px; }
+.live-panel-eta { display: block; margin: 8px 0; font-size: 17px; }
+.live-panel-close { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border: 0; border-radius: 50%; background: #edf0f3; font-size: 20px; cursor: pointer; }
+.live-nearest-title-row > strong { font-size: 16px; line-height: 1.2; }
+.live-nearest-plate { font-size: 10px; }
+.live-nearest-copy small { font-size: 8px; line-height: 1.5; }
+.live-nearest-route-icon { width: 57px; height: 57px; }
+.live-nearest-card { border-color: #ffbc8870; box-shadow: 0 8px 24px #16202908, 0 0 15px #ff7b2024; }
+.live-vehicle-row:hover, .live-vehicle-row:focus-visible { border-color: #ffad72; box-shadow: 0 0 10px #ff7b201f; }
+.nav-item .guide-nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+.guide-nav-icon svg { display: block; width: 23px; height: 23px; }
+
+/* Compact Live layout and selected vehicle emphasis. */
+#livePage.live-page { padding-top: 10px; }
+#livePage .live-intro { margin-bottom: 9px; padding-top: 0; padding-bottom: 0; }
+#livePage .live-intro .eyebrow { margin: 0 0 3px; font-size: 7px; }
+#livePage .live-intro h1 { margin: 0 0 4px; font-size: 25px; }
+#livePage .live-intro > p:last-child { margin: 0; font-size: 9px; }
+#livePage .live-route-section > .live-section-heading { margin-bottom: 8px; }
+.live-route-carousel { scrollbar-width: none; cursor: grab; }
+.live-route-carousel:active { cursor: grabbing; }
+.live-route-carousel::-webkit-scrollbar { display: none; height: 0; }
+.live-route-card:not(.route-card-expanded) .live-route-select { position: relative; inset: auto; transform: none; min-height: 0; flex: 1 1 auto; }
+.live-route-card:not(.route-card-expanded) .live-route-more { position: relative; inset: auto; transform: none; align-self: center; flex: 0 0 28px; width: calc(100% - 24px); height: 28px; min-height: 28px; margin: 5px 12px 12px; padding: 0 10px; }
+.live-route-card:not(.route-card-expanded) .live-route-more:active { transform: scale(.98); }
+.live-jeepney-marker-shell.is-muted .live-jeepney-marker-button { filter: grayscale(1); opacity: .65; }
+.live-vehicle-row.is-muted .live-list-jeep { filter: grayscale(1); opacity: .65; }
+.live-nearest-copy { flex: 1; min-width: 0; }
+.live-nearest-title-row { width: 100%; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.live-nearest-title-row > strong { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.live-nearest-title-row .live-nearest-plate { flex: 0 0 auto; margin: 0 0 0 auto; padding: 6px 8px; border: 1px solid #c5ccd3; border-radius: 7px; background: #f6f8fa; color: #303943; box-shadow: inset 0 1px 0 #fff, 0 1px 3px #18202a0c; font: 750 10px/1.1 ui-monospace, Consolas, monospace; letter-spacing: .07em; white-space: nowrap; }
+
+/* Trips library and Discover use the established app layout. */
+.legacy-trip-view { display:none !important; }
+.trips-library-page .page-heading,.discover-page .page-heading { margin-bottom:18px; }
+.trips-library-page #newSavedTripButton { width:100%; margin-bottom:10px; }
+.saved-trip-card { margin:12px 0; padding:17px; border:1px solid #e2e6ea; border-radius:22px; background:#fff; box-shadow:0 6px 20px #1d293509; }
+.saved-trip-kind { color:var(--larga-orange); font:750 8px/1.4 var(--montserrat); letter-spacing:.12em; }
+.saved-trip-card h2 { margin:7px 0; font-size:21px; }
+.saved-trip-card p { margin:0 0 6px; font-size:12px; color:#515b66; }
+.saved-trip-card small { font-size:10px; color:#78818b; }
+.saved-trip-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+.saved-trip-actions button,.discover-categories button,.trip-label-presets button { padding:9px 11px; border:1px solid #dfe4e9; border-radius:12px; background:#f5f7f9; font:650 10px/1.2 var(--general); cursor:pointer; }
+.saved-trip-actions button:first-child { background:var(--larga-orange); color:#fff; border-color:var(--larga-orange); }
+.saved-trip-actions .saved-trip-delete { color:#b43434; }
+.guide-save-trip-button { width:100%; margin-top:8px; padding:11px; border:1px solid #ffb377; border-radius:14px; background:#fff3e9; color:#a74700; font:750 11px/1.2 var(--general); cursor:pointer; }
+.trip-save-overlay { position:absolute; inset:0; z-index:6000; display:flex; align-items:center; justify-content:center; padding:20px; background:#14212d60; backdrop-filter:blur(8px); }
+.trip-save-dialog { width:100%; max-width:340px; padding:23px; border-radius:25px; background:#fff; box-shadow:0 15px 45px #15223030; }
+.trip-save-dialog h2 { margin:0 0 18px; font-size:23px; }
+.trip-save-dialog label { display:block; font-size:11px; margin-bottom:7px; }
+.trip-save-dialog input,.discover-search-input { width:100%; padding:13px; border:1px solid #dce2e7; border-radius:13px; background:#f9fafb; font:500 12px var(--general); box-sizing:border-box; }
+.trip-label-presets,.discover-categories { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0; }
+.trip-save-actions { display:flex; gap:9px; margin-top:18px; }
+.trip-save-actions button { flex:1; border:0; border-radius:13px; padding:12px; cursor:pointer; }
+.trip-save-dialog #tripSaveStatus { color:#b13d26; font-size:11px; }
+.discover-search-label { display:block; font-size:11px; margin-bottom:8px; }
+.discover-place-result { display:block; width:100%; padding:15px; margin:8px 0; border:1px solid #e0e5e9; border-radius:16px; background:#fff; text-align:left; cursor:pointer; }
+.discover-place-result strong,.discover-place-result small { display:block; }
+.discover-place-result strong { font-size:13px; }
+.discover-place-result small { margin-top:6px; color:#78818b; font-size:10px; }
+button:disabled { cursor:wait; }
+
