@@ -1,3 +1,20 @@
+const LARGA_GOOGLE_MAPS_CONFIG = {
+    // INTERACTION-SAFE DEMO KEY SETUP
+    //
+    // Do NOT paste the key into this JavaScript file.
+    // Put the raw Demo Key by itself inside maps-demo-key.txt.
+    // This prevents a typo in the key from breaking the entire app.
+    demoKey: "",
+
+    demoKeyFile: "maps-demo-key.txt",
+
+    // Google's DEMO_MAP_ID is intended for development/prototyping.
+    mapId: "DEMO_MAP_ID",
+
+    demoMode: true
+};
+
+
 window.addEventListener(
     "DOMContentLoaded",
     function () {
@@ -2551,6 +2568,15 @@ window.addEventListener(
 
             }
 
+
+            if (
+                pageName === "live"
+            ) {
+
+                initializeLiveTrackingPage();
+
+            }
+
         }
 
 
@@ -2590,23 +2616,28 @@ window.addEventListener(
 
         function updateProfileButton() {
 
-            if (
+            const displayName =
                 isGuest
-            ) {
-
-                profileButton.textContent =
-                    "G";
-
-
-                return;
-
-            }
-
+                    ? "Guest"
+                    : (currentUserName || "User");
 
             profileButton.textContent =
-                currentUserName
+                displayName
+                    .trim()
                     .charAt(0)
-                    .toUpperCase();
+                    .toUpperCase() || "G";
+
+            profileButton.setAttribute(
+                "aria-label",
+                isGuest
+                    ? "Guest profile"
+                    : displayName + " profile"
+            );
+
+            profileButton.title =
+                isGuest
+                    ? "Guest"
+                    : displayName;
 
         }
 
@@ -2662,6 +2693,8 @@ window.addEventListener(
         const guideMapJourneyMarkers = get("guideMapJourneyMarkers");
         const guideUserMarker = get("guideUserMarker");
         const guideMapCanvas = get("guideMapCanvas");
+        const guideGoogleMap = get("guideGoogleMap");
+        const guideMapSetup = get("guideMapSetup");
         const guideMapWorld = get("guideMapWorld");
         const guideMapExpandButton = get("guideMapExpandButton");
         const guideMapExpandIcon = get("guideMapExpandIcon");
@@ -3488,6 +3521,811 @@ window.addEventListener(
 
 
 
+
+        // ==================================================
+        // DOWNTOWN ROUTE 1-13 VERIFIED STREET SEQUENCES
+        // ==================================================
+        //
+        // These corrections follow current Davao commuter-route references.
+        // Google Maps is used as the base map. In Demo Key mode, LARGA
+        // requests road-following geometry through Google's supported
+        // Compute Routes web service only when a route is selected.
+        //
+        // IMPORTANT: The routes are reconstructed from published street
+        // sequences. They are suitable for the prototype, but operational
+        // changes and rare-route deviations should still be field-verified.
+
+        const DOWNTOWN_GEOMETRY_VERSION =
+            "2026-10-09-street-locked-v1";
+
+        /*
+         * Street-locked downtown route data.
+         *
+         * Accuracy strategy:
+         * - Route cards no longer send Google a few broad landmarks.
+         * - Each route is split into short ordered segments.
+         * - Every segment is constrained through the published street order.
+         * - The resulting road-following polyline is cached locally after the
+         *   first successful calculation, so repeated selections do not keep
+         *   re-computing the same geometry.
+         *
+         * Primary cross-checks for Routes 1-13:
+         * - 2026 Metro Davao commuter route sequence
+         * - OpenStreetMap Davao public-transport mapping notes
+         * - 2026 CommuteTour route descriptions/maps
+         * - Commute Davao used as a secondary visual/reference catalog
+         *
+         * These remain prototype transit geometries. Rare routes can still
+         * change operationally, so field/LTFRB verification is still the final
+         * authority before production use.
+         */
+
+        const verifiedDowntownRouteData = {
+
+            "route-1": {
+                short:
+                    "Marfori Heights • Chinatown Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Marfori Heights",
+                    "Bankerohan Public Market",
+                    "Davao City Hall",
+                    "Chinatown / Uyanguren",
+                    "San Pedro Cathedral",
+                    "Gaisano Ilustre"
+                ],
+
+                roads: [
+                    "Lopez Jaena",
+                    "General Luna",
+                    "Pelayo",
+                    "Magallanes / A. Pichon",
+                    "C.M. Recto",
+                    "Emilio Jacinto",
+                    "Quezon Boulevard",
+                    "R. Magsaysay",
+                    "Chavez",
+                    "Sobrecarey",
+                    "Guzman",
+                    "C. Bangoy",
+                    "San Pedro",
+                    "Ilustre"
+                ],
+
+                summary:
+                    "Marfori Heights–Chinatown circulation loop through Bankerohan, Claveria, Quezon Boulevard, San Pedro, and Ilustre.",
+
+                googleRouteSegments: [
+                    [
+                        "Marfori Heights, Davao City, Philippines",
+                        "Lopez Jaena Street & General Luna Street, Davao City, Philippines",
+                        "General Luna Street & Pelayo Street, Davao City, Philippines",
+                        "Pelayo Street & A. Pichon Street, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines",
+                        "C.M. Recto Avenue & Emilio Jacinto Street, Davao City, Philippines",
+                        "Emilio Jacinto Street & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & R. Magsaysay Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "Quezon Boulevard & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & Chavez Street, Davao City, Philippines",
+                        "Chavez Street & Sobrecarey Street, Davao City, Philippines",
+                        "Sobrecarey Street & Guzman Street, Davao City, Philippines",
+                        "Guzman Street & C. Bangoy Street, Davao City, Philippines",
+                        "C. Bangoy Street & San Pedro Street, Davao City, Philippines",
+                        "San Pedro Street & Ilustre Street, Davao City, Philippines",
+                        "Marfori Heights, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-2": {
+                short:
+                    "Ecoland Terminal • Chinatown Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Davao City Overland Transport Terminal",
+                    "Quezon Boulevard",
+                    "Chinatown / Uyanguren",
+                    "San Pedro Cathedral",
+                    "Marfori",
+                    "Generoso Bridge"
+                ],
+
+                roads: [
+                    "Quezon Boulevard",
+                    "R. Magsaysay",
+                    "C. Bangoy",
+                    "Bonifacio",
+                    "Bolton",
+                    "San Pedro",
+                    "Marfori",
+                    "Datu Bago Drive",
+                    "Generoso Bridge"
+                ],
+
+                summary:
+                    "Ecoland Terminal–Chinatown loop. Outbound uses Quezon Boulevard. The return uses Magsaysay, C. Bangoy, Bonifacio, Bolton, San Pedro, Marfori, and Datu Bago Drive.",
+
+                googleRouteSegments: [
+                    [
+                        "Davao City Overland Transport Terminal, Davao City, Philippines",
+                        "Quimpo Boulevard & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & R. Magsaysay Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "Quezon Boulevard & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & C. Bangoy Street, Davao City, Philippines",
+                        "C. Bangoy Street & Bonifacio Street, Davao City, Philippines",
+                        "Bonifacio Street & Bolton Street, Davao City, Philippines",
+                        "Bolton Street & San Pedro Street, Davao City, Philippines",
+                        "San Pedro Street, Davao City, Philippines",
+                        "Marfori Heights, Davao City, Philippines"
+                    ],
+                    [
+                        "Marfori Heights, Davao City, Philippines",
+                        "Datu Bago Drive, Davao City, Philippines",
+                        "Governor Generoso Bridge, Davao City, Philippines",
+                        "Davao City Overland Transport Terminal, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-3": {
+                short:
+                    "Marfori Heights • Sta. Ana Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Marfori Heights",
+                    "Davao City Hall",
+                    "Ateneo de Davao University",
+                    "Sta. Ana",
+                    "Chinatown / Uyanguren",
+                    "San Pedro Cathedral",
+                    "Gaisano Ilustre"
+                ],
+
+                roads: [
+                    "Lopez Jaena",
+                    "General Luna",
+                    "Pelayo",
+                    "Magallanes",
+                    "C.M. Recto",
+                    "Dela Cruz",
+                    "Emilio Jacinto",
+                    "Aurora Quezon",
+                    "J. Luna",
+                    "Sales",
+                    "R. Magsaysay",
+                    "Chavez",
+                    "Sobrecarey",
+                    "Guzman",
+                    "C. Bangoy",
+                    "San Pedro",
+                    "Ilustre"
+                ],
+
+                summary:
+                    "Marfori Heights–Sta. Ana circulation loop using the downtown core, Chinatown, San Pedro, and Ilustre on the return.",
+
+                googleRouteSegments: [
+                    [
+                        "Marfori Heights, Davao City, Philippines",
+                        "Lopez Jaena Street & General Luna Street, Davao City, Philippines",
+                        "General Luna Street & Pelayo Street, Davao City, Philippines",
+                        "Pelayo Street & A. Pichon Street, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines",
+                        "C.M. Recto Avenue & Dela Cruz Street, Davao City, Philippines",
+                        "Dela Cruz Street & Emilio Jacinto Street, Davao City, Philippines",
+                        "Emilio Jacinto Street & Aurora Quezon Street, Davao City, Philippines"
+                    ],
+                    [
+                        "Emilio Jacinto Street & Aurora Quezon Street, Davao City, Philippines",
+                        "Aurora Quezon Street & J. Luna Street, Davao City, Philippines",
+                        "J. Luna Street & Sales Street, Davao City, Philippines",
+                        "Sales Street & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & Chavez Street, Davao City, Philippines",
+                        "Chavez Street & Sobrecarey Street, Davao City, Philippines",
+                        "Sobrecarey Street & Guzman Street, Davao City, Philippines"
+                    ],
+                    [
+                        "Sobrecarey Street & Guzman Street, Davao City, Philippines",
+                        "Guzman Street & C. Bangoy Street, Davao City, Philippines",
+                        "C. Bangoy Street & San Pedro Street, Davao City, Philippines",
+                        "San Pedro Street & Ilustre Street, Davao City, Philippines",
+                        "Marfori Heights, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-4": {
+                short:
+                    "Claveria • SPMC Northbound Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Claveria",
+                    "GMall Bajada",
+                    "Abreeza",
+                    "SPMC",
+                    "Cabaguio",
+                    "San Pedro Cathedral"
+                ],
+
+                roads: [
+                    "C.M. Recto",
+                    "J.P. Laurel Avenue",
+                    "Cabaguio Road",
+                    "Aurora Quezon",
+                    "Quezon Boulevard",
+                    "San Pedro"
+                ],
+
+                summary:
+                    "Claveria–SPMC northbound loop through J.P. Laurel, Cabaguio, Quezon Boulevard, and San Pedro.",
+
+                googleRouteSegments: [
+                    [
+                        "C.M. Recto Avenue & San Pedro Street, Davao City, Philippines",
+                        "C.M. Recto Avenue & J.P. Laurel Avenue, Davao City, Philippines",
+                        "Gaisano Mall of Davao, Davao City, Philippines",
+                        "Ayala Malls Abreeza, Davao City, Philippines",
+                        "Southern Philippines Medical Center, Davao City, Philippines",
+                        "J.P. Laurel Avenue & Cabaguio Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "J.P. Laurel Avenue & Cabaguio Avenue, Davao City, Philippines",
+                        "Cabaguio Avenue & Aurora Quezon Street, Davao City, Philippines",
+                        "Aurora Quezon Street & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & San Pedro Street, Davao City, Philippines",
+                        "C.M. Recto Avenue & San Pedro Street, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-5": {
+                short:
+                    "Bankerohan • Uyanguren • Agdao",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Bankerohan Public Market",
+                    "Davao City Hall",
+                    "Ateneo de Davao University",
+                    "Chinatown / Uyanguren",
+                    "Sta. Ana",
+                    "Agdao Public Market",
+                    "San Pedro Cathedral"
+                ],
+
+                roads: [
+                    "A. Pichon / Magallanes",
+                    "C.M. Recto",
+                    "R. Magsaysay",
+                    "Leon M. Guerrero",
+                    "Sta. Ana",
+                    "Guzman",
+                    "Vinzons",
+                    "Sobrecarey",
+                    "Sales",
+                    "Monteverde",
+                    "F. Bangoy",
+                    "W. Aquino",
+                    "Leon Garcia",
+                    "Quezon Boulevard",
+                    "San Pedro"
+                ],
+
+                summary:
+                    "Bankerohan–Agdao loop via Uyanguren. Route 5 and 5A follow the same general path. This card follows the Route 5/5A direction.",
+
+                googleRouteSegments: [
+                    [
+                        "Bankerohan Public Market, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines",
+                        "C.M. Recto Avenue & Roxas Avenue, Davao City, Philippines",
+                        "Roxas Avenue & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & Leon M. Guerrero Street, Davao City, Philippines",
+                        "Leon M. Guerrero Street & Sta. Ana Avenue, Davao City, Philippines",
+                        "Sta. Ana Avenue & Guzman Street, Davao City, Philippines"
+                    ],
+                    [
+                        "Sta. Ana Avenue & Guzman Street, Davao City, Philippines",
+                        "Guzman Street & Vinzon Street, Davao City, Philippines",
+                        "Vinzon Street & Sobrecarey Street, Davao City, Philippines",
+                        "Sobrecarey Street & Sales Street, Davao City, Philippines",
+                        "Sales Street & Monteverde Street, Davao City, Philippines",
+                        "Monteverde Street & F. Bangoy Street, Davao City, Philippines",
+                        "F. Bangoy Street & Sta. Ana Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "F. Bangoy Street & Sta. Ana Avenue, Davao City, Philippines",
+                        "Sta. Ana Avenue & W. Aquino Street, Davao City, Philippines",
+                        "W. Aquino Street & Leon Garcia Street, Davao City, Philippines",
+                        "Leon Garcia Street & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & San Pedro Street, Davao City, Philippines",
+                        "Bankerohan Public Market, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-6": {
+                short:
+                    "Bankerohan • Boulevard • Agdao",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Bankerohan Public Market",
+                    "Trading Boulevard",
+                    "Ramon Magsaysay Park",
+                    "Agdao Public Market",
+                    "Chinatown / Uyanguren",
+                    "San Pedro Cathedral"
+                ],
+
+                roads: [
+                    "A. Pichon / Magallanes",
+                    "Trading Boulevard",
+                    "Quezon Boulevard",
+                    "Leon Garcia",
+                    "6th Avenue",
+                    "F. Bangoy",
+                    "R. Magsaysay",
+                    "C. Bangoy",
+                    "Rizal",
+                    "Bolton",
+                    "San Pedro"
+                ],
+
+                summary:
+                    "Bankerohan–Agdao loop via the Boulevard. The return uses Chinatown, C. Bangoy, Rizal, Bolton, and San Pedro.",
+
+                googleRouteSegments: [
+                    [
+                        "Bankerohan Public Market, Davao City, Philippines",
+                        "A. Pichon Street & Quimpo Boulevard, Davao City, Philippines",
+                        "Trading Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Park, Davao City, Philippines",
+                        "Leon Garcia Street & 6th Avenue, Davao City, Philippines",
+                        "6th Avenue & F. Bangoy Street, Davao City, Philippines",
+                        "Agdao Public Market, Davao City, Philippines"
+                    ],
+                    [
+                        "Agdao Public Market, Davao City, Philippines",
+                        "R. Magsaysay Park, Davao City, Philippines",
+                        "R. Magsaysay Avenue & C. Bangoy Street, Davao City, Philippines",
+                        "C. Bangoy Street & Rizal Street, Davao City, Philippines",
+                        "Rizal Street & Bolton Street, Davao City, Philippines",
+                        "Bolton Street & San Pedro Street, Davao City, Philippines",
+                        "Bankerohan Public Market, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-7": {
+                short:
+                    "Bankerohan • Dacudao • Agdao",
+
+                frequency:
+                    "Rare",
+
+                landmarks: [
+                    "Bankerohan Public Market",
+                    "Boulevard",
+                    "Dacudao Avenue",
+                    "Agdao Public Market",
+                    "Sta. Ana",
+                    "San Pedro"
+                ],
+
+                roads: [
+                    "Datu Bago",
+                    "Magallanes",
+                    "Boulevard",
+                    "Dacudao Avenue",
+                    "Agdao",
+                    "Sta. Ana",
+                    "R. Magsaysay",
+                    "San Pedro"
+                ],
+
+                summary:
+                    "Rare Bankerohan–Agdao circulation variant. It follows the Route 6 family of loops but uses Dacudao Avenue.",
+
+                googleRouteSegments: [
+                    [
+                        "Bankerohan Public Market, Davao City, Philippines",
+                        "A. Pichon Street, Davao City, Philippines",
+                        "Trading Boulevard, Davao City, Philippines",
+                        "Dacudao Avenue, Davao City, Philippines",
+                        "Agdao Public Market, Davao City, Philippines"
+                    ],
+                    [
+                        "Agdao Public Market, Davao City, Philippines",
+                        "Sta. Ana Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue, Davao City, Philippines",
+                        "San Pedro Street, Davao City, Philippines",
+                        "Bankerohan Public Market, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-8": {
+                short:
+                    "City High • San Pedro Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Davao City National High School",
+                    "F. Torres",
+                    "San Pedro Cathedral",
+                    "Gaisano Ilustre",
+                    "Davao Doctors Hospital",
+                    "Quirino Avenue"
+                ],
+
+                roads: [
+                    "F. Torres",
+                    "Jacinto Extension",
+                    "Ponciano",
+                    "San Pedro",
+                    "Ilustre",
+                    "Gov. Duterte",
+                    "Quirino",
+                    "Tionko"
+                ],
+
+                summary:
+                    "City High–San Pedro circulation loop through F. Torres, Jacinto Extension, Ilustre, Quirino Avenue, and Tionko.",
+
+                googleRouteSegments: [
+                    [
+                        "Davao City National High School, Davao City, Philippines",
+                        "F. Torres Street & Jacinto Extension, Davao City, Philippines",
+                        "Jacinto Extension & Ponciano Street, Davao City, Philippines",
+                        "Ponciano Street & San Pedro Street, Davao City, Philippines",
+                        "San Pedro Street & Ilustre Street, Davao City, Philippines",
+                        "Ilustre Street & Governor Duterte Street, Davao City, Philippines"
+                    ],
+                    [
+                        "Ilustre Street & Governor Duterte Street, Davao City, Philippines",
+                        "Governor Duterte Street & Quirino Avenue, Davao City, Philippines",
+                        "Quirino Avenue & Tionko Avenue, Davao City, Philippines",
+                        "Davao City National High School, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-9": {
+                short:
+                    "Bankerohan • Lapu-Lapu • Agdao",
+
+                frequency:
+                    "Rare",
+
+                landmarks: [
+                    "Bankerohan Public Market",
+                    "Trading Boulevard",
+                    "Agdao Public Market",
+                    "Sta. Ana",
+                    "Bajada",
+                    "City High"
+                ],
+
+                roads: [
+                    "Datu Bago",
+                    "Magallanes",
+                    "Boulevard",
+                    "Leon Garcia",
+                    "Lapu-Lapu",
+                    "Sta. Ana",
+                    "J.P. Laurel",
+                    "Quirino",
+                    "Jacinto Extension",
+                    "F. Torres",
+                    "San Pedro Extension"
+                ],
+
+                summary:
+                    "Rare Bankerohan–Agdao loop via Lapu-Lapu, Sta. Ana, Bajada, Quirino, and the City High corridor.",
+
+                googleRouteSegments: [
+                    [
+                        "Bankerohan Public Market, Davao City, Philippines",
+                        "Datu Bago Drive, Davao City, Philippines",
+                        "A. Pichon Street, Davao City, Philippines",
+                        "Trading Boulevard, Davao City, Philippines",
+                        "Leon Garcia Street, Davao City, Philippines",
+                        "Lapu-Lapu Street, Davao City, Philippines",
+                        "Agdao Public Market, Davao City, Philippines"
+                    ],
+                    [
+                        "Agdao Public Market, Davao City, Philippines",
+                        "Sta. Ana Avenue & J.P. Laurel Avenue, Davao City, Philippines",
+                        "J.P. Laurel Avenue & Quirino Avenue, Davao City, Philippines",
+                        "Quirino Avenue & Jacinto Extension, Davao City, Philippines",
+                        "Jacinto Extension & F. Torres Street, Davao City, Philippines",
+                        "F. Torres Street & San Pedro Extension, Davao City, Philippines",
+                        "Bankerohan Public Market, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-10": {
+                short:
+                    "Claveria • SPMC Southbound Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Bankerohan Public Market",
+                    "Chinatown / Uyanguren",
+                    "Agdao",
+                    "SPMC",
+                    "GMall Bajada",
+                    "San Pedro Cathedral"
+                ],
+
+                roads: [
+                    "Magallanes",
+                    "Uyanguren / R. Magsaysay",
+                    "Quezon Boulevard",
+                    "Leon Garcia",
+                    "Cabaguio",
+                    "J.P. Laurel",
+                    "Ponciano",
+                    "San Pedro",
+                    "Claveria"
+                ],
+
+                summary:
+                    "SPMC southbound loop through Uyanguren, Leon Garcia, Cabaguio, J.P. Laurel, Ponciano, San Pedro, Bankerohan, and Claveria.",
+
+                googleRouteSegments: [
+                    [
+                        "C.M. Recto Avenue & A. Pichon Street, Davao City, Philippines",
+                        "A. Pichon Street & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & Leon Garcia Street, Davao City, Philippines",
+                        "Leon Garcia Street & Cabaguio Avenue, Davao City, Philippines",
+                        "Cabaguio Avenue & J.P. Laurel Avenue, Davao City, Philippines",
+                        "Southern Philippines Medical Center, Davao City, Philippines"
+                    ],
+                    [
+                        "Southern Philippines Medical Center, Davao City, Philippines",
+                        "J.P. Laurel Avenue & Ponciano Street, Davao City, Philippines",
+                        "Ponciano Street & San Pedro Street, Davao City, Philippines",
+                        "Bankerohan Public Market, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-11": {
+                short:
+                    "Agdao • Brokenshire Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "Agdao Public Market",
+                    "San Pedro Cathedral",
+                    "Bankerohan Public Market",
+                    "Brokenshire College",
+                    "Davao City National High School",
+                    "Bajada"
+                ],
+
+                roads: [
+                    "Leon Garcia",
+                    "Boulevard",
+                    "San Pedro",
+                    "San Pedro Extension",
+                    "Circumferential Road",
+                    "F. Torres",
+                    "J.P. Laurel",
+                    "Loyola",
+                    "Sobrecarey",
+                    "Lapu-Lapu"
+                ],
+
+                summary:
+                    "Agdao–Brokenshire circulation loop through the Boulevard, San Pedro, Circumferential Road, F. Torres, Bajada, Loyola, and Lapu-Lapu.",
+
+                googleRouteSegments: [
+                    [
+                        "Agdao Public Market, Davao City, Philippines",
+                        "Leon Garcia Street & Quezon Boulevard, Davao City, Philippines",
+                        "Quezon Boulevard & San Pedro Street, Davao City, Philippines",
+                        "San Pedro Street & San Pedro Extension, Davao City, Philippines",
+                        "Brokenshire College, Davao City, Philippines",
+                        "Circumferential Road, Davao City, Philippines"
+                    ],
+                    [
+                        "Circumferential Road, Davao City, Philippines",
+                        "F. Torres Street, Davao City, Philippines",
+                        "J.P. Laurel Avenue & F. Torres Street, Davao City, Philippines",
+                        "Loyola Street, Davao City, Philippines",
+                        "Sobrecarey Street, Davao City, Philippines",
+                        "Lapu-Lapu Street, Davao City, Philippines",
+                        "Agdao Public Market, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-12": {
+                short:
+                    "Ecoland • Chinatown via Sandawa",
+
+                frequency:
+                    "Rare",
+
+                landmarks: [
+                    "Ecoland",
+                    "Sandawa",
+                    "Davao City Hall",
+                    "Chinatown / Uyanguren",
+                    "Boulevard"
+                ],
+
+                roads: [
+                    "Candelaria",
+                    "Sandawa",
+                    "McArthur Highway",
+                    "Magallanes",
+                    "Claveria",
+                    "Uyanguren",
+                    "J. Luna",
+                    "Boulevard"
+                ],
+
+                summary:
+                    "Rare Ecoland–Chinatown circulation loop through Sandawa, McArthur Highway, downtown, Uyanguren, J. Luna, and the Boulevard.",
+
+                googleRouteSegments: [
+                    [
+                        "Davao City Overland Transport Terminal, Davao City, Philippines",
+                        "Candelaria Street, Ecoland, Davao City, Philippines",
+                        "Sandawa Road, Davao City, Philippines",
+                        "McArthur Highway & A. Pichon Street, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines",
+                        "C.M. Recto Avenue & R. Magsaysay Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "C.M. Recto Avenue & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & J. Luna Street, Davao City, Philippines",
+                        "J. Luna Street & R. Magsaysay Avenue, Davao City, Philippines",
+                        "R. Magsaysay Avenue & Quezon Boulevard, Davao City, Philippines",
+                        "Trading Boulevard, Davao City, Philippines",
+                        "Davao City Overland Transport Terminal, Davao City, Philippines"
+                    ]
+                ]
+            },
+
+            "route-13": {
+                short:
+                    "SPC/GMall • RMC • City High Loop",
+
+                frequency:
+                    "Common",
+
+                landmarks: [
+                    "GMall Bajada",
+                    "San Pedro College",
+                    "Chinatown / Uyanguren",
+                    "San Pedro Cathedral",
+                    "Rizal Memorial Colleges",
+                    "Davao City National High School"
+                ],
+
+                roads: [
+                    "De Guzman",
+                    "R. Magsaysay / Uyanguren",
+                    "Ponciano",
+                    "San Pedro",
+                    "Ilustre",
+                    "Gov. Duterte",
+                    "Mt. Apo",
+                    "Lopez Jaena",
+                    "Circumferential",
+                    "Mabini",
+                    "F. Torres",
+                    "Tionko",
+                    "Arellano",
+                    "General Luna",
+                    "Quirino",
+                    "Legazpi / Pelayo",
+                    "Magallanes",
+                    "Claveria",
+                    "Jacinto",
+                    "J. Luna",
+                    "Chavez",
+                    "Lapu-Lapu",
+                    "Sobrecarey",
+                    "Vinzon"
+                ],
+
+                summary:
+                    "Long downtown circulation loop connecting SPC/GMall, Uyanguren, San Pedro, RMC, City High, Quirino, Claveria, Sta. Ana, and back to Bajada.",
+
+                googleRouteSegments: [
+                    [
+                        "San Pedro College, Davao City, Philippines",
+                        "De Guzman Street, Davao City, Philippines",
+                        "R. Magsaysay Avenue, Davao City, Philippines",
+                        "Ponciano Street, Davao City, Philippines",
+                        "San Pedro Street, Davao City, Philippines",
+                        "Ilustre Street, Davao City, Philippines",
+                        "Governor Duterte Street, Davao City, Philippines",
+                        "Mt. Apo Street, Davao City, Philippines"
+                    ],
+                    [
+                        "Mt. Apo Street, Davao City, Philippines",
+                        "Lopez Jaena Street, Davao City, Philippines",
+                        "Rizal Memorial Colleges, Davao City, Philippines",
+                        "Circumferential Road, Davao City, Philippines",
+                        "Mabini Street, Davao City, Philippines",
+                        "F. Torres Street, Davao City, Philippines",
+                        "Davao City National High School, Davao City, Philippines",
+                        "Tionko Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "Tionko Avenue, Davao City, Philippines",
+                        "Arellano Street, Davao City, Philippines",
+                        "Mt. Apo Street & General Luna Street, Davao City, Philippines",
+                        "General Luna Street & Quirino Avenue, Davao City, Philippines",
+                        "Quirino Avenue & Legazpi Street, Davao City, Philippines",
+                        "Legazpi Street & Pelayo Street, Davao City, Philippines",
+                        "Pelayo Street & A. Pichon Street, Davao City, Philippines",
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines"
+                    ],
+                    [
+                        "A. Pichon Street & C.M. Recto Avenue, Davao City, Philippines",
+                        "C.M. Recto Avenue & Emilio Jacinto Street, Davao City, Philippines",
+                        "Emilio Jacinto Street & J. Luna Street, Davao City, Philippines",
+                        "J. Luna Street & Chavez Street, Davao City, Philippines",
+                        "Chavez Street & Lapu-Lapu Street, Davao City, Philippines",
+                        "Lapu-Lapu Street & Sobrecarey Street, Davao City, Philippines",
+                        "Sobrecarey Street & Vinzon Street, Davao City, Philippines",
+                        "Vinzon Street & De Guzman Street, Davao City, Philippines",
+                        "San Pedro College, Davao City, Philippines"
+                    ]
+                ]
+            }
+        };
+
+        Object.keys(verifiedDowntownRouteData).forEach(function (routeId) {
+            const route = guideRouteCatalog.find(function (candidate) {
+                return candidate.id === routeId;
+            });
+
+            if (route) {
+                Object.assign(route, verifiedDowntownRouteData[routeId]);
+                route.geometryStatus = "street-locked-2026";
+            }
+        });
+
+
         const downtownRoutes = guideRouteCatalog.filter(function (route) {
             return route.downtown === true;
         });
@@ -3730,6 +4568,136 @@ window.addEventListener(
                 routeCarousel.appendChild(card);
             });
 
+            if (
+                plan.legs.length === 1 &&
+                plan.alternativeDirectRoutes &&
+                plan.alternativeDirectRoutes.length
+            ) {
+                plan.alternativeDirectRoutes
+                    .forEach(function (route, alternativeIndex) {
+
+                        const card =
+                            document.createElement("article");
+
+                        card.className =
+                            "guide-route-card journey-route-card journey-alternative-card";
+
+                        card.setAttribute(
+                            "data-route-id",
+                            route.id
+                        );
+
+                        setCardTheme(
+                            card,
+                            route
+                        );
+
+                        card.innerHTML = `
+                            <button
+                                class="route-card-select-area journey-card-select-area"
+                                type="button"
+                                aria-label="Use ${route.name} for this trip"
+                            >
+                                <span class="journey-step-badge">
+                                    OPTION ${alternativeIndex + 2}
+                                </span>
+                                <span class="journey-ride-label">
+                                    ALSO DIRECT
+                                </span>
+                                <h3>${route.name}</h3>
+                                <div class="journey-leg-copy">
+                                    <span>
+                                        <b>Board</b>
+                                        ${plan.start}
+                                    </span>
+                                    <span class="journey-leg-arrow">↓</span>
+                                    <span>
+                                        <b>Get off</b>
+                                        ${plan.end}
+                                    </span>
+                                </div>
+                            </button>
+
+                            <button
+                                class="route-card-more"
+                                type="button"
+                                aria-label="Learn more about ${route.name}"
+                            >
+                                Learn More
+                            </button>
+                        `;
+
+                        card.querySelector(
+                            ".journey-card-select-area"
+                        ).addEventListener(
+                            "click",
+                            function (event) {
+                                event.stopPropagation();
+
+                                const previousPrimary =
+                                    plan.legs[0].route;
+
+                                plan.legs[0].route =
+                                    route;
+
+                                plan.alternativeDirectRoutes =
+                                    [
+                                        previousPrimary
+                                    ].concat(
+                                        plan.alternativeDirectRoutes
+                                            .filter(function (candidate) {
+                                                return candidate.id !== route.id;
+                                            })
+                                    );
+
+                                selectedGuideRouteIds =
+                                    new Set([
+                                        route.id
+                                    ]);
+
+                                selectedGuideRoute =
+                                    route;
+
+                                routeName.textContent =
+                                    route.name;
+
+                                renderJourneyCards(
+                                    plan
+                                );
+
+                                renderGuideMapRoutes();
+                                updateGuideHeaderAction();
+
+                                guideMessage.textContent =
+                                    route.name +
+                                    " selected. Other direct options remain available in the carousel.";
+                            }
+                        );
+
+                        card.querySelector(
+                            ".route-card-more"
+                        ).addEventListener(
+                            "click",
+                            function (event) {
+                                event.preventDefault();
+                                event.stopPropagation();
+
+                                selectedGuideRoute =
+                                    route;
+
+                                openRouteDetail(
+                                    route.id,
+                                    card
+                                );
+                            }
+                        );
+
+                        routeCarousel.appendChild(
+                            card
+                        );
+                    });
+            }
+
             focusJourneyLeg(null);
         }
 
@@ -3838,6 +4806,1070 @@ window.addEventListener(
             guideHeaderAction.disabled = selectedGuideRouteIds.size === 0;
         }
 
+
+        // ==================================================
+        // GOOGLE MAPS DEMO KEY + COMPUTE ROUTES WEB SERVICE
+        // ==================================================
+
+        const DAVAO_MAP_CENTER = {
+            lat: 7.0736,
+            lng: 125.6127
+        };
+
+        let googleGuideMap = null;
+        let GooglePolyline = null;
+        let GoogleAdvancedMarkerElement = null;
+        let GoogleLatLngBounds = null;
+
+        let googleUserMarker = null;
+        let googleMapRenderGeneration = 0;
+
+        const googleRoutePathCache = new Map();
+        const googleRoutePathPromiseCache = new Map();
+
+        let googleRoutePolylines = [];
+        let googleRouteMarkers = [];
+
+        async function loadGoogleMapsDemoKey() {
+            if (hasGoogleMapsDemoKey()) {
+                return;
+            }
+
+            try {
+                const response =
+                    await fetch(
+                        LARGA_GOOGLE_MAPS_CONFIG.demoKeyFile,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const key =
+                    (await response.text()).trim();
+
+                if (
+                    key.length > 12 &&
+                    !key.includes("PASTE_") &&
+                    !key.includes("YOUR_")
+                ) {
+                    LARGA_GOOGLE_MAPS_CONFIG.demoKey =
+                        key;
+                }
+            }
+            catch (error) {
+                // The rest of LARGA must remain fully usable even when
+                // the key file is missing or Live Server is not running.
+                console.warn(
+                    "Maps Demo Key file was not loaded:",
+                    error
+                );
+            }
+        }
+
+        function hasGoogleMapsDemoKey() {
+            const key =
+                LARGA_GOOGLE_MAPS_CONFIG.demoKey || "";
+
+            return (
+                key.length > 12 &&
+                !key.includes("PASTE_") &&
+                !key.includes("YOUR_")
+            );
+        }
+
+        function loadGoogleMapsScript() {
+            if (
+                window.google &&
+                window.google.maps &&
+                window.google.maps.importLibrary
+            ) {
+                return Promise.resolve();
+            }
+
+            return new Promise(function (resolve, reject) {
+                const existing = document.querySelector(
+                    'script[data-larga-google-maps="true"]'
+                );
+
+                if (existing) {
+                    existing.addEventListener("load", resolve, { once: true });
+                    existing.addEventListener("error", reject, { once: true });
+                    return;
+                }
+
+                const scriptElement = document.createElement("script");
+                scriptElement.dataset.largaGoogleMaps = "true";
+                scriptElement.async = true;
+                scriptElement.defer = true;
+
+                const parameters = new URLSearchParams({
+                    key: LARGA_GOOGLE_MAPS_CONFIG.demoKey,
+                    v: "weekly",
+                    libraries: "marker",
+                    language: "en",
+                    region: "PH"
+                });
+
+                scriptElement.src =
+                    "https://maps.googleapis.com/maps/api/js?" +
+                    parameters.toString();
+
+                scriptElement.addEventListener("load", resolve, { once: true });
+                scriptElement.addEventListener("error", reject, { once: true });
+
+                document.head.appendChild(scriptElement);
+            });
+        }
+
+        async function initializeGoogleGuideMap() {
+            if (!guideGoogleMap) {
+                return;
+            }
+
+            await loadGoogleMapsDemoKey();
+
+            if (!hasGoogleMapsDemoKey()) {
+                show(guideMapSetup);
+
+                guideMapSetup.querySelector("strong").textContent =
+                    "Google Maps Demo Key";
+
+                guideMapSetup.querySelector("span").textContent =
+                    "Paste your no-billing Maps Demo Key into maps-demo-key.txt. The rest of LARGA stays fully usable even without the key.";
+
+                return;
+            }
+
+            try {
+                await loadGoogleMapsScript();
+
+                const [
+                    mapsLibrary,
+                    markerLibrary,
+                    coreLibrary
+                ] = await Promise.all([
+                    google.maps.importLibrary("maps"),
+                    google.maps.importLibrary("marker"),
+                    google.maps.importLibrary("core")
+                ]);
+
+                GooglePolyline =
+                    mapsLibrary.Polyline;
+
+                GoogleAdvancedMarkerElement =
+                    markerLibrary.AdvancedMarkerElement;
+
+                GoogleLatLngBounds =
+                    coreLibrary.LatLngBounds;
+
+                googleGuideMap =
+                    new mapsLibrary.Map(
+                        guideGoogleMap,
+                        {
+                            center: DAVAO_MAP_CENTER,
+                            zoom: 13,
+                            mapId:
+                                LARGA_GOOGLE_MAPS_CONFIG.mapId ||
+                                "DEMO_MAP_ID",
+
+                            disableDefaultUI: true,
+                            mapTypeControl: false,
+                            fullscreenControl: false,
+                            streetViewControl: false,
+                            zoomControl: false,
+
+                            gestureHandling: "greedy",
+                            clickableIcons: true
+                        }
+                    );
+
+                guideMapCanvas.classList.add(
+                    "google-map-ready"
+                );
+
+                hide(guideMapWorld);
+                hide(guideMapSetup);
+                show(guideGoogleMap);
+
+                guideMessage.textContent =
+                    "Google Maps Demo Key is active. Downtown routes now follow street-locked Davao route sequences and are cached after first load.";
+
+                renderGuideMapRoutes();
+            }
+            catch (error) {
+                console.error(
+                    "Google Maps initialization failed:",
+                    error
+                );
+
+                show(guideMapSetup);
+
+                guideMapSetup.querySelector("strong").textContent =
+                    "Google Maps could not load";
+
+                guideMapSetup.querySelector("span").textContent =
+                    "Check that your Maps Demo Key was copied correctly. This build does not require you to enable billing.";
+            }
+        }
+
+        function clearGoogleMapRouteOverlays() {
+            googleRoutePolylines.forEach(
+                function (polyline) {
+                    polyline.setMap(null);
+                }
+            );
+
+            googleRoutePolylines = [];
+
+            googleRouteMarkers.forEach(
+                function (marker) {
+                    marker.map = null;
+                }
+            );
+
+            googleRouteMarkers = [];
+        }
+
+        function normalizeGoogleAnchor(anchor) {
+            if (
+                typeof anchor === "string" &&
+                !anchor.toLowerCase().includes("davao")
+            ) {
+                return anchor +
+                    ", Davao City, Philippines";
+            }
+
+            return anchor;
+        }
+
+        function getGoogleRouteSegmentsForRoute(route) {
+            if (
+                route.googleRouteSegments &&
+                route.googleRouteSegments.length
+            ) {
+                return route.googleRouteSegments
+                    .map(function (segment) {
+                        return segment
+                            .map(normalizeGoogleAnchor)
+                            .filter(Boolean);
+                    })
+                    .filter(function (segment) {
+                        return segment.length >= 2;
+                    });
+            }
+
+            if (
+                route.googleAnchors &&
+                route.googleAnchors.length >= 2
+            ) {
+                return [
+                    route.googleAnchors
+                        .map(normalizeGoogleAnchor)
+                ];
+            }
+
+            const landmarkAnchors =
+                (route.landmarks || [])
+                    .slice(0, 6)
+                    .map(function (landmark) {
+                        return normalizeGoogleAnchor(
+                            landmark
+                        );
+                    });
+
+            if (landmarkAnchors.length < 2) {
+                return [];
+            }
+
+            return [
+                landmarkAnchors
+            ];
+        }
+
+        function getPersistentRouteCacheKey(routeId) {
+            return [
+                "larga-route-geometry",
+                DOWNTOWN_GEOMETRY_VERSION,
+                routeId
+            ].join(":");
+        }
+
+        function readPersistentRoutePath(routeId) {
+            try {
+                const raw =
+                    window.localStorage.getItem(
+                        getPersistentRouteCacheKey(
+                            routeId
+                        )
+                    );
+
+                if (!raw) {
+                    return null;
+                }
+
+                const parsed =
+                    JSON.parse(raw);
+
+                if (
+                    !Array.isArray(parsed) ||
+                    parsed.length < 2
+                ) {
+                    return null;
+                }
+
+                const valid =
+                    parsed.every(
+                        function (point) {
+                            return (
+                                point &&
+                                Number.isFinite(
+                                    Number(point.lat)
+                                ) &&
+                                Number.isFinite(
+                                    Number(point.lng)
+                                )
+                            );
+                        }
+                    );
+
+                if (!valid) {
+                    return null;
+                }
+
+                return parsed.map(
+                    function (point) {
+                        return {
+                            lat:
+                                Number(point.lat),
+
+                            lng:
+                                Number(point.lng)
+                        };
+                    }
+                );
+            }
+            catch (error) {
+                console.warn(
+                    "Could not read cached route geometry:",
+                    error
+                );
+
+                return null;
+            }
+        }
+
+        function savePersistentRoutePath(
+            routeId,
+            path
+        ) {
+            try {
+                window.localStorage.setItem(
+                    getPersistentRouteCacheKey(
+                        routeId
+                    ),
+
+                    JSON.stringify(
+                        path
+                    )
+                );
+            }
+            catch (error) {
+                console.warn(
+                    "Could not cache route geometry:",
+                    error
+                );
+            }
+        }
+
+        function appendRouteSegment(
+            target,
+            segment
+        ) {
+            if (
+                !segment ||
+                !segment.length
+            ) {
+                return;
+            }
+
+            if (!target.length) {
+                segment.forEach(
+                    function (point) {
+                        target.push(point);
+                    }
+                );
+
+                return;
+            }
+
+            const previous =
+                target[
+                    target.length - 1
+                ];
+
+            segment.forEach(
+                function (point, index) {
+
+                    if (
+                        index === 0 &&
+                        Math.abs(
+                            previous.lat -
+                            point.lat
+                        ) < 0.00001 &&
+                        Math.abs(
+                            previous.lng -
+                            point.lng
+                        ) < 0.00001
+                    ) {
+                        return;
+                    }
+
+                    target.push(point);
+                }
+            );
+        }
+
+        async function computeRouteSegmentWithDemoKey(
+            anchors
+        ) {
+            if (
+                !hasGoogleMapsDemoKey() ||
+                anchors.length < 2
+            ) {
+                throw new Error(
+                    "A Maps Demo Key and at least two street anchors are required."
+                );
+            }
+
+            if (anchors.length > 27) {
+                throw new Error(
+                    "A route segment exceeded Google's waypoint limit."
+                );
+            }
+
+            const intermediateWaypoints =
+                anchors
+                    .slice(1, -1)
+                    .map(function (address) {
+                        return {
+                            address:
+                                address,
+
+                            // These are pass-through constraints. Google can
+                            // shape the road-following polyline, but it may not
+                            // reorder or skip the published street sequence.
+                            via:
+                                true
+                        };
+                    });
+
+            const requestBody = {
+                origin: {
+                    address:
+                        anchors[0]
+                },
+
+                destination: {
+                    address:
+                        anchors[
+                            anchors.length - 1
+                        ]
+                },
+
+                intermediates:
+                    intermediateWaypoints,
+
+                travelMode:
+                    "DRIVE",
+
+                routingPreference:
+                    "TRAFFIC_UNAWARE",
+
+                polylineQuality:
+                    "HIGH_QUALITY",
+
+                polylineEncoding:
+                    "GEO_JSON_LINESTRING",
+
+                regionCode:
+                    "ph",
+
+                languageCode:
+                    "en-US"
+            };
+
+            const response =
+                await fetch(
+                    "https://routes.googleapis.com/directions/v2:computeRoutes",
+                    {
+                        method:
+                            "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "X-Goog-Api-Key":
+                                LARGA_GOOGLE_MAPS_CONFIG.demoKey,
+
+                            "X-Goog-FieldMask":
+                                "routes.polyline.geoJsonLinestring"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                requestBody
+                            )
+                    }
+                );
+
+            if (!response.ok) {
+                let errorMessage =
+                    "Compute Routes request failed with HTTP " +
+                    response.status +
+                    ".";
+
+                try {
+                    const errorData =
+                        await response.json();
+
+                    if (
+                        errorData &&
+                        errorData.error &&
+                        errorData.error.message
+                    ) {
+                        errorMessage +=
+                            " " +
+                            errorData.error.message;
+                    }
+                }
+                catch (error) {
+                    // Keep the HTTP status message.
+                }
+
+                throw new Error(
+                    errorMessage
+                );
+            }
+
+            const result =
+                await response.json();
+
+            const lineString =
+                result &&
+                result.routes &&
+                result.routes[0] &&
+                result.routes[0].polyline &&
+                result.routes[0].polyline
+                    .geoJsonLinestring;
+
+            if (
+                !lineString ||
+                !Array.isArray(
+                    lineString.coordinates
+                ) ||
+                lineString.coordinates.length < 2
+            ) {
+                throw new Error(
+                    "Google returned no usable route polyline."
+                );
+            }
+
+            return lineString.coordinates
+                .map(function (coordinate) {
+                    return {
+                        lat:
+                            Number(
+                                coordinate[1]
+                            ),
+
+                        lng:
+                            Number(
+                                coordinate[0]
+                            )
+                    };
+                })
+                .filter(function (point) {
+                    return (
+                        Number.isFinite(
+                            point.lat
+                        ) &&
+                        Number.isFinite(
+                            point.lng
+                        )
+                    );
+                });
+        }
+
+        async function computeGoogleRoutePath(route) {
+            if (
+                googleRoutePathCache.has(route.id)
+            ) {
+                return googleRoutePathCache.get(
+                    route.id
+                );
+            }
+
+            const persistentPath =
+                readPersistentRoutePath(
+                    route.id
+                );
+
+            if (persistentPath) {
+                googleRoutePathCache.set(
+                    route.id,
+                    persistentPath
+                );
+
+                return persistentPath;
+            }
+
+            if (
+                googleRoutePathPromiseCache.has(
+                    route.id
+                )
+            ) {
+                return googleRoutePathPromiseCache.get(
+                    route.id
+                );
+            }
+
+            const routePromise =
+                (async function () {
+
+                    const segments =
+                        getGoogleRouteSegmentsForRoute(
+                            route
+                        );
+
+                    if (!segments.length) {
+                        throw new Error(
+                            "No street sequence is available for " +
+                            route.name +
+                            "."
+                        );
+                    }
+
+                    const segmentPaths =
+                        await Promise.all(
+                            segments.map(
+                                function (anchors) {
+                                    return computeRouteSegmentWithDemoKey(
+                                        anchors
+                                    );
+                                }
+                            )
+                        );
+
+                    const path = [];
+
+                    segmentPaths.forEach(
+                        function (segmentPath) {
+                            appendRouteSegment(
+                                path,
+                                segmentPath
+                            );
+                        }
+                    );
+
+                    if (path.length < 2) {
+                        throw new Error(
+                            "No road-following path returned for " +
+                            route.name +
+                            "."
+                        );
+                    }
+
+                    googleRoutePathCache.set(
+                        route.id,
+                        path
+                    );
+
+                    savePersistentRoutePath(
+                        route.id,
+                        path
+                    );
+
+                    return path;
+
+                })();
+
+            googleRoutePathPromiseCache.set(
+                route.id,
+                routePromise
+            );
+
+            try {
+                return await routePromise;
+            }
+            finally {
+                googleRoutePathPromiseCache.delete(
+                    route.id
+                );
+            }
+        }
+
+        function createGoogleJeepMarker(
+            route,
+            position,
+            index,
+            dimmed
+        ) {
+            if (
+                !GoogleAdvancedMarkerElement ||
+                !googleGuideMap ||
+                !position
+            ) {
+                return null;
+            }
+
+            const markerShell =
+                document.createElement("div");
+
+            markerShell.className =
+                "google-jeep-marker";
+
+            if (dimmed) {
+                markerShell.classList.add(
+                    "is-dimmed"
+                );
+            }
+
+            markerShell.style.setProperty(
+                "--route-color",
+                getRouteAccent(route)
+            );
+
+            markerShell.innerHTML =
+                "<span>🚐</span>";
+
+            const marker =
+                new GoogleAdvancedMarkerElement({
+                    map:
+                        googleGuideMap,
+
+                    position:
+                        position,
+
+                    title:
+                        route.name +
+                        " jeepney " +
+                        (index + 1),
+
+                    zIndex:
+                        30 + index
+                });
+
+            marker.append(
+                markerShell
+            );
+
+            return marker;
+        }
+
+        function updateGoogleUserMarker(
+            latitude,
+            longitude,
+            shouldPan
+        ) {
+            if (
+                !googleGuideMap ||
+                !GoogleAdvancedMarkerElement
+            ) {
+                return;
+            }
+
+            const position = {
+                lat: latitude,
+                lng: longitude
+            };
+
+            if (!googleUserMarker) {
+                const userDot =
+                    document.createElement("div");
+
+                userDot.className =
+                    "google-user-location";
+
+                userDot.innerHTML =
+                    "<span></span>";
+
+                googleUserMarker =
+                    new GoogleAdvancedMarkerElement({
+                        map:
+                            googleGuideMap,
+                        position:
+                            position,
+                        title:
+                            "Your location",
+                        zIndex:
+                            100
+                    });
+
+                googleUserMarker.append(
+                    userDot
+                );
+            }
+            else {
+                googleUserMarker.position =
+                    position;
+
+                googleUserMarker.map =
+                    googleGuideMap;
+            }
+
+            if (shouldPan) {
+                googleGuideMap.panTo(
+                    position
+                );
+
+                if (
+                    googleGuideMap.getZoom() < 15
+                ) {
+                    googleGuideMap.setZoom(
+                        15
+                    );
+                }
+            }
+        }
+
+        async function renderGoogleGuideMapRoutes(
+            selectedRoutes
+        ) {
+            if (!googleGuideMap) {
+                return;
+            }
+
+            const renderGeneration =
+                ++googleMapRenderGeneration;
+
+            clearGoogleMapRouteOverlays();
+
+            if (!selectedRoutes.length) {
+                googleGuideMap.setCenter(
+                    DAVAO_MAP_CENTER
+                );
+
+                googleGuideMap.setZoom(
+                    13
+                );
+
+                return;
+            }
+
+            const results =
+                await Promise.all(
+                    selectedRoutes.map(
+                        async function (
+                            route,
+                            routeIndex
+                        ) {
+                            try {
+                                return {
+                                    route:
+                                        route,
+
+                                    routeIndex:
+                                        routeIndex,
+
+                                    path:
+                                        await computeGoogleRoutePath(
+                                            route
+                                        )
+                                };
+                            }
+                            catch (error) {
+                                console.warn(
+                                    "Could not compute " +
+                                    route.name +
+                                    ":",
+                                    error
+                                );
+
+                                return {
+                                    route:
+                                        route,
+
+                                    routeIndex:
+                                        routeIndex,
+
+                                    path:
+                                        null,
+
+                                    error:
+                                        error
+                                };
+                            }
+                        }
+                    )
+                );
+
+            if (
+                renderGeneration !==
+                googleMapRenderGeneration
+            ) {
+                return;
+            }
+
+            const bounds =
+                new GoogleLatLngBounds();
+
+            let successfulRoutes =
+                0;
+
+            let failedRoutes =
+                0;
+
+            results.forEach(
+                function (result) {
+
+                    const route =
+                        result.route;
+
+                    const path =
+                        result.path;
+
+                    if (
+                        !path ||
+                        path.length < 2
+                    ) {
+                        failedRoutes += 1;
+                        return;
+                    }
+
+                    successfulRoutes += 1;
+
+                    const accent =
+                        getRouteAccent(route);
+
+                    const dimmed =
+                        currentTripPlan &&
+                        focusedJourneyRouteId &&
+                        focusedJourneyRouteId !==
+                            route.id;
+
+                    const focused =
+                        currentTripPlan &&
+                        focusedJourneyRouteId ===
+                            route.id;
+
+                    const routeHalo =
+                        new GooglePolyline({
+                            map:
+                                googleGuideMap,
+
+                            path:
+                                path,
+
+                            strokeColor:
+                                "#ffffff",
+
+                            strokeOpacity:
+                                dimmed
+                                    ? 0.24
+                                    : 0.82,
+
+                            strokeWeight:
+                                focused
+                                    ? 10
+                                    : 8,
+
+                            clickable:
+                                false,
+
+                            zIndex:
+                                10 +
+                                result.routeIndex * 2
+                        });
+
+                    const routeLine =
+                        new GooglePolyline({
+                            map:
+                                googleGuideMap,
+
+                            path:
+                                path,
+
+                            strokeColor:
+                                accent,
+
+                            strokeOpacity:
+                                dimmed
+                                    ? 0.30
+                                    : 0.92,
+
+                            strokeWeight:
+                                focused
+                                    ? 7
+                                    : 5,
+
+                            clickable:
+                                false,
+
+                            zIndex:
+                                11 +
+                                result.routeIndex * 2
+                        });
+
+                    googleRoutePolylines.push(
+                        routeHalo,
+                        routeLine
+                    );
+
+                    path.forEach(
+                        function (point) {
+                            bounds.extend(
+                                point
+                            );
+                        }
+                    );
+
+                    // GUIDE PAGE:
+                    // Do not render live jeepney markers here.
+                    // Vehicle positions belong exclusively to the Live page.
+                }
+            );
+
+            if (
+                successfulRoutes > 0 &&
+                !bounds.isEmpty()
+            ) {
+                googleGuideMap.fitBounds(
+                    bounds,
+                    58
+                );
+
+                google.maps.event.addListenerOnce(
+                    googleGuideMap,
+                    "idle",
+                    function () {
+                        const zoom =
+                            googleGuideMap.getZoom();
+
+                        if (zoom > 16) {
+                            googleGuideMap.setZoom(
+                                16
+                            );
+                        }
+                    }
+                );
+            }
+
+            if (failedRoutes > 0) {
+                guideMessage.textContent =
+                    failedRoutes === selectedRoutes.length
+                        ? "Google Maps loaded, but the Demo Key route request could not be completed. Check the browser console for the exact Google response."
+                        : failedRoutes + " selected route" +
+                          (failedRoutes > 1 ? "s" : "") +
+                          " could not be computed with the Demo Key.";
+            }
+        }
+
+
         function renderGuideMapRoutes() {
             guideRouteLayers.innerHTML = "";
             guideMapStops.innerHTML = "";
@@ -3848,8 +5880,17 @@ window.addEventListener(
                 .map(getRouteById)
                 .filter(Boolean);
 
+            if (googleGuideMap) {
+                renderGoogleGuideMapRoutes(
+                    selectedRoutes
+                );
+            }
+
             if (selectedRoutes.length === 0) {
-                guideMapEyebrow.textContent = "MAP PREVIEW";
+                guideMapEyebrow.textContent =
+                    googleGuideMap
+                        ? "GOOGLE MAPS"
+                        : "MAP PREVIEW";
                 guideMapRouteName.textContent = "Select a route";
                 guideMapRouteDot.style.background = "#a9b0b7";
                 guideMapSelectionHint.classList.remove("has-route");
@@ -3865,7 +5906,10 @@ window.addEventListener(
                 guideMapRouteDot.style.background = "var(--larga-orange)";
             }
             else if (selectedRoutes.length === 1) {
-                guideMapEyebrow.textContent = "MAP PREVIEW";
+                guideMapEyebrow.textContent =
+                    googleGuideMap
+                        ? "GOOGLE MAPS"
+                        : "MAP PREVIEW";
                 guideMapRouteName.textContent = selectedRoutes[0].name;
                 guideMapRouteDot.style.background = getRouteAccent(selectedRoutes[0]);
             }
@@ -3873,6 +5917,11 @@ window.addEventListener(
                 guideMapEyebrow.textContent = "COMPARING ROUTES";
                 guideMapRouteName.textContent = `${selectedRoutes.length} routes selected`;
                 guideMapRouteDot.style.background = "var(--larga-orange)";
+            }
+
+            if (googleGuideMap) {
+                updateGuideHeaderAction();
+                return;
             }
 
             selectedRoutes.forEach(function (route, routeIndex) {
@@ -3894,21 +5943,7 @@ window.addEventListener(
 
                 guideRouteLayers.appendChild(path);
 
-                const positions = getRouteJeeps(route);
-                const jeepCount = selectedRoutes.length === 1 ? Math.min(2, positions.length) : 1;
-
-                positions.slice(0, jeepCount).forEach(function (position, jeepIndex) {
-                    const jeep = document.createElement("span");
-                    jeep.className = "guide-live-jeep";
-                    if (dimmed) jeep.classList.add("dimmed-map-object");
-                    jeep.textContent = "🚐";
-                    jeep.style.left = position[0] + "%";
-                    jeep.style.top = position[1] + "%";
-                    jeep.style.setProperty("--route-color", accent);
-                    jeep.style.animationDelay = `${jeepIndex * 0.1}s`;
-                    guideMapJeeps.appendChild(jeep);
-                });
-
+                // Guide fallback map intentionally omits live jeepney markers.
                 if (selectedRoutes.length <= 3) {
                     const stopPositions = [
                         [24 + routeIndex * 4, 72 - routeIndex * 5],
@@ -4037,10 +6072,27 @@ window.addEventListener(
 
             routeDetailAnimating = true;
 
+            let detailFadeAnimation = null;
+            let backdropFadeAnimation = null;
+            let closingAnimation = null;
+
             function finishRestore() {
-                // At this point the floating card already has the exact size
-                // and screen position of its placeholder. Moving the same DOM
-                // node back into the carousel therefore creates no visual jump.
+                /*
+                 * Important ordering:
+                 * 1. Keep the completed fade effects in place.
+                 * 2. Move the card back while hidden from paint.
+                 * 3. Normalize its classes/inline geometry with transitions disabled.
+                 * 4. Remove the overlay state.
+                 * 5. Only then cancel the WAAPI fade effects.
+                 *
+                 * Cancelling the backdrop animation before removing
+                 * `card-morph-open` briefly restored opacity:1 and caused the
+                 * one-frame flash/jitter visible after closing.
+                 */
+
+                card.style.visibility = "hidden";
+                card.style.transition = "none";
+
                 routeDetailOverlay.appendChild(routeDetailGlass);
                 placeholder.replaceWith(card);
 
@@ -4055,21 +6107,66 @@ window.addEventListener(
 
                 clearExpandedCardGeometry(card);
 
-                routeDetailGlass.getAnimations().forEach(function (activeAnimation) {
-                    activeAnimation.cancel();
-                });
+                // Force the normal mini-card geometry to resolve while hidden.
+                card.getBoundingClientRect();
 
-                routeDetailBackdrop.getAnimations().forEach(function (activeAnimation) {
-                    activeAnimation.cancel();
-                });
-
-                routeDetailGlass.style.removeProperty("opacity");
-
+                // Remove the overlay state while the backdrop is still held at
+                // opacity 0 by the completed animation.
                 routeDetailOverlay.classList.remove("is-open", "card-morph-open");
                 routeDetailOverlay.setAttribute("aria-hidden", "true");
 
-                expandedRouteCardState = null;
-                routeDetailAnimating = false;
+                routeDetailGlass.style.removeProperty("opacity");
+
+                // Now it is safe to release the finished animation effects.
+                if (detailFadeAnimation) {
+                    detailFadeAnimation.cancel();
+                }
+                if (backdropFadeAnimation) {
+                    backdropFadeAnimation.cancel();
+                }
+
+                // Reveal the normalized card itself immediately, then
+                // cross-fade the mini-card typography. This prevents the
+                // expanded title from ever reflowing into the mini-card layout.
+                card.classList.add(
+                    "route-card-returned"
+                );
+
+                card.style.visibility =
+                    "visible";
+
+                expandedRouteCardState =
+                    null;
+
+                routeDetailAnimating =
+                    false;
+
+                requestAnimationFrame(
+                    function () {
+
+                        card.classList.add(
+                            "route-card-returned-visible"
+                        );
+
+                        card.style.removeProperty(
+                            "transition"
+                        );
+
+                        card.style.removeProperty(
+                            "visibility"
+                        );
+
+                        setTimeout(
+                            function () {
+                                card.classList.remove(
+                                    "route-card-returned",
+                                    "route-card-returned-visible"
+                                );
+                            },
+                            190
+                        );
+                    }
+                );
             }
 
             if (immediate) {
@@ -4081,10 +6178,6 @@ window.addEventListener(
             const currentRect = card.getBoundingClientRect();
             const placeholderRect = placeholder.getBoundingClientRect();
 
-            // Convert both rectangles to the overlay's coordinate system.
-            // Using real left/top/width/height values avoids the scale/transform
-            // mismatch that previously made the card dip downward before it
-            // snapped back into the carousel.
             const current = {
                 left: currentRect.left - overlayRect.left,
                 top: currentRect.top - overlayRect.top,
@@ -4101,45 +6194,56 @@ window.addEventListener(
 
             card.classList.add("route-card-morphing-out");
 
-            // Fade the detailed contents while the card is already moving.
-            // No delayed mini-card state is used; that was the source of the
-            // small floating card seen near the bottom of the blurred screen.
-            routeDetailGlass.animate(
+            // Detail content fades while the card is already returning.
+            detailFadeAnimation = routeDetailGlass.animate(
                 [
-                    { opacity: 1 },
-                    { opacity: 0 }
+                    {
+                        opacity: 1,
+                        offset: 0
+                    },
+                    {
+                        opacity: 0.82,
+                        offset: 0.18
+                    },
+                    {
+                        opacity: 0,
+                        offset: 0.56
+                    },
+                    {
+                        opacity: 0,
+                        offset: 1
+                    }
                 ],
                 {
-                    duration: 180,
-                    easing: "cubic-bezier(0.4, 0, 1, 1)",
+                    duration: 360,
+                    easing: "cubic-bezier(0.4, 0, 0.2, 1)",
                     fill: "forwards"
                 }
             );
 
-            // Fade the blurred background at the same time as the card returns.
-            routeDetailBackdrop.animate(
+            // The blur dissolves continuously throughout almost the entire
+            // return motion. It never flashes back to full opacity.
+            backdropFadeAnimation = routeDetailBackdrop.animate(
                 [
                     { opacity: 1 },
                     { opacity: 0 }
                 ],
                 {
-                    duration: 340,
+                    duration: 350,
                     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                     fill: "forwards"
                 }
             );
 
-            // Set the underlying geometry to the final destination BEFORE the
-            // animation. The keyframes visually interpolate from the expanded
-            // box to these values, and when the effect ends there is nothing
-            // left to snap or reflow.
+            // Put the underlying box at the final geometry first. WAAPI then
+            // draws the visual interpolation from the expanded rectangle to it.
             card.style.left = target.left + "px";
             card.style.top = target.top + "px";
             card.style.width = target.width + "px";
             card.style.minWidth = target.width + "px";
             card.style.height = target.height + "px";
 
-            const closingAnimation = card.animate(
+            closingAnimation = card.animate(
                 [
                     {
                         left: current.left + "px",
@@ -4394,14 +6498,256 @@ window.addEventListener(
             routeSearchInput.focus();
         });
 
+        // ==================================================
+        // TRIP PLANNER PLACE DATABASE
+        // ==================================================
+        //
+        // Numbered Route 1-13 loops are ranked first for downtown
+        // trips. Conventional routes are still included whenever
+        // their known landmark/corridor coverage also serves the
+        // selected places.
+        //
+        // Aliases collapse common Davao names such as:
+        // "GMall Bajada" / "Gaisano Mall of Davao",
+        // "San Pedro Church" / "San Pedro Cathedral", etc.
+
+        const guidePlaceAliasGroups = [
+            [
+                "San Pedro Church",
+                "San Pedro Cathedral",
+                "San Pedro"
+            ],
+            [
+                "GMall Bajada",
+                "Gaisano Mall of Davao",
+                "GMall"
+            ],
+            [
+                "Abreeza Mall",
+                "Ayala Malls Abreeza",
+                "Abreeza"
+            ],
+            [
+                "NCCC Uyanguren",
+                "Chinatown / Uyanguren",
+                "Uyanguren",
+                "Chinatown"
+            ],
+            [
+                "Magsaysay Park",
+                "Ramon Magsaysay Park"
+            ],
+            [
+                "Davao Doctors Hospital",
+                "Davao Doctors",
+                "DDH"
+            ],
+            [
+                "Bankerohan Public Market",
+                "Bankerohan"
+            ],
+            [
+                "Davao City Overland Transport Terminal",
+                "DCOTT",
+                "Ecoland Terminal"
+            ],
+            [
+                "SM City Davao",
+                "SM Ecoland"
+            ],
+            [
+                "SM Lanang",
+                "SM Lanang Premier"
+            ],
+            [
+                "SPMC",
+                "Southern Philippines Medical Center"
+            ],
+            [
+                "Davao City National High School",
+                "City High"
+            ],
+            [
+                "Sta. Ana",
+                "Sta. Ana area",
+                "Sta. Ana Public Market"
+            ],
+            [
+                "Agdao",
+                "Agdao Public Market"
+            ],
+            [
+                "Roxas Avenue",
+                "Roxas"
+            ],
+            [
+                "Claveria",
+                "C.M. Recto",
+                "CM Recto"
+            ]
+        ];
+
+        const guidePlaceAliasIndex = new Map();
+
+        guidePlaceAliasGroups.forEach(function (group) {
+            const canonical =
+                normalizeGuideText(group[0]);
+
+            group.forEach(function (alias) {
+                guidePlaceAliasIndex.set(
+                    normalizeGuideText(alias),
+                    canonical
+                );
+            });
+        });
+
+        function canonicalGuidePlace(value) {
+            const normalized =
+                normalizeGuideText(value);
+
+            return (
+                guidePlaceAliasIndex.get(
+                    normalized
+                ) ||
+                normalized
+            );
+        }
+
+        function routeServesGuidePlace(route, place) {
+            const target =
+                canonicalGuidePlace(place);
+
+            const routeValues = []
+                .concat(route.landmarks || [])
+                .concat(route.roads || [])
+                .concat([
+                    route.name || "",
+                    route.short || ""
+                ]);
+
+            return routeValues.some(
+                function (value) {
+
+                    const candidate =
+                        canonicalGuidePlace(value);
+
+                    if (candidate === target) {
+                        return true;
+                    }
+
+                    // Only use substring matching for sufficiently specific
+                    // place names. This avoids generic words such as "road"
+                    // creating false route matches.
+                    if (
+                        target.length >= 7 &&
+                        candidate.length >= 7
+                    ) {
+                        return (
+                            candidate.includes(target) ||
+                            target.includes(candidate)
+                        );
+                    }
+
+                    return false;
+                }
+            );
+        }
+
+        function getRoutesServingPlace(place) {
+            return guideRouteCatalog
+                .filter(function (route) {
+                    return routeServesGuidePlace(
+                        route,
+                        place
+                    );
+                })
+                .sort(function (a, b) {
+                    return (
+                        routeScore(b) -
+                        routeScore(a)
+                    );
+                });
+        }
+
+        function getGuidePlacePriority(place) {
+            const servingRoutes =
+                getRoutesServingPlace(place);
+
+            const downtownCount =
+                servingRoutes.filter(
+                    function (route) {
+                        return route.downtown;
+                    }
+                ).length;
+
+            const commonCount =
+                servingRoutes.filter(
+                    function (route) {
+                        return route.frequency === "Common";
+                    }
+                ).length;
+
+            return (
+                downtownCount * 100 +
+                commonCount * 12 +
+                servingRoutes.length
+            );
+        }
+
         function getGuidePlaces() {
             const values = [];
-            guideRouteCatalog.forEach(function (route) {
-                route.landmarks.forEach(function (landmark) {
-                    values.push(landmark);
+
+            // Deliberately add numbered downtown-route landmarks first.
+            guideRouteCatalog
+                .filter(function (route) {
+                    return route.downtown;
+                })
+                .forEach(function (route) {
+                    (route.landmarks || [])
+                        .forEach(function (landmark) {
+                            values.push(landmark);
+                        });
                 });
+
+            // Then add the rest of the city catalog.
+            guideRouteCatalog
+                .filter(function (route) {
+                    return !route.downtown;
+                })
+                .forEach(function (route) {
+                    (route.landmarks || [])
+                        .forEach(function (landmark) {
+                            values.push(landmark);
+                        });
+                });
+
+            const uniqueByCanonical =
+                new Map();
+
+            values.forEach(function (place) {
+                const key =
+                    canonicalGuidePlace(place);
+
+                if (!uniqueByCanonical.has(key)) {
+                    uniqueByCanonical.set(
+                        key,
+                        place
+                    );
+                }
             });
-            return Array.from(new Set(values)).sort(function (a, b) {
+
+            return Array.from(
+                uniqueByCanonical.values()
+            ).sort(function (a, b) {
+
+                const priorityDifference =
+                    getGuidePlacePriority(b) -
+                    getGuidePlacePriority(a);
+
+                if (priorityDifference !== 0) {
+                    return priorityDifference;
+                }
+
                 return a.localeCompare(b);
             });
         }
@@ -4429,16 +6775,76 @@ window.addEventListener(
             input.focus();
         }
 
+        function getGuidePlaceSuggestionMeta(place) {
+            const routes =
+                getRoutesServingPlace(place);
+
+            const downtownRoutes =
+                routes.filter(function (route) {
+                    return route.downtown;
+                });
+
+            if (downtownRoutes.length) {
+                const routeNames =
+                    downtownRoutes
+                        .slice(0, 3)
+                        .map(function (route) {
+                            return route.name;
+                        })
+                        .join(" • ");
+
+                return {
+                    className:
+                        "downtown-place-result",
+
+                    label:
+                        routeNames +
+                        (downtownRoutes.length > 3
+                            ? " +" + (downtownRoutes.length - 3)
+                            : "")
+                };
+            }
+
+            if (routes.length) {
+                return {
+                    className:
+                        "",
+
+                    label:
+                        routes.length +
+                        " route" +
+                        (routes.length === 1 ? "" : "s") +
+                        " serve this area"
+                };
+            }
+
+            return {
+                className:
+                    "",
+
+                label:
+                    "Supported route landmark"
+            };
+        }
+
         function renderGuidePlaceResults(input) {
             activeGuidePlaceInput = input;
 
-            const query = normalizeGuideText(input.value);
+            const query =
+                normalizeGuideText(input.value);
+
             guidePlaceResults.innerHTML = "";
 
             if (input === tripFromInput) {
-                const currentLocationButton = document.createElement("button");
-                currentLocationButton.type = "button";
-                currentLocationButton.className = "guide-place-result guide-current-location-result";
+                const currentLocationButton =
+                    document.createElement("button");
+
+                currentLocationButton.type =
+                    "button";
+
+                currentLocationButton.className =
+                    "guide-place-result guide-current-location-result";
+
                 currentLocationButton.innerHTML = `
                     <span class="guide-place-icon">⌖</span>
                     <span class="guide-place-copy">
@@ -4447,39 +6853,103 @@ window.addEventListener(
                     </span>
                     <span class="guide-place-chevron">›</span>
                 `;
-                currentLocationButton.addEventListener("click", function () {
-                    requestPlannerCurrentLocation();
-                });
-                guidePlaceResults.appendChild(currentLocationButton);
+
+                currentLocationButton
+                    .addEventListener(
+                        "click",
+                        function () {
+                            requestPlannerCurrentLocation();
+                        }
+                    );
+
+                guidePlaceResults.appendChild(
+                    currentLocationButton
+                );
             }
 
-            const matches = guidePlaces
-                .filter(function (place) {
-                    if (!query) return true;
-                    return normalizeGuideText(place).includes(query);
-                })
-                .slice(0, 9);
+            const matches =
+                guidePlaces
+                    .filter(function (place) {
+                        if (!query) {
+                            return true;
+                        }
+
+                        const normalizedPlace =
+                            normalizeGuideText(place);
+
+                        const canonicalPlace =
+                            canonicalGuidePlace(place);
+
+                        return (
+                            normalizedPlace.includes(query) ||
+                            canonicalPlace.includes(query) ||
+                            query.includes(canonicalPlace)
+                        );
+                    })
+                    .sort(function (a, b) {
+
+                        // Search matches remain downtown-first.
+                        const scoreDifference =
+                            getGuidePlacePriority(b) -
+                            getGuidePlacePriority(a);
+
+                        if (scoreDifference !== 0) {
+                            return scoreDifference;
+                        }
+
+                        return a.localeCompare(b);
+                    })
+                    .slice(0, 10);
 
             matches.forEach(function (place) {
-                const result = document.createElement("button");
-                result.type = "button";
-                result.className = "guide-place-result";
-                result.setAttribute("role", "option");
+                const result =
+                    document.createElement("button");
+
+                const meta =
+                    getGuidePlaceSuggestionMeta(
+                        place
+                    );
+
+                result.type =
+                    "button";
+
+                result.className =
+                    "guide-place-result " +
+                    meta.className;
+
+                result.setAttribute(
+                    "role",
+                    "option"
+                );
+
                 result.innerHTML = `
                     <span class="guide-place-icon">⌖</span>
                     <span class="guide-place-copy">
                         <strong>${place}</strong>
-                        <small>Supported route landmark</small>
+                        <small>${meta.label}</small>
                     </span>
                     <span class="guide-place-chevron">›</span>
                 `;
-                result.addEventListener("click", function () {
-                    setGuidePlaceValue(input, place);
-                });
-                guidePlaceResults.appendChild(result);
+
+                result.addEventListener(
+                    "click",
+                    function () {
+                        setGuidePlaceValue(
+                            input,
+                            place
+                        );
+                    }
+                );
+
+                guidePlaceResults.appendChild(
+                    result
+                );
             });
 
-            if (!matches.length && input !== tripFromInput) {
+            if (
+                !matches.length &&
+                input !== tripFromInput
+            ) {
                 guidePlaceResults.innerHTML = `
                     <div class="guide-place-empty">
                         No supported landmark matches that search.
@@ -4492,178 +6962,553 @@ window.addEventListener(
 
         function requestPlannerCurrentLocation() {
             closeGuidePlaceResults();
-            guideMessage.textContent = "Requesting your current location...";
-            guideLocationText.textContent = "Locating...";
+
+            guideMessage.textContent =
+                "Requesting your current location...";
+
+            guideLocationText.textContent =
+                "Locating...";
 
             if (!navigator.geolocation) {
-                guideMessage.textContent = "Your browser does not support location.";
-                guideLocationText.textContent = "My location";
+                guideMessage.textContent =
+                    "Your browser does not support location.";
+
+                guideLocationText.textContent =
+                    "My location";
+
                 return;
             }
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-                    plannerCurrentLocationSelected = true;
+
+                    plannerCurrentLocationSelected =
+                        true;
+
                     plannerCurrentLocationCoordinates = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+                        latitude:
+                            position.coords.latitude,
+
+                        longitude:
+                            position.coords.longitude
                     };
-                    tripFromInput.value = CURRENT_LOCATION_VALUE;
-                    show(guideUserMarker);
-                    guideLocationText.textContent = "Location active";
-                    guideMessage.textContent = "Current location selected. For this prototype, choose a nearby supported landmark if you want route matching before Google Maps is connected.";
-                    console.log("Planner location:", position.coords.latitude, position.coords.longitude);
+
+                    tripFromInput.value =
+                        CURRENT_LOCATION_VALUE;
+
+                    if (googleGuideMap) {
+                        hide(guideUserMarker);
+
+                        updateGoogleUserMarker(
+                            position.coords.latitude,
+                            position.coords.longitude,
+                            false
+                        );
+                    }
+                    else {
+                        show(guideUserMarker);
+                    }
+
+                    guideLocationText.textContent =
+                        "Location active";
+
+                    guideMessage.textContent =
+                        "Current location selected. Choose the nearest supported landmark for route matching while the planner database is being expanded.";
+
+                    console.log(
+                        "Planner location:",
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
                 },
                 function () {
-                    plannerCurrentLocationSelected = false;
-                    plannerCurrentLocationCoordinates = null;
-                    tripFromInput.value = "";
-                    guideLocationText.textContent = "My location";
-                    guideMessage.textContent = "Location permission was not granted.";
+                    plannerCurrentLocationSelected =
+                        false;
+
+                    plannerCurrentLocationCoordinates =
+                        null;
+
+                    tripFromInput.value =
+                        "";
+
+                    guideLocationText.textContent =
+                        "My location";
+
+                    guideMessage.textContent =
+                        "Location permission was not granted.";
                 }
             );
         }
 
-        [tripFromInput, tripToInput].forEach(function (input) {
-            input.addEventListener("focus", function () {
-                renderGuidePlaceResults(input);
+        [tripFromInput, tripToInput]
+            .forEach(function (input) {
+
+                input.addEventListener(
+                    "focus",
+                    function () {
+                        renderGuidePlaceResults(
+                            input
+                        );
+                    }
+                );
+
+                input.addEventListener(
+                    "input",
+                    function () {
+
+                        if (
+                            input === tripFromInput &&
+                            input.value !==
+                                CURRENT_LOCATION_VALUE
+                        ) {
+                            plannerCurrentLocationSelected =
+                                false;
+                        }
+
+                        renderGuidePlaceResults(
+                            input
+                        );
+                    }
+                );
             });
 
-            input.addEventListener("input", function () {
-                if (input === tripFromInput && input.value !== CURRENT_LOCATION_VALUE) {
-                    plannerCurrentLocationSelected = false;
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".guide-trip-planner"
+                    ) &&
+                    !guidePlaceResults
+                        .classList
+                        .contains("hidden")
+                ) {
+                    closeGuidePlaceResults();
                 }
-                renderGuidePlaceResults(input);
-            });
-        });
-
-        document.addEventListener("click", function (event) {
-            if (
-                !event.target.closest(".guide-trip-planner") &&
-                !guidePlaceResults.classList.contains("hidden")
-            ) {
-                closeGuidePlaceResults();
             }
-        });
+        );
 
         function resolveGuidePlace(input) {
-            const normalizedInput = normalizeGuideText(input);
-            if (!normalizedInput) return null;
+            const normalizedInput =
+                normalizeGuideText(input);
 
-            const exact = guidePlaces.find(function (place) {
-                return normalizeGuideText(place) === normalizedInput;
-            });
-            if (exact) return exact;
+            if (!normalizedInput) {
+                return null;
+            }
 
-            return guidePlaces.find(function (place) {
-                const candidate = normalizeGuideText(place);
-                return candidate.includes(normalizedInput) || normalizedInput.includes(candidate);
-            }) || null;
+            const canonicalInput =
+                canonicalGuidePlace(input);
+
+            const exact =
+                guidePlaces.find(
+                    function (place) {
+                        return (
+                            canonicalGuidePlace(place) ===
+                            canonicalInput
+                        );
+                    }
+                );
+
+            if (exact) {
+                return exact;
+            }
+
+            return (
+                guidePlaces.find(
+                    function (place) {
+
+                        const candidate =
+                            canonicalGuidePlace(place);
+
+                        return (
+                            candidate.includes(
+                                canonicalInput
+                            ) ||
+                            canonicalInput.includes(
+                                candidate
+                            )
+                        );
+                    }
+                ) ||
+                null
+            );
         }
 
         function routeHasLandmark(route, landmark) {
-            const target = normalizeGuideText(landmark);
-            return route.landmarks.some(function (item) {
-                return normalizeGuideText(item) === target;
-            });
+            return routeServesGuidePlace(
+                route,
+                landmark
+            );
         }
 
-        function sharedLandmarks(routeA, routeB, excluded) {
-            const exclusions = (excluded || []).map(normalizeGuideText);
-            return routeA.landmarks.filter(function (landmark) {
-                const normalized = normalizeGuideText(landmark);
-                return !exclusions.includes(normalized) && routeB.landmarks.some(function (other) {
-                    return normalizeGuideText(other) === normalized;
-                });
-            });
+        function sharedLandmarks(
+            routeA,
+            routeB,
+            excluded
+        ) {
+            const exclusions =
+                (excluded || [])
+                    .map(canonicalGuidePlace);
+
+            const candidatePlaces = []
+                .concat(routeA.landmarks || [])
+                .concat(routeA.roads || []);
+
+            const shared = [];
+
+            candidatePlaces.forEach(
+                function (place) {
+
+                    const normalized =
+                        canonicalGuidePlace(place);
+
+                    if (
+                        exclusions.includes(
+                            normalized
+                        )
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        routeServesGuidePlace(
+                            routeB,
+                            place
+                        ) &&
+                        !shared.some(
+                            function (item) {
+                                return (
+                                    canonicalGuidePlace(item) ===
+                                    normalized
+                                );
+                            }
+                        )
+                    ) {
+                        shared.push(place);
+                    }
+                }
+            );
+
+            return shared;
         }
 
         function routeScore(route) {
-            let score = route.downtown ? 5 : 0;
-            if (route.frequency === "Common") score += 3;
-            if (route.frequency === "Limited") score -= 4;
+            let score =
+                route.downtown
+                    ? 18
+                    : 0;
+
+            if (
+                route.frequency === "Common"
+            ) {
+                score += 6;
+            }
+
+            if (
+                route.frequency === "Limited"
+            ) {
+                score -= 5;
+            }
+
+            if (
+                route.frequency === "Rare"
+            ) {
+                score -= 8;
+            }
+
             return score;
         }
 
-        function findGuideTripPlan(startInput, endInput) {
-            const start = resolveGuidePlace(startInput);
-            const end = resolveGuidePlace(endInput);
+        function findGuideTripPlan(
+            startInput,
+            endInput
+        ) {
+            const start =
+                resolveGuidePlace(
+                    startInput
+                );
+
+            const end =
+                resolveGuidePlace(
+                    endInput
+                );
 
             if (!start || !end) {
                 return {
-                    error: "Choose places from the supported landmark suggestions so LARGA can match verified prototype routes."
+                    error:
+                        "Choose places from the suggestions so LARGA can compare the known jeepney routes serving each area."
                 };
             }
 
-            if (normalizeGuideText(start) === normalizeGuideText(end)) {
-                return { error: "Starting point and destination must be different places." };
-            }
-
-            const startingRoutes = guideRouteCatalog
-                .filter(function (route) { return routeHasLandmark(route, start); })
-                .sort(function (a, b) { return routeScore(b) - routeScore(a); });
-
-            const endingRoutes = guideRouteCatalog
-                .filter(function (route) { return routeHasLandmark(route, end); })
-                .sort(function (a, b) { return routeScore(b) - routeScore(a); });
-
-            for (const route of startingRoutes) {
-                if (routeHasLandmark(route, end)) {
-                    return {
-                        start,
-                        end,
-                        transfers: [],
-                        legs: [{ route, board: start, alight: end }]
-                    };
-                }
-            }
-
-            let bestTwo = null;
-            for (const first of startingRoutes) {
-                for (const second of endingRoutes) {
-                    if (first.id === second.id) continue;
-                    const transfer = sharedLandmarks(first, second, [start, end])[0];
-                    if (!transfer) continue;
-                    const score = routeScore(first) + routeScore(second);
-                    if (!bestTwo || score > bestTwo.score) {
-                        bestTwo = { first, second, transfer, score };
-                    }
-                }
-            }
-
-            if (bestTwo) {
+            if (
+                canonicalGuidePlace(start) ===
+                canonicalGuidePlace(end)
+            ) {
                 return {
-                    start,
-                    end,
-                    transfers: [bestTwo.transfer],
+                    error:
+                        "Starting point and destination must be different places."
+                };
+            }
+
+            const startingRoutes =
+                guideRouteCatalog
+                    .filter(function (route) {
+                        return routeServesGuidePlace(
+                            route,
+                            start
+                        );
+                    })
+                    .sort(function (a, b) {
+                        return (
+                            routeScore(b) -
+                            routeScore(a)
+                        );
+                    });
+
+            const endingRoutes =
+                guideRouteCatalog
+                    .filter(function (route) {
+                        return routeServesGuidePlace(
+                            route,
+                            end
+                        );
+                    })
+                    .sort(function (a, b) {
+                        return (
+                            routeScore(b) -
+                            routeScore(a)
+                        );
+                    });
+
+            const directRoutes =
+                startingRoutes
+                    .filter(function (route) {
+                        return routeServesGuidePlace(
+                            route,
+                            end
+                        );
+                    })
+                    .sort(function (a, b) {
+                        return (
+                            routeScore(b) -
+                            routeScore(a)
+                        );
+                    });
+
+            if (directRoutes.length) {
+                return {
+                    start:
+                        start,
+
+                    end:
+                        end,
+
+                    transfers:
+                        [],
+
                     legs: [
-                        { route: bestTwo.first, board: start, alight: bestTwo.transfer },
-                        { route: bestTwo.second, board: bestTwo.transfer, alight: end }
+                        {
+                            route:
+                                directRoutes[0],
+
+                            board:
+                                start,
+
+                            alight:
+                                end
+                        }
+                    ],
+
+                    // Show additional valid one-ride choices instead of
+                    // silently returning only the first matching route.
+                    alternativeDirectRoutes:
+                        directRoutes.slice(
+                            1,
+                            5
+                        )
+                };
+            }
+
+            const twoRideCandidates = [];
+
+            startingRoutes.forEach(
+                function (first) {
+
+                    endingRoutes.forEach(
+                        function (second) {
+
+                            if (
+                                first.id === second.id
+                            ) {
+                                return;
+                            }
+
+                            const transfers =
+                                sharedLandmarks(
+                                    first,
+                                    second,
+                                    [
+                                        start,
+                                        end
+                                    ]
+                                );
+
+                            transfers
+                                .slice(0, 2)
+                                .forEach(
+                                    function (
+                                        transfer
+                                    ) {
+                                        twoRideCandidates.push({
+                                            first:
+                                                first,
+
+                                            second:
+                                                second,
+
+                                            transfer:
+                                                transfer,
+
+                                            score:
+                                                routeScore(first) +
+                                                routeScore(second)
+                                        });
+                                    }
+                                );
+                        }
+                    );
+                }
+            );
+
+            twoRideCandidates.sort(
+                function (a, b) {
+                    return b.score - a.score;
+                }
+            );
+
+            if (twoRideCandidates.length) {
+                const bestTwo =
+                    twoRideCandidates[0];
+
+                return {
+                    start:
+                        start,
+
+                    end:
+                        end,
+
+                    transfers: [
+                        bestTwo.transfer
+                    ],
+
+                    legs: [
+                        {
+                            route:
+                                bestTwo.first,
+
+                            board:
+                                start,
+
+                            alight:
+                                bestTwo.transfer
+                        },
+                        {
+                            route:
+                                bestTwo.second,
+
+                            board:
+                                bestTwo.transfer,
+
+                            alight:
+                                end
+                        }
                     ]
                 };
             }
 
-            let bestThree = null;
-            for (const first of startingRoutes) {
-                for (const middle of guideRouteCatalog) {
-                    if (middle.id === first.id) continue;
-                    const transferOne = sharedLandmarks(first, middle, [start, end])[0];
-                    if (!transferOne) continue;
+            let bestThree =
+                null;
 
-                    for (const third of endingRoutes) {
-                        if (third.id === first.id || third.id === middle.id) continue;
-                        const transferTwo = sharedLandmarks(middle, third, [start, end, transferOne])[0];
-                        if (!transferTwo) continue;
+            for (
+                const first of startingRoutes
+            ) {
+                for (
+                    const middle of guideRouteCatalog
+                ) {
+                    if (
+                        middle.id === first.id
+                    ) {
+                        continue;
+                    }
 
-                        const score = routeScore(first) + routeScore(middle) + routeScore(third);
-                        if (!bestThree || score > bestThree.score) {
-                            bestThree = {
-                                first,
+                    const transferOne =
+                        sharedLandmarks(
+                            first,
+                            middle,
+                            [
+                                start,
+                                end
+                            ]
+                        )[0];
+
+                    if (!transferOne) {
+                        continue;
+                    }
+
+                    for (
+                        const third of endingRoutes
+                    ) {
+                        if (
+                            third.id === first.id ||
+                            third.id === middle.id
+                        ) {
+                            continue;
+                        }
+
+                        const transferTwo =
+                            sharedLandmarks(
                                 middle,
                                 third,
-                                transferOne,
-                                transferTwo,
-                                score
+                                [
+                                    start,
+                                    end,
+                                    transferOne
+                                ]
+                            )[0];
+
+                        if (!transferTwo) {
+                            continue;
+                        }
+
+                        const score =
+                            routeScore(first) +
+                            routeScore(middle) +
+                            routeScore(third);
+
+                        if (
+                            !bestThree ||
+                            score >
+                                bestThree.score
+                        ) {
+                            bestThree = {
+                                first:
+                                    first,
+
+                                middle:
+                                    middle,
+
+                                third:
+                                    third,
+
+                                transferOne:
+                                    transferOne,
+
+                                transferTwo:
+                                    transferTwo,
+
+                                score:
+                                    score
                             };
                         }
                     }
@@ -4672,21 +7517,58 @@ window.addEventListener(
 
             if (bestThree) {
                 return {
-                    start,
-                    end,
-                    transfers: [bestThree.transferOne, bestThree.transferTwo],
+                    start:
+                        start,
+
+                    end:
+                        end,
+
+                    transfers: [
+                        bestThree.transferOne,
+                        bestThree.transferTwo
+                    ],
+
                     legs: [
-                        { route: bestThree.first, board: start, alight: bestThree.transferOne },
-                        { route: bestThree.middle, board: bestThree.transferOne, alight: bestThree.transferTwo },
-                        { route: bestThree.third, board: bestThree.transferTwo, alight: end }
+                        {
+                            route:
+                                bestThree.first,
+
+                            board:
+                                start,
+
+                            alight:
+                                bestThree.transferOne
+                        },
+                        {
+                            route:
+                                bestThree.middle,
+
+                            board:
+                                bestThree.transferOne,
+
+                            alight:
+                                bestThree.transferTwo
+                        },
+                        {
+                            route:
+                                bestThree.third,
+
+                            board:
+                                bestThree.transferTwo,
+
+                            alight:
+                                end
+                        }
                     ]
                 };
             }
 
             return {
-                error: "No 1-to-3 ride connection was found in the current prototype route catalog for those two landmarks."
+                error:
+                    "No 1-to-3 ride connection was found in the current route database for those two locations."
             };
         }
+
 
         function applyTripPlan(plan) {
             currentTripPlan = plan;
@@ -4705,7 +7587,21 @@ window.addEventListener(
             renderJourneyCards(plan);
             renderGuideMapRoutes();
             updateGuideHeaderAction();
-            guideMessage.textContent = "Tap a ride card to focus that leg. All trip routes remain visible on the map.";
+            if (
+                plan.alternativeDirectRoutes &&
+                plan.alternativeDirectRoutes.length
+            ) {
+                guideMessage.textContent =
+                    "Recommended route shown first. Swipe to compare " +
+                    plan.alternativeDirectRoutes.length +
+                    " other direct option" +
+                    (plan.alternativeDirectRoutes.length === 1 ? "" : "s") +
+                    " that also serve both locations.";
+            }
+            else {
+                guideMessage.textContent =
+                    "Tap a ride card to focus that leg. All trip routes remain visible on the map.";
+            }
         }
 
         function resetTripPlanView() {
@@ -4734,7 +7630,8 @@ window.addEventListener(
                 resetTripPlanView();
             }
             else {
-                guideMessage.textContent = "Choose a starting point and destination. LARGA will look for up to three jeepney rides.";
+                guideMessage.textContent =
+                    "Choose a starting point and destination. Downtown routes are prioritized, then LARGA checks other routes that serve the same locations.";
             }
         }
 
@@ -4798,10 +7695,32 @@ window.addEventListener(
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     };
-                    show(guideUserMarker);
+                    if (googleGuideMap) {
+                        hide(guideUserMarker);
+
+                        updateGoogleUserMarker(
+                            position.coords.latitude,
+                            position.coords.longitude,
+                            true
+                        );
+
+                        guideMessage.textContent =
+                            "Current location enabled on Google Maps.";
+                    }
+                    else {
+                        show(guideUserMarker);
+
+                        guideMessage.textContent =
+                            "Current location enabled for the prototype map.";
+                    }
+
                     guideLocationText.textContent = "Location active";
-                    guideMessage.textContent = "Current location enabled for the prototype map.";
-                    console.log("Guide location:", position.coords.latitude, position.coords.longitude);
+
+                    console.log(
+                        "Guide location:",
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
                 },
                 function () {
                     guideLocationText.textContent = "My location";
@@ -4912,11 +7831,43 @@ window.addEventListener(
         let guideMapZoom = 1;
 
         function applyGuideMapZoom() {
-            guideMapWorld.style.setProperty("--map-zoom", guideMapZoom.toFixed(2));
+            if (googleGuideMap) {
+                return;
+            }
+
+            guideMapWorld.style.setProperty(
+                "--map-zoom",
+                guideMapZoom.toFixed(2)
+            );
         }
 
         function changeGuideMapZoom(amount) {
-            guideMapZoom = Math.min(2.2, Math.max(1, guideMapZoom + amount));
+            if (googleGuideMap) {
+                const currentZoom =
+                    googleGuideMap.getZoom() || 13;
+
+                googleGuideMap.setZoom(
+                    Math.min(
+                        19,
+                        Math.max(
+                            11,
+                            currentZoom +
+                            (amount > 0 ? 1 : -1)
+                        )
+                    )
+                );
+
+                return;
+            }
+
+            guideMapZoom = Math.min(
+                2.2,
+                Math.max(
+                    1,
+                    guideMapZoom + amount
+                )
+            );
+
             applyGuideMapZoom();
         }
 
@@ -4931,11 +7882,25 @@ window.addEventListener(
         });
 
         guideMapCanvas.addEventListener("wheel", function (event) {
+            if (googleGuideMap) {
+                // Let Google Maps handle native wheel zoom.
+                return;
+            }
+
             event.preventDefault();
-            changeGuideMapZoom(event.deltaY < 0 ? 0.12 : -0.12);
+            changeGuideMapZoom(
+                event.deltaY < 0
+                    ? 0.12
+                    : -0.12
+            );
         }, { passive: false });
 
         guideMapCanvas.addEventListener("dblclick", function (event) {
+            if (googleGuideMap) {
+                // Let Google Maps handle native double-click zoom.
+                return;
+            }
+
             event.preventDefault();
             changeGuideMapZoom(0.2);
         });
@@ -4946,11 +7911,26 @@ window.addEventListener(
             guideMapExpandButton.setAttribute("aria-label", expanded ? "Collapse map" : "Expand map");
             guideMapExpandButton.title = expanded ? "Collapse map" : "Expand map";
             guideMapExpandIcon.textContent = expanded ? "↙" : "⛶";
+
+            if (googleGuideMap) {
+                setTimeout(
+                    function () {
+                        google.maps.event.trigger(
+                            googleGuideMap,
+                            "resize"
+                        );
+
+                        renderGuideMapRoutes();
+                    },
+                    260
+                );
+            }
         });
 
         applyGuideMapZoom();
         renderDowntownRouteCards();
         renderGuideMapRoutes();
+        initializeGoogleGuideMap();
 
         // ==================================================
         // TRIP GUIDANCE
@@ -5124,247 +8104,2596 @@ window.addEventListener(
 
 
         // ==================================================
-        // LIVE
+        // LIVE TRACKING 5.0
         // ==================================================
+        //
+        // Live Tracking intentionally simulates vehicle movement for the
+        // prototype. Route geometry comes from the same route database used
+        // by Guide. The vehicle layer is completely separate from Guide.
+        //
+        // Only one route can be tracked at a time.
 
-        const routeCheckboxes =
-            document.querySelectorAll(
-                ".route-checkbox"
-            );
+        const liveRouteCarousel =
+            get("liveRouteCarousel");
+
+        const liveRouteSearchInput =
+            get("liveRouteSearchInput");
+
+        const liveRouteSearchClear =
+            get("liveRouteSearchClear");
+
+        const liveRouteSearchResults =
+            get("liveRouteSearchResults");
+
+        const liveGoogleMapElement =
+            get("liveGoogleMap");
+
+        const liveMapLoading =
+            get("liveMapLoading");
+
+        const liveMapRouteDot =
+            get("liveMapRouteDot");
+
+        const liveMapRouteName =
+            get("liveMapRouteName");
+
+        const liveVehicleCountLabel =
+            get("liveVehicleCountLabel");
+
+        const liveLocationButton =
+            get("liveLocationButton");
+
+        const liveLocationButtonText =
+            get("liveLocationButtonText");
+
+        const liveEnableLocationButton =
+            get("liveEnableLocationButton");
+
+        const liveLocationGate =
+            get("liveLocationGate");
+
+        const liveNearestSection =
+            get("liveNearestSection");
+
+        const liveNearestEta =
+            get("liveNearestEta");
+
+        const liveNearestRouteName =
+            get("liveNearestRouteName");
+
+        const liveNearestPlate =
+            get("liveNearestPlate");
+
+        const liveNearestDistance =
+            get("liveNearestDistance");
+
+        const liveNearestRouteIcon =
+            get("liveNearestRouteIcon");
+
+        const liveNotifyThreshold =
+            get("liveNotifyThreshold");
+
+        const liveNotifyButton =
+            get("liveNotifyButton");
+
+        const liveNotifyStatus =
+            get("liveNotifyStatus");
+
+        const liveOtherCount =
+            get("liveOtherCount");
+
+        const liveVehicleList =
+            get("liveVehicleList");
+
+        const largaLiveToast =
+            get("largaLiveToast");
+
+        const largaLiveToastTitle =
+            get("largaLiveToastTitle");
+
+        const largaLiveToastMessage =
+            get("largaLiveToastMessage");
 
 
-        const liveRouteObjects =
-            document.querySelectorAll(
-                "[data-route]"
-            );
+        let liveGoogleMap = null;
+        let liveMapInitialized = false;
+        let liveMapInitializing = false;
+
+        let liveRouteHalo = null;
+        let liveRouteLine = null;
+
+        let liveUserMarker = null;
+
+        let activeLiveRouteId = null;
+        let activeLiveRoutePath = [];
+        let activeLiveRouteMetrics = null;
+
+        let liveVehicles = [];
+        let liveVehicleMarkers = [];
+
+        let selectedLiveVehicleId = null;
+
+        let liveLocationWatchId = null;
+        let liveUserCoordinates = null;
+        let liveBoardingPoint = null;
+
+        let liveSimulationTimer = null;
+        let liveLastTickTime = null;
+
+        let liveNotificationSubscription = null;
+        let liveToastTimer = null;
+
+        // Accelerated slightly so the classroom prototype visibly changes
+        // without making the markers jump unrealistically.
+        const LIVE_SIMULATION_TIME_SCALE = 6;
+
+        const LIVE_ROUTE_CARD_COUNT = 8;
 
 
-        const mapEmptyMessage =
-            get("mapEmptyMessage");
+        function liveHash(value) {
+            let hash = 2166136261;
 
+            String(value)
+                .split("")
+                .forEach(function (character) {
+                    hash ^= character.charCodeAt(0);
 
-        const nearbyJeepneys =
-            get("nearbyJeepneys");
-
-
-        const liveRouteData = {
-
-            Bajada: {
-
-                name:
-                    "Bajada Route",
-
-                eta:
-                    "3 min"
-
-            },
-
-            Matina: {
-
-                name:
-                    "Matina Route",
-
-                eta:
-                    "5 min"
-
-            },
-
-            Toril: {
-
-                name:
-                    "Toril Route",
-
-                eta:
-                    "7 min"
-
-            }
-
-        };
-
-
-        function updateLiveMap() {
-
-            const selectedRoutes =
-                Array
-                    .from(
-                        routeCheckboxes
-                    )
-                    .filter(
-                        function (
-                            checkbox
-                        ) {
-
-                            return (
-                                checkbox.checked
-                            );
-
-                        }
-                    )
-                    .map(
-                        function (
-                            checkbox
-                        ) {
-
-                            return (
-                                checkbox.value
-                            );
-
-                        }
+                    hash = Math.imul(
+                        hash,
+                        16777619
                     );
+                });
 
-
-            liveRouteObjects.forEach(
-                function (
-                    object
-                ) {
-
-                    const route =
-                        object.getAttribute(
-                            "data-route"
-                        );
-
-
-                    if (
-                        selectedRoutes
-                            .includes(
-                                route
-                            )
-                    ) {
-
-                        show(
-                            object
-                        );
-
-                    }
-
-                    else {
-
-                        hide(
-                            object
-                        );
-
-                    }
-
-                }
-            );
-
-
-            if (
-                selectedRoutes.length === 0
-            ) {
-
-                show(
-                    mapEmptyMessage
-                );
-
-            }
-
-            else {
-
-                hide(
-                    mapEmptyMessage
-                );
-
-            }
-
-
-            updateNearbyJeepneys(
-                selectedRoutes
-            );
-
+            return hash >>> 0;
         }
 
 
+        function getLiveRouteById(routeId) {
+            return guideRouteCatalog.find(
+                function (route) {
+                    return route.id === routeId;
+                }
+            ) || null;
+        }
 
-        function updateNearbyJeepneys(
-            selectedRoutes
-        ) {
 
-            nearbyJeepneys.innerHTML =
-                "";
-
-
+        function getLiveDefaultRoute() {
             if (
-                selectedRoutes.length === 0
+                selectedGuideRoute &&
+                getLiveRouteById(
+                    selectedGuideRoute.id
+                )
             ) {
-
-                nearbyJeepneys.innerHTML =
-                    '<div class="empty-saved">No selected routes.</div>';
-
-
-                return;
-
+                return selectedGuideRoute;
             }
 
+            return (
+                guideRouteCatalog.find(
+                    function (route) {
+                        return route.id === "route-1";
+                    }
+                ) ||
+                guideRouteCatalog[0]
+            );
+        }
 
-            selectedRoutes.forEach(
+
+        function getLiveVehicleCount(route) {
+            return (
+                3 +
+                (
+                    liveHash(route.id) %
+                    3
+                )
+            );
+        }
+
+
+        function getLivePlate(
+            route,
+            vehicleIndex
+        ) {
+            const seed =
+                liveHash(
+                    route.id +
+                    "-plate-" +
+                    vehicleIndex
+                );
+
+            // For-hire motor vehicles use three alphabetic characters
+            // followed by four numeric characters under the modern LTO
+            // plate series. These values are generated and explicitly
+            // labeled SIMULATED in the interface.
+            const letters = [];
+
+            for (
+                let index = 0;
+                index < 3;
+                index += 1
+            ) {
+                const shift =
+                    (seed >> (index * 5)) & 31;
+
+                letters.push(
+                    String.fromCharCode(
+                        65 +
+                        (
+                            shift %
+                            26
+                        )
+                    )
+                );
+            }
+
+            const number =
+                1000 +
+                (
+                    (
+                        seed +
+                        vehicleIndex * 7919
+                    ) %
+                    9000
+                );
+
+            return (
+                letters.join("") +
+                " " +
+                String(number)
+            );
+        }
+
+
+        function haversineMeters(
+            pointA,
+            pointB
+        ) {
+            const earthRadius =
+                6371000;
+
+            const toRadians =
+                function (degrees) {
+                    return (
+                        degrees *
+                        Math.PI /
+                        180
+                    );
+                };
+
+            const latitudeOne =
+                toRadians(pointA.lat);
+
+            const latitudeTwo =
+                toRadians(pointB.lat);
+
+            const latitudeDelta =
+                toRadians(
+                    pointB.lat -
+                    pointA.lat
+                );
+
+            const longitudeDelta =
+                toRadians(
+                    pointB.lng -
+                    pointA.lng
+                );
+
+            const sinLatitude =
+                Math.sin(
+                    latitudeDelta / 2
+                );
+
+            const sinLongitude =
+                Math.sin(
+                    longitudeDelta / 2
+                );
+
+            const a =
+                sinLatitude * sinLatitude +
+                Math.cos(latitudeOne) *
+                Math.cos(latitudeTwo) *
+                sinLongitude *
+                sinLongitude;
+
+            return (
+                earthRadius *
+                2 *
+                Math.atan2(
+                    Math.sqrt(a),
+                    Math.sqrt(1 - a)
+                )
+            );
+        }
+
+
+        function buildLiveRouteMetrics(path) {
+            const cumulative = [0];
+
+            let total = 0;
+
+            for (
+                let index = 1;
+                index < path.length;
+                index += 1
+            ) {
+                total +=
+                    haversineMeters(
+                        path[index - 1],
+                        path[index]
+                    );
+
+                cumulative.push(
+                    total
+                );
+            }
+
+            return {
+                cumulative:
+                    cumulative,
+
+                total:
+                    total
+            };
+        }
+
+
+        function sampleLivePathAtDistance(
+            path,
+            metrics,
+            distance
+        ) {
+            if (
+                !path.length ||
+                !metrics ||
+                metrics.total <= 0
+            ) {
+                return (
+                    path[0] ||
+                    DAVAO_MAP_CENTER
+                );
+            }
+
+            let normalizedDistance =
+                distance %
+                metrics.total;
+
+            if (
+                normalizedDistance < 0
+            ) {
+                normalizedDistance +=
+                    metrics.total;
+            }
+
+            let segmentIndex = 1;
+
+            while (
+                segmentIndex <
+                    metrics.cumulative.length &&
+                metrics.cumulative[
+                    segmentIndex
+                ] <
+                    normalizedDistance
+            ) {
+                segmentIndex += 1;
+            }
+
+            if (
+                segmentIndex >=
+                    path.length
+            ) {
+                return path[
+                    path.length - 1
+                ];
+            }
+
+            const startIndex =
+                segmentIndex - 1;
+
+            const segmentStart =
+                metrics.cumulative[
+                    startIndex
+                ];
+
+            const segmentEnd =
+                metrics.cumulative[
+                    segmentIndex
+                ];
+
+            const segmentLength =
+                Math.max(
+                    1,
+                    segmentEnd -
+                    segmentStart
+                );
+
+            const progress =
+                (
+                    normalizedDistance -
+                    segmentStart
+                ) /
+                segmentLength;
+
+            const start =
+                path[
+                    startIndex
+                ];
+
+            const end =
+                path[
+                    segmentIndex
+                ];
+
+            return {
+                lat:
+                    start.lat +
+                    (
+                        end.lat -
+                        start.lat
+                    ) *
+                    progress,
+
+                lng:
+                    start.lng +
+                    (
+                        end.lng -
+                        start.lng
+                    ) *
+                    progress
+            };
+        }
+
+
+        function findNearestLivePathPoint(
+            coordinates,
+            path,
+            metrics
+        ) {
+            if (
+                !coordinates ||
+                !path.length
+            ) {
+                return null;
+            }
+
+            let nearestIndex = 0;
+            let nearestDistance =
+                Infinity;
+
+            path.forEach(
                 function (
-                    routeKey
+                    point,
+                    index
                 ) {
-
-                    const route =
-                        liveRouteData[
-                            routeKey
-                        ];
-
-
-                    const card =
-                        document.createElement(
-                            "div"
+                    const distance =
+                        haversineMeters(
+                            coordinates,
+                            point
                         );
 
+                    if (
+                        distance <
+                        nearestDistance
+                    ) {
+                        nearestDistance =
+                            distance;
 
-                    card.className =
-                        "nearby-card";
+                        nearestIndex =
+                            index;
+                    }
+                }
+            );
+
+            return {
+                index:
+                    nearestIndex,
+
+                point:
+                    path[
+                        nearestIndex
+                    ],
+
+                walkingDistanceMeters:
+                    nearestDistance,
+
+                routeDistance:
+                    metrics.cumulative[
+                        nearestIndex
+                    ] || 0
+            };
+        }
 
 
-                    card.innerHTML =
-                        `
-                        <div>
+        function getLiveDistanceAhead(
+            vehicleDistance,
+            targetDistance,
+            totalDistance
+        ) {
+            let distance =
+                targetDistance -
+                vehicleDistance;
 
-                            <span class="status-live">
-                                ● LIVE
+            if (
+                distance < 0
+            ) {
+                distance +=
+                    totalDistance;
+            }
+
+            return distance;
+        }
+
+
+        function getLiveVehicleEtaMinutes(
+            vehicle
+        ) {
+            if (
+                !liveBoardingPoint ||
+                !activeLiveRouteMetrics
+            ) {
+                return null;
+            }
+
+            const distanceAhead =
+                getLiveDistanceAhead(
+                    vehicle.distanceOnRoute,
+                    liveBoardingPoint.routeDistance,
+                    activeLiveRouteMetrics.total
+                );
+
+            const metersPerMinute =
+                (
+                    vehicle.speedKph *
+                    1000
+                ) /
+                60;
+
+            return Math.max(
+                0.2,
+                distanceAhead /
+                metersPerMinute
+            );
+        }
+
+
+        function formatLiveEta(minutes) {
+            if (
+                minutes === null ||
+                !Number.isFinite(minutes)
+            ) {
+                return "--";
+            }
+
+            if (
+                minutes < 1
+            ) {
+                return "<1";
+            }
+
+            return String(
+                Math.max(
+                    1,
+                    Math.round(minutes)
+                )
+            );
+        }
+
+
+        function formatLiveDistance(meters) {
+            if (
+                !Number.isFinite(meters)
+            ) {
+                return "";
+            }
+
+            if (
+                meters < 1000
+            ) {
+                return (
+                    Math.max(
+                        10,
+                        Math.round(
+                            meters / 10
+                        ) * 10
+                    ) +
+                    " m"
+                );
+            }
+
+            return (
+                (
+                    meters /
+                    1000
+                ).toFixed(1) +
+                " km"
+            );
+        }
+
+
+        function setLiveRouteCardTheme(
+            card,
+            route
+        ) {
+            setCardTheme(
+                card,
+                route
+            );
+
+            card.style.setProperty(
+                "--live-route-accent",
+                getRouteAccent(route)
+            );
+        }
+
+
+        function renderLiveRouteCards() {
+            liveRouteCarousel.innerHTML =
+                "";
+
+            const rankedRoutes =
+                guideRouteCatalog
+                    .slice()
+                    .sort(
+                        function (a, b) {
+                            const downtownDifference =
+                                Number(Boolean(b.downtown)) -
+                                Number(Boolean(a.downtown));
+
+                            if (
+                                downtownDifference !== 0
+                            ) {
+                                return downtownDifference;
+                            }
+
+                            return (
+                                routeScore(b) -
+                                routeScore(a)
+                            );
+                        }
+                    );
+
+            const activeIndex =
+                rankedRoutes.findIndex(
+                    function (route) {
+                        return (
+                            route.id ===
+                            activeLiveRouteId
+                        );
+                    }
+                );
+
+            if (
+                activeIndex >=
+                LIVE_ROUTE_CARD_COUNT
+            ) {
+                const activeRoute =
+                    rankedRoutes.splice(
+                        activeIndex,
+                        1
+                    )[0];
+
+                rankedRoutes.unshift(
+                    activeRoute
+                );
+            }
+
+            rankedRoutes
+                .slice(
+                    0,
+                    LIVE_ROUTE_CARD_COUNT
+                )
+                .forEach(
+                    function (route) {
+                        const card =
+                            document.createElement(
+                                "button"
+                            );
+
+                        card.type =
+                            "button";
+
+                        card.className =
+                            "live-route-card";
+
+                        card.dataset.routeId =
+                            route.id;
+
+                        if (
+                            route.id ===
+                            activeLiveRouteId
+                        ) {
+                            card.classList.add(
+                                "is-active"
+                            );
+                        }
+
+                        setLiveRouteCardTheme(
+                            card,
+                            route
+                        );
+
+                        card.innerHTML = `
+                            <span class="live-route-card-kicker">
+                                ${route.downtown ? "DOWNTOWN" : "CITY ROUTE"}
                             </span>
 
                             <strong>
                                 ${route.name}
                             </strong>
 
-                        </div>
+                            <small>
+                                ${route.short}
+                            </small>
 
-                        <span class="nearby-eta">
-                            ${route.eta}
-                        </span>
+                            <span class="live-route-card-count">
+                                <i></i>
+                                ${getLiveVehicleCount(route)} active
+                            </span>
                         `;
 
+                        card.addEventListener(
+                            "click",
+                            function () {
+                                selectLiveRoute(
+                                    route.id,
+                                    {
+                                        fitMap:
+                                            true,
 
-                    nearbyJeepneys
-                        .appendChild(
-                            card
+                                        announce:
+                                            true
+                                    }
+                                );
+                            }
                         );
 
-                }
-            );
-
+                        liveRouteCarousel.appendChild(
+                            card
+                        );
+                    }
+                );
         }
 
 
-        routeCheckboxes.forEach(
-            function (
-                checkbox
-            ) {
+        function updateLiveRouteCardSelection() {
+            document
+                .querySelectorAll(
+                    ".live-route-card"
+                )
+                .forEach(
+                    function (card) {
+                        card.classList.toggle(
+                            "is-active",
+                            card.dataset.routeId ===
+                                activeLiveRouteId
+                        );
+                    }
+                );
+        }
 
-                checkbox.addEventListener(
-                    "change",
-                    updateLiveMap
+
+        function renderLiveRouteSearch() {
+            const query =
+                normalizeGuideText(
+                    liveRouteSearchInput.value
                 );
 
+            liveRouteSearchResults.innerHTML =
+                "";
+
+            liveRouteSearchClear.classList.toggle(
+                "hidden",
+                !query
+            );
+
+            if (!query) {
+                hide(
+                    liveRouteSearchResults
+                );
+
+                return;
+            }
+
+            const matches =
+                guideRouteCatalog
+                    .filter(
+                        function (route) {
+                            const haystack =
+                                [
+                                    route.name,
+                                    route.short
+                                ]
+                                    .concat(
+                                        route.landmarks || []
+                                    )
+                                    .concat(
+                                        route.roads || []
+                                    )
+                                    .join(" ");
+
+                            return normalizeGuideText(
+                                haystack
+                            ).includes(
+                                query
+                            );
+                        }
+                    )
+                    .sort(
+                        function (a, b) {
+                            const downtownDifference =
+                                Number(Boolean(b.downtown)) -
+                                Number(Boolean(a.downtown));
+
+                            if (
+                                downtownDifference !== 0
+                            ) {
+                                return downtownDifference;
+                            }
+
+                            return (
+                                routeScore(b) -
+                                routeScore(a)
+                            );
+                        }
+                    )
+                    .slice(
+                        0,
+                        8
+                    );
+
+            if (
+                !matches.length
+            ) {
+                liveRouteSearchResults.innerHTML = `
+                    <div class="live-search-empty">
+                        No matching route found.
+                    </div>
+                `;
+
+                show(
+                    liveRouteSearchResults
+                );
+
+                return;
+            }
+
+            matches.forEach(
+                function (route) {
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+                    button.type =
+                        "button";
+
+                    button.className =
+                        "live-search-result";
+
+                    button.innerHTML = `
+                        <span
+                            class="live-search-result-dot"
+                            style="background:${getRouteAccent(route)}"
+                        ></span>
+
+                        <span>
+                            <strong>${route.name}</strong>
+                            <small>${route.short}</small>
+                        </span>
+
+                        <em>
+                            ${getLiveVehicleCount(route)} live
+                        </em>
+                    `;
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+                            liveRouteSearchInput.value =
+                                route.name;
+
+                            hide(
+                                liveRouteSearchResults
+                            );
+
+                            selectLiveRoute(
+                                route.id,
+                                {
+                                    fitMap:
+                                        true,
+
+                                    announce:
+                                        true
+                                }
+                            );
+                        }
+                    );
+
+                    liveRouteSearchResults.appendChild(
+                        button
+                    );
+                }
+            );
+
+            show(
+                liveRouteSearchResults
+            );
+        }
+
+
+        function clearLiveMapObjects() {
+            if (liveRouteHalo) {
+                liveRouteHalo.setMap(
+                    null
+                );
+
+                liveRouteHalo =
+                    null;
+            }
+
+            if (liveRouteLine) {
+                liveRouteLine.setMap(
+                    null
+                );
+
+                liveRouteLine =
+                    null;
+            }
+
+            liveVehicleMarkers.forEach(
+                function (record) {
+                    if (
+                        record.marker
+                    ) {
+                        record.marker.map =
+                            null;
+                    }
+                }
+            );
+
+            liveVehicleMarkers =
+                [];
+
+            selectedLiveVehicleId =
+                null;
+        }
+
+
+        function createLiveJeepneyMarkerContent(
+            vehicle,
+            route
+        ) {
+            const shell =
+                document.createElement(
+                    "div"
+                );
+
+            shell.className =
+                "live-jeepney-marker-shell";
+
+            shell.style.setProperty(
+                "--live-route-color",
+                getRouteAccent(route)
+            );
+
+            shell.dataset.vehicleId =
+                vehicle.id;
+
+            shell.innerHTML = `
+                <button
+                    class="live-jeepney-marker-button"
+                    type="button"
+                    aria-label="${route.name}, simulated jeepney ${vehicle.plate}"
+                >
+                    <span class="live-jeepney-vehicle">
+                        <span class="live-jeep-roof"></span>
+                        <span class="live-jeep-window live-jeep-window-one"></span>
+                        <span class="live-jeep-window live-jeep-window-two"></span>
+                        <span class="live-jeep-grille"></span>
+                        <span class="live-jeep-wheel live-jeep-wheel-left"></span>
+                        <span class="live-jeep-wheel live-jeep-wheel-right"></span>
+                    </span>
+                </button>
+
+                <div class="live-jeepney-popover">
+                    <div class="live-popover-top">
+                        <span class="live-popover-route">
+                            ${route.name}
+                        </span>
+
+                        <span class="live-popover-simulated">
+                            SIMULATED
+                        </span>
+                    </div>
+
+                    <strong class="live-popover-plate">
+                        ${vehicle.plate}
+                    </strong>
+
+                    <span class="live-popover-status">
+                        Live position on ${route.name}
+                    </span>
+
+                    <div class="live-popover-eta">
+                        <small>
+                            ETA TO YOUR BOARDING POINT
+                        </small>
+
+                        <b data-live-marker-eta>
+                            Enable location
+                        </b>
+                    </div>
+
+                    <button
+                        class="live-popover-notify"
+                        type="button"
+                        data-live-marker-notify
+                    >
+                        ♢ Notify me
+                    </button>
+                </div>
+            `;
+
+            const markerButton =
+                shell.querySelector(
+                    ".live-jeepney-marker-button"
+                );
+
+            markerButton.addEventListener(
+                "click",
+                function (event) {
+                    event.stopPropagation();
+
+                    selectedLiveVehicleId =
+                        (
+                            selectedLiveVehicleId ===
+                                vehicle.id
+                        )
+                            ? null
+                            : vehicle.id;
+
+                    updateLiveMarkerSelection();
+                }
+            );
+
+            const notifyButton =
+                shell.querySelector(
+                    "[data-live-marker-notify]"
+                );
+
+            notifyButton.addEventListener(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    selectedLiveVehicleId =
+                        vehicle.id;
+
+                    updateLiveMarkerSelection();
+
+                    armLiveNotification(
+                        vehicle.id
+                    );
+                }
+            );
+
+            return shell;
+        }
+
+
+        function updateLiveMarkerSelection() {
+            liveVehicleMarkers.forEach(
+                function (record) {
+                    const isSelected =
+                        record.vehicle.id ===
+                        selectedLiveVehicleId;
+
+                    record.content
+                        .classList
+                        .toggle(
+                            "is-selected",
+                            isSelected
+                        );
+
+                    const etaElement =
+                        record.content.querySelector(
+                            "[data-live-marker-eta]"
+                        );
+
+                    const eta =
+                        getLiveVehicleEtaMinutes(
+                            record.vehicle
+                        );
+
+                    if (
+                        etaElement
+                    ) {
+                        etaElement.textContent =
+                            eta === null
+                                ? "Enable location"
+                                : (
+                                    formatLiveEta(eta) +
+                                    " min"
+                                );
+                    }
+                }
+            );
+        }
+
+
+        function createLiveVehicles(
+            route,
+            metrics
+        ) {
+            const count =
+                getLiveVehicleCount(
+                    route
+                );
+
+            const vehicles = [];
+
+            for (
+                let index = 0;
+                index < count;
+                index += 1
+            ) {
+                const seed =
+                    liveHash(
+                        route.id +
+                        "-vehicle-" +
+                        index
+                    );
+
+                const spacing =
+                    (
+                        index +
+                        0.14 +
+                        (
+                            (seed % 23) /
+                            100
+                        )
+                    ) /
+                    count;
+
+                const speedKph =
+                    16 +
+                    (
+                        seed %
+                        8
+                    );
+
+                vehicles.push({
+                    id:
+                        route.id +
+                        "-jeep-" +
+                        index,
+
+                    routeId:
+                        route.id,
+
+                    plate:
+                        getLivePlate(
+                            route,
+                            index
+                        ),
+
+                    speedKph:
+                        speedKph,
+
+                    distanceOnRoute:
+                        (
+                            metrics.total *
+                            spacing
+                        ) %
+                        metrics.total,
+
+                    markerIndex:
+                        index
+                });
+            }
+
+            return vehicles;
+        }
+
+
+        function createLiveVehicleMarkers(
+            route
+        ) {
+            liveVehicleMarkers =
+                liveVehicles.map(
+                    function (vehicle) {
+                        const position =
+                            sampleLivePathAtDistance(
+                                activeLiveRoutePath,
+                                activeLiveRouteMetrics,
+                                vehicle.distanceOnRoute
+                            );
+
+                        const content =
+                            createLiveJeepneyMarkerContent(
+                                vehicle,
+                                route
+                            );
+
+                        const marker =
+                            new GoogleAdvancedMarkerElement({
+                                map:
+                                    liveGoogleMap,
+
+                                position:
+                                    position,
+
+                                title:
+                                    route.name +
+                                    " • " +
+                                    vehicle.plate +
+                                    " • simulated",
+
+                                zIndex:
+                                    50 +
+                                    vehicle.markerIndex
+                            });
+
+                        marker.append(
+                            content
+                        );
+
+                        return {
+                            vehicle:
+                                vehicle,
+
+                            marker:
+                                marker,
+
+                            content:
+                                content
+                        };
+                    }
+                );
+        }
+
+
+        function fitLiveMapToRoute() {
+            if (
+                !liveGoogleMap ||
+                !activeLiveRoutePath.length ||
+                !GoogleLatLngBounds
+            ) {
+                return;
+            }
+
+            const bounds =
+                new GoogleLatLngBounds();
+
+            activeLiveRoutePath
+                .forEach(
+                    function (point) {
+                        bounds.extend(
+                            point
+                        );
+                    }
+                );
+
+            if (
+                liveUserCoordinates
+            ) {
+                bounds.extend(
+                    liveUserCoordinates
+                );
+            }
+
+            liveGoogleMap.fitBounds(
+                bounds,
+                54
+            );
+
+            google.maps.event
+                .addListenerOnce(
+                    liveGoogleMap,
+                    "idle",
+                    function () {
+                        if (
+                            liveGoogleMap.getZoom() >
+                            16
+                        ) {
+                            liveGoogleMap.setZoom(
+                                16
+                            );
+                        }
+                    }
+                );
+        }
+
+
+        function drawLiveRoute(
+            route,
+            path
+        ) {
+            const accent =
+                getRouteAccent(
+                    route
+                );
+
+            liveRouteHalo =
+                new GooglePolyline({
+                    map:
+                        liveGoogleMap,
+
+                    path:
+                        path,
+
+                    strokeColor:
+                        "#ffffff",
+
+                    strokeOpacity:
+                        0.90,
+
+                    strokeWeight:
+                        9,
+
+                    clickable:
+                        false,
+
+                    zIndex:
+                        8
+                });
+
+            liveRouteLine =
+                new GooglePolyline({
+                    map:
+                        liveGoogleMap,
+
+                    path:
+                        path,
+
+                    strokeColor:
+                        accent,
+
+                    strokeOpacity:
+                        0.96,
+
+                    strokeWeight:
+                        6,
+
+                    clickable:
+                        false,
+
+                    zIndex:
+                        9
+                });
+        }
+
+
+        async function initializeLiveTrackingMap() {
+            if (
+                liveMapInitialized ||
+                liveMapInitializing
+            ) {
+                if (
+                    liveGoogleMap
+                ) {
+                    requestAnimationFrame(
+                        function () {
+                            google.maps.event.trigger(
+                                liveGoogleMap,
+                                "resize"
+                            );
+
+                            if (
+                                activeLiveRoutePath.length
+                            ) {
+                                fitLiveMapToRoute();
+                            }
+                        }
+                    );
+                }
+
+                return;
+            }
+
+            liveMapInitializing =
+                true;
+
+            show(
+                liveMapLoading
+            );
+
+            await loadGoogleMapsDemoKey();
+
+            if (
+                !hasGoogleMapsDemoKey()
+            ) {
+                liveMapInitializing =
+                    false;
+
+                liveMapLoading.innerHTML = `
+                    <strong>Google Maps Demo Key needed</strong>
+                    <small>Add the key to maps-demo-key.txt.</small>
+                `;
+
+                return;
+            }
+
+            try {
+                await loadGoogleMapsScript();
+
+                const [
+                    mapsLibrary,
+                    markerLibrary,
+                    coreLibrary
+                ] =
+                    await Promise.all([
+                        google.maps.importLibrary(
+                            "maps"
+                        ),
+                        google.maps.importLibrary(
+                            "marker"
+                        ),
+                        google.maps.importLibrary(
+                            "core"
+                        )
+                    ]);
+
+                GooglePolyline =
+                    GooglePolyline ||
+                    mapsLibrary.Polyline;
+
+                GoogleAdvancedMarkerElement =
+                    GoogleAdvancedMarkerElement ||
+                    markerLibrary.AdvancedMarkerElement;
+
+                GoogleLatLngBounds =
+                    GoogleLatLngBounds ||
+                    coreLibrary.LatLngBounds;
+
+                liveGoogleMap =
+                    new mapsLibrary.Map(
+                        liveGoogleMapElement,
+                        {
+                            center:
+                                DAVAO_MAP_CENTER,
+
+                            zoom:
+                                13,
+
+                            mapId:
+                                LARGA_GOOGLE_MAPS_CONFIG.mapId ||
+                                "DEMO_MAP_ID",
+
+                            disableDefaultUI:
+                                true,
+
+                            streetViewControl:
+                                false,
+
+                            mapTypeControl:
+                                false,
+
+                            fullscreenControl:
+                                false,
+
+                            zoomControl:
+                                true,
+
+                            clickableIcons:
+                                true,
+
+                            gestureHandling:
+                                "greedy"
+                        }
+                    );
+
+                liveGoogleMap.addListener(
+                    "click",
+                    function () {
+                        selectedLiveVehicleId =
+                            null;
+
+                        updateLiveMarkerSelection();
+                    }
+                );
+
+                liveMapInitialized =
+                    true;
+
+                liveMapInitializing =
+                    false;
+
+                hide(
+                    liveMapLoading
+                );
+
+                if (
+                    activeLiveRouteId
+                ) {
+                    await loadLiveRouteOnMap(
+                        activeLiveRouteId,
+                        {
+                            fitMap:
+                                true
+                        }
+                    );
+                }
+            }
+            catch (error) {
+                liveMapInitializing =
+                    false;
+
+                console.error(
+                    "Live map initialization failed:",
+                    error
+                );
+
+                liveMapLoading.innerHTML = `
+                    <strong>Live map could not load</strong>
+                    <small>Check the Demo Key and browser console.</small>
+                `;
+            }
+        }
+
+
+        async function loadLiveRouteOnMap(
+            routeId,
+            options
+        ) {
+            const route =
+                getLiveRouteById(
+                    routeId
+                );
+
+            if (
+                !route ||
+                !liveGoogleMap
+            ) {
+                return;
+            }
+
+            show(
+                liveMapLoading
+            );
+
+            clearLiveMapObjects();
+
+            try {
+                const path =
+                    await computeGoogleRoutePath(
+                        route
+                    );
+
+                if (
+                    activeLiveRouteId !==
+                    routeId
+                ) {
+                    return;
+                }
+
+                activeLiveRoutePath =
+                    path.slice();
+
+                activeLiveRouteMetrics =
+                    buildLiveRouteMetrics(
+                        path
+                    );
+
+                drawLiveRoute(
+                    route,
+                    path
+                );
+
+                liveVehicles =
+                    createLiveVehicles(
+                        route,
+                        activeLiveRouteMetrics
+                    );
+
+                createLiveVehicleMarkers(
+                    route
+                );
+
+                liveVehicleCountLabel.textContent =
+                    liveVehicles.length +
+                    " simulated jeepney" +
+                    (
+                        liveVehicles.length === 1
+                            ? ""
+                            : "s"
+                    );
+
+                if (
+                    liveUserCoordinates
+                ) {
+                    updateLiveBoardingPoint();
+                }
+
+                updateLiveTrackingPanels();
+
+                if (
+                    !options ||
+                    options.fitMap !== false
+                ) {
+                    fitLiveMapToRoute();
+                }
+
+                startLiveSimulation();
+            }
+            catch (error) {
+                console.error(
+                    "Could not load Live route:",
+                    error
+                );
+
+                liveVehicleCountLabel.textContent =
+                    "Route unavailable";
+
+                liveMapLoading.innerHTML = `
+                    <strong>Route could not be displayed</strong>
+                    <small>Route geometry is still being refined.</small>
+                `;
+
+                return;
+            }
+
+            hide(
+                liveMapLoading
+            );
+        }
+
+
+        async function selectLiveRoute(
+            routeId,
+            options
+        ) {
+            const route =
+                getLiveRouteById(
+                    routeId
+                );
+
+            if (!route) {
+                return;
+            }
+
+            activeLiveRouteId =
+                route.id;
+
+            liveNotificationSubscription =
+                null;
+
+            liveNotifyStatus.textContent =
+                "Choose an alert time for this jeepney.";
+
+            liveNotifyButton.classList.remove(
+                "is-armed"
+            );
+
+            liveMapRouteName.textContent =
+                route.name;
+
+            liveMapRouteDot.style.background =
+                getRouteAccent(
+                    route
+                );
+
+            liveNearestRouteIcon.style.setProperty(
+                "--nearest-route-color",
+                getRouteAccent(route)
+            );
+
+            updateLiveRouteCardSelection();
+
+            if (
+                options &&
+                options.announce
+            ) {
+                liveRouteSearchInput.value =
+                    route.name;
+
+                hide(
+                    liveRouteSearchResults
+                );
+            }
+
+            if (
+                liveMapInitialized
+            ) {
+                await loadLiveRouteOnMap(
+                    route.id,
+                    options || {}
+                );
+            }
+        }
+
+
+        function createLiveUserMarker() {
+            if (
+                !liveGoogleMap ||
+                !GoogleAdvancedMarkerElement ||
+                !liveUserCoordinates
+            ) {
+                return;
+            }
+
+            if (
+                liveUserMarker
+            ) {
+                liveUserMarker.position =
+                    liveUserCoordinates;
+
+                liveUserMarker.map =
+                    liveGoogleMap;
+
+                return;
+            }
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "live-user-marker";
+
+            element.innerHTML =
+                "<span></span>";
+
+            liveUserMarker =
+                new GoogleAdvancedMarkerElement({
+                    map:
+                        liveGoogleMap,
+
+                    position:
+                        liveUserCoordinates,
+
+                    title:
+                        "Your location",
+
+                    zIndex:
+                        150
+                });
+
+            liveUserMarker.append(
+                element
+            );
+        }
+
+
+        function updateLiveBoardingPoint() {
+            if (
+                !liveUserCoordinates ||
+                !activeLiveRoutePath.length ||
+                !activeLiveRouteMetrics
+            ) {
+                liveBoardingPoint =
+                    null;
+
+                return;
+            }
+
+            liveBoardingPoint =
+                findNearestLivePathPoint(
+                    liveUserCoordinates,
+                    activeLiveRoutePath,
+                    activeLiveRouteMetrics
+                );
+
+            createLiveUserMarker();
+
+            updateLiveTrackingPanels();
+        }
+
+
+        function requestLiveLocation() {
+            if (
+                !navigator.geolocation
+            ) {
+                showLiveToast(
+                    "Location unavailable",
+                    "This browser does not support geolocation."
+                );
+
+                return;
+            }
+
+            liveLocationButton.disabled =
+                true;
+
+            liveEnableLocationButton.disabled =
+                true;
+
+            liveLocationButtonText.textContent =
+                "Locating…";
+
+            const onPosition =
+                function (position) {
+                    liveUserCoordinates = {
+                        lat:
+                            position.coords.latitude,
+
+                        lng:
+                            position.coords.longitude
+                    };
+
+                    liveLocationButton.disabled =
+                        false;
+
+                    liveEnableLocationButton.disabled =
+                        false;
+
+                    liveLocationButton.classList.add(
+                        "is-active"
+                    );
+
+                    liveLocationButtonText.textContent =
+                        "Location active";
+
+                    hide(
+                        liveLocationGate
+                    );
+
+                    show(
+                        liveNearestSection
+                    );
+
+                    updateLiveBoardingPoint();
+
+                    if (
+                        liveGoogleMap &&
+                        activeLiveRoutePath.length
+                    ) {
+                        fitLiveMapToRoute();
+                    }
+                };
+
+            const onError =
+                function () {
+                    liveLocationButton.disabled =
+                        false;
+
+                    liveEnableLocationButton.disabled =
+                        false;
+
+                    liveLocationButtonText.textContent =
+                        "Enable location";
+
+                    showLiveToast(
+                        "Location permission needed",
+                        "Allow location access to calculate the nearest jeepney and ETA."
+                    );
+                };
+
+            if (
+                liveLocationWatchId !==
+                null
+            ) {
+                navigator.geolocation.clearWatch(
+                    liveLocationWatchId
+                );
+            }
+
+            liveLocationWatchId =
+                navigator.geolocation.watchPosition(
+                    onPosition,
+                    onError,
+                    {
+                        enableHighAccuracy:
+                            true,
+
+                        maximumAge:
+                            8000,
+
+                        timeout:
+                            15000
+                    }
+                );
+        }
+
+
+        function getSortedLiveVehiclesByEta() {
+            return liveVehicles
+                .map(
+                    function (vehicle) {
+                        return {
+                            vehicle:
+                                vehicle,
+
+                            eta:
+                                getLiveVehicleEtaMinutes(
+                                    vehicle
+                                )
+                        };
+                    }
+                )
+                .filter(
+                    function (record) {
+                        return (
+                            record.eta !==
+                            null
+                        );
+                    }
+                )
+                .sort(
+                    function (a, b) {
+                        return (
+                            a.eta -
+                            b.eta
+                        );
+                    }
+                );
+        }
+
+
+        function renderLiveVehicleList(
+            sortedVehicles
+        ) {
+            liveVehicleList.innerHTML =
+                "";
+
+            const remaining =
+                sortedVehicles.slice(
+                    1
+                );
+
+            liveOtherCount.textContent =
+                remaining.length +
+                " vehicle" +
+                (
+                    remaining.length === 1
+                        ? ""
+                        : "s"
+                );
+
+            remaining.forEach(
+                function (record) {
+                    const row =
+                        document.createElement(
+                            "button"
+                        );
+
+                    row.type =
+                        "button";
+
+                    row.className =
+                        "live-vehicle-row";
+
+                    row.innerHTML = `
+                        <span
+                            class="live-list-jeep"
+                            aria-hidden="true"
+                        >
+                            <span></span>
+                        </span>
+
+                        <span class="live-list-copy">
+                            <strong>${record.vehicle.plate}</strong>
+                            <small>SIMULATED • ${record.vehicle.speedKph} km/h</small>
+                        </span>
+
+                        <span class="live-list-eta">
+                            ${formatLiveEta(record.eta)}
+                            <small>min</small>
+                        </span>
+                    `;
+
+                    row.addEventListener(
+                        "click",
+                        function () {
+                            selectedLiveVehicleId =
+                                record.vehicle.id;
+
+                            updateLiveMarkerSelection();
+
+                            const markerRecord =
+                                liveVehicleMarkers.find(
+                                    function (candidate) {
+                                        return (
+                                            candidate.vehicle.id ===
+                                            record.vehicle.id
+                                        );
+                                    }
+                                );
+
+                            if (
+                                markerRecord &&
+                                liveGoogleMap
+                            ) {
+                                liveGoogleMap.panTo(
+                                    markerRecord.marker.position
+                                );
+                            }
+                        }
+                    );
+
+                    liveVehicleList.appendChild(
+                        row
+                    );
+                }
+            );
+        }
+
+
+        function updateLiveTrackingPanels() {
+            updateLiveMarkerSelection();
+
+            if (
+                !liveUserCoordinates ||
+                !liveBoardingPoint
+            ) {
+                return;
+            }
+
+            const route =
+                getLiveRouteById(
+                    activeLiveRouteId
+                );
+
+            const sorted =
+                getSortedLiveVehiclesByEta();
+
+            if (
+                !route ||
+                !sorted.length
+            ) {
+                return;
+            }
+
+            const nearest =
+                sorted[0];
+
+            liveNearestEta.textContent =
+                formatLiveEta(
+                    nearest.eta
+                ) +
+                " min";
+
+            liveNearestRouteName.textContent =
+                route.name;
+
+            liveNearestPlate.textContent =
+                nearest.vehicle.plate;
+
+            liveNearestDistance.textContent =
+                (
+                    "Nearest boarding point is about " +
+                    formatLiveDistance(
+                        liveBoardingPoint.walkingDistanceMeters
+                    ) +
+                    " from your location."
+                );
+
+            renderLiveVehicleList(
+                sorted
+            );
+
+            if (
+                liveNotificationSubscription &&
+                liveNotificationSubscription.vehicleId ===
+                    nearest.vehicle.id
+            ) {
+                liveNotifyButton.classList.add(
+                    "is-armed"
+                );
+            }
+            else {
+                liveNotifyButton.classList.remove(
+                    "is-armed"
+                );
+            }
+
+            checkLiveNotification(
+                sorted
+            );
+        }
+
+
+        function showLiveToast(
+            title,
+            message
+        ) {
+            largaLiveToastTitle.textContent =
+                title;
+
+            largaLiveToastMessage.textContent =
+                message;
+
+            show(
+                largaLiveToast
+            );
+
+            largaLiveToast.classList.add(
+                "is-visible"
+            );
+
+            if (
+                liveToastTimer
+            ) {
+                clearTimeout(
+                    liveToastTimer
+                );
+            }
+
+            liveToastTimer =
+                setTimeout(
+                    function () {
+                        largaLiveToast.classList.remove(
+                            "is-visible"
+                        );
+
+                        setTimeout(
+                            function () {
+                                hide(
+                                    largaLiveToast
+                                );
+                            },
+                            220
+                        );
+                    },
+                    4400
+                );
+        }
+
+
+        async function requestLiveNotificationPermission() {
+            if (
+                !("Notification" in window)
+            ) {
+                return "unsupported";
+            }
+
+            if (
+                Notification.permission ===
+                "granted"
+            ) {
+                return "granted";
+            }
+
+            if (
+                Notification.permission ===
+                "denied"
+            ) {
+                return "denied";
+            }
+
+            try {
+                return await Notification
+                    .requestPermission();
+            }
+            catch (error) {
+                return "unsupported";
+            }
+        }
+
+
+        async function armLiveNotification(
+            vehicleId
+        ) {
+            if (
+                !liveUserCoordinates
+            ) {
+                showLiveToast(
+                    "Enable location first",
+                    "LARGA needs your location before an arrival alert can be set."
+                );
+
+                return;
+            }
+
+            const sorted =
+                getSortedLiveVehiclesByEta();
+
+            const chosenRecord =
+                sorted.find(
+                    function (record) {
+                        return (
+                            record.vehicle.id ===
+                            vehicleId
+                        );
+                    }
+                ) ||
+                sorted[0];
+
+            if (!chosenRecord) {
+                return;
+            }
+
+            const threshold =
+                Number(
+                    liveNotifyThreshold.value
+                );
+
+            const permission =
+                await requestLiveNotificationPermission();
+
+            liveNotificationSubscription = {
+                vehicleId:
+                    chosenRecord.vehicle.id,
+
+                plate:
+                    chosenRecord.vehicle.plate,
+
+                threshold:
+                    threshold,
+
+                notified:
+                    false,
+
+                notificationPermission:
+                    permission
+            };
+
+            liveNotifyButton.classList.add(
+                "is-armed"
+            );
+
+            liveNotifyStatus.textContent =
+                (
+                    "Alert set for " +
+                    threshold +
+                    " minute" +
+                    (
+                        threshold === 1
+                            ? ""
+                            : "s"
+                    ) +
+                    " before arrival."
+                );
+
+            showLiveToast(
+                "Arrival alert set",
+                chosenRecord.vehicle.plate +
+                " will alert you at " +
+                threshold +
+                " min."
+            );
+
+            checkLiveNotification(
+                sorted
+            );
+        }
+
+
+        function checkLiveNotification(
+            sortedVehicles
+        ) {
+            if (
+                !liveNotificationSubscription ||
+                liveNotificationSubscription.notified
+            ) {
+                return;
+            }
+
+            const record =
+                sortedVehicles.find(
+                    function (candidate) {
+                        return (
+                            candidate.vehicle.id ===
+                            liveNotificationSubscription.vehicleId
+                        );
+                    }
+                );
+
+            if (!record) {
+                return;
+            }
+
+            if (
+                record.eta >
+                liveNotificationSubscription.threshold
+            ) {
+                return;
+            }
+
+            liveNotificationSubscription.notified =
+                true;
+
+            const route =
+                getLiveRouteById(
+                    activeLiveRouteId
+                );
+
+            const etaText =
+                formatLiveEta(
+                    record.eta
+                );
+
+            const message =
+                (
+                    record.vehicle.plate +
+                    " on " +
+                    route.name +
+                    " is about " +
+                    etaText +
+                    " min from your boarding point."
+                );
+
+            liveNotifyStatus.textContent =
+                "Get ready to board your ride.";
+
+            showLiveToast(
+                "Get ready to board",
+                message
+            );
+
+            if (
+                liveNotificationSubscription
+                    .notificationPermission ===
+                    "granted" &&
+                "Notification" in window
+            ) {
+                try {
+                    new Notification(
+                        "LARGA • Get ready to board",
+                        {
+                            body:
+                                message,
+
+                            tag:
+                                "larga-" +
+                                record.vehicle.id
+                        }
+                    );
+                }
+                catch (error) {
+                    console.warn(
+                        "Browser notification could not be shown:",
+                        error
+                    );
+                }
+            }
+        }
+
+
+        function tickLiveSimulation() {
+            if (
+                !activeLiveRouteMetrics ||
+                !liveVehicles.length
+            ) {
+                return;
+            }
+
+            const now =
+                performance.now();
+
+            if (
+                liveLastTickTime ===
+                null
+            ) {
+                liveLastTickTime =
+                    now;
+
+                return;
+            }
+
+            const elapsedSeconds =
+                Math.min(
+                    2,
+                    (
+                        now -
+                        liveLastTickTime
+                    ) /
+                    1000
+                );
+
+            liveLastTickTime =
+                now;
+
+            liveVehicles.forEach(
+                function (vehicle) {
+                    const metersPerSecond =
+                        (
+                            vehicle.speedKph *
+                            1000 /
+                            3600
+                        ) *
+                        LIVE_SIMULATION_TIME_SCALE;
+
+                    vehicle.distanceOnRoute =
+                        (
+                            vehicle.distanceOnRoute +
+                            metersPerSecond *
+                            elapsedSeconds
+                        ) %
+                        activeLiveRouteMetrics.total;
+                }
+            );
+
+            liveVehicleMarkers.forEach(
+                function (record) {
+                    record.marker.position =
+                        sampleLivePathAtDistance(
+                            activeLiveRoutePath,
+                            activeLiveRouteMetrics,
+                            record.vehicle.distanceOnRoute
+                        );
+                }
+            );
+
+            updateLiveTrackingPanels();
+        }
+
+
+        function startLiveSimulation() {
+            if (
+                liveSimulationTimer
+            ) {
+                clearInterval(
+                    liveSimulationTimer
+                );
+            }
+
+            liveLastTickTime =
+                performance.now();
+
+            liveSimulationTimer =
+                setInterval(
+                    tickLiveSimulation,
+                    1000
+                );
+        }
+
+
+        async function initializeLiveTrackingPage() {
+            if (
+                !activeLiveRouteId
+            ) {
+                const defaultRoute =
+                    getLiveDefaultRoute();
+
+                if (
+                    defaultRoute
+                ) {
+                    activeLiveRouteId =
+                        defaultRoute.id;
+                }
+            }
+
+            renderLiveRouteCards();
+
+            const activeRoute =
+                getLiveRouteById(
+                    activeLiveRouteId
+                );
+
+            if (
+                activeRoute
+            ) {
+                liveMapRouteName.textContent =
+                    activeRoute.name;
+
+                liveMapRouteDot.style.background =
+                    getRouteAccent(
+                        activeRoute
+                    );
+
+                liveNearestRouteIcon.style.setProperty(
+                    "--nearest-route-color",
+                    getRouteAccent(activeRoute)
+                );
+            }
+
+            await initializeLiveTrackingMap();
+
+            if (
+                liveMapInitialized &&
+                activeLiveRouteId &&
+                !activeLiveRoutePath.length
+            ) {
+                await loadLiveRouteOnMap(
+                    activeLiveRouteId,
+                    {
+                        fitMap:
+                            true
+                    }
+                );
+            }
+        }
+
+
+        liveRouteSearchInput.addEventListener(
+            "input",
+            renderLiveRouteSearch
+        );
+
+
+        liveRouteSearchInput.addEventListener(
+            "focus",
+            function () {
+                if (
+                    liveRouteSearchInput.value.trim()
+                ) {
+                    renderLiveRouteSearch();
+                }
             }
         );
 
 
-        updateLiveMap();
+        liveRouteSearchClear.addEventListener(
+            "click",
+            function () {
+                liveRouteSearchInput.value =
+                    "";
 
+                hide(
+                    liveRouteSearchClear
+                );
+
+                hide(
+                    liveRouteSearchResults
+                );
+
+                liveRouteSearchInput.focus();
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+                if (
+                    !event.target.closest(
+                        ".live-search-wrap"
+                    )
+                ) {
+                    hide(
+                        liveRouteSearchResults
+                    );
+                }
+            }
+        );
+
+
+        liveLocationButton.addEventListener(
+            "click",
+            requestLiveLocation
+        );
+
+
+        liveEnableLocationButton.addEventListener(
+            "click",
+            requestLiveLocation
+        );
+
+
+        liveNotifyButton.addEventListener(
+            "click",
+            function () {
+                const sorted =
+                    getSortedLiveVehiclesByEta();
+
+                if (
+                    !sorted.length
+                ) {
+                    showLiveToast(
+                        "No ETA yet",
+                        "Enable location and wait for the selected route to finish loading."
+                    );
+
+                    return;
+                }
+
+                armLiveNotification(
+                    sorted[0].vehicle.id
+                );
+            }
+        );
+
+
+        liveNotifyThreshold.addEventListener(
+            "change",
+            function () {
+                if (
+                    liveNotificationSubscription
+                ) {
+                    const sorted =
+                        getSortedLiveVehiclesByEta();
+
+                    if (
+                        sorted.length
+                    ) {
+                        armLiveNotification(
+                            sorted[0].vehicle.id
+                        );
+                    }
+                }
+            }
+        );
 
 
         // ==================================================

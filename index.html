@@ -2197,6 +2197,21 @@
                     >
 
                         <div
+                            class="guide-google-map hidden"
+                            id="guideGoogleMap"
+                            aria-label="Google map showing Davao City jeepney routes"
+                        ></div>
+
+                        <div
+                            class="guide-map-setup hidden"
+                            id="guideMapSetup"
+                            role="status"
+                        >
+                            <strong>Google Maps Demo Key</strong>
+                            <span>Paste your no-billing Maps Demo Key in script.js to activate the live map.</span>
+                        </div>
+
+                        <div
                             class="guide-map-world"
                             id="guideMapWorld"
                         >
@@ -2514,302 +2529,372 @@
 
 
             <section
-
-                class="page"
-
+                class="page live-page"
                 id="livePage"
-
             >
 
-
-
-                <div class="page-heading">
-
-
-
+                <div class="live-intro">
                     <p class="eyebrow">
-
                         LIVE JEEPNEY TRACKING
-
                     </p>
-
-
 
                     <h1>
-
-                        Track Jeepneys
-
+                        Track your ride
                     </h1>
 
-
-
                     <p>
-
-                        Select the routes you want to see.
-
+                        Pick one route to see simulated live jeepneys and arrival estimates.
                     </p>
+                </div>
 
 
+                <div class="live-route-section">
+
+                    <div class="live-section-heading">
+                        <div>
+                            <p class="live-section-kicker">
+                                SELECT A ROUTE
+                            </p>
+
+                            <h2>
+                                Live Routes
+                            </h2>
+                        </div>
+
+                        <span
+                            class="live-demo-badge"
+                            title="Vehicle positions are simulated for this prototype."
+                        >
+                            DEMO
+                        </span>
+                    </div>
+
+
+                    <div
+                        class="live-route-carousel"
+                        id="liveRouteCarousel"
+                        aria-label="Live route selection"
+                    ></div>
+
+
+                    <div class="live-search-wrap">
+
+                        <label
+                            class="live-search-label"
+                            for="liveRouteSearchInput"
+                        >
+                            Search all jeepney routes
+                        </label>
+
+                        <div class="live-search-control">
+                            <span
+                                class="live-search-icon"
+                                aria-hidden="true"
+                            >
+                                ⌕
+                            </span>
+
+                            <input
+                                id="liveRouteSearchInput"
+                                type="search"
+                                placeholder="Route name, landmark, or road"
+                                autocomplete="off"
+                            >
+
+                            <button
+                                class="live-search-clear hidden"
+                                id="liveRouteSearchClear"
+                                type="button"
+                                aria-label="Clear route search"
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div
+                            class="live-search-results hidden"
+                            id="liveRouteSearchResults"
+                            role="listbox"
+                            aria-label="Live route search results"
+                        ></div>
+
+                    </div>
 
                 </div>
 
 
+                <div class="live-map-section">
+
+                    <div
+                        class="live-google-map"
+                        id="liveGoogleMap"
+                        aria-label="Map showing simulated live jeepney locations"
+                    ></div>
 
 
+                    <div
+                        class="live-map-loading"
+                        id="liveMapLoading"
+                    >
+                        <span class="live-map-loader"></span>
 
-                <div class="route-filter">
+                        <strong>
+                            Preparing live map
+                        </strong>
 
-
-
-                    <p class="field-label">
-
-                        SHOW ROUTES
-
-                    </p>
-
-
-
-
-
-                    <label class="checkbox-row">
+                        <small>
+                            Loading the selected route…
+                        </small>
+                    </div>
 
 
+                    <div class="live-map-topbar">
 
-                        <input
+                        <div class="live-map-route-pill">
+                            <span
+                                class="live-map-route-dot"
+                                id="liveMapRouteDot"
+                            ></span>
 
-                            type="checkbox"
+                            <div>
+                                <small>
+                                    TRACKING
+                                </small>
 
-                            class="route-checkbox"
+                                <strong
+                                    id="liveMapRouteName"
+                                >
+                                    Route 1
+                                </strong>
+                            </div>
+                        </div>
 
-                            value="Bajada"
 
-                            checked
-
+                        <button
+                            class="live-location-button"
+                            id="liveLocationButton"
+                            type="button"
                         >
+                            <span aria-hidden="true">⌖</span>
+
+                            <span id="liveLocationButtonText">
+                                Enable location
+                            </span>
+                        </button>
+
+                    </div>
 
 
+                    <div
+                        class="live-map-legend"
+                        id="liveMapLegend"
+                    >
+                        <span class="live-legend-dot"></span>
 
-                        Bajada Route
-
-
-
-                    </label>
-
-
-
-
-
-                    <label class="checkbox-row">
-
-
-
-                        <input
-
-                            type="checkbox"
-
-                            class="route-checkbox"
-
-                            value="Matina"
-
-                        >
-
-
-
-                        Matina Route
-
-
-
-                    </label>
-
-
-
-
-
-                    <label class="checkbox-row">
-
-
-
-                        <input
-
-                            type="checkbox"
-
-                            class="route-checkbox"
-
-                            value="Toril"
-
-                        >
-
-
-
-                        Toril Route
-
-
-
-                    </label>
-
-
+                        <span id="liveVehicleCountLabel">
+                            0 simulated jeepneys
+                        </span>
+                    </div>
 
                 </div>
 
 
+                <div
+                    class="live-location-gate"
+                    id="liveLocationGate"
+                >
+                    <div class="live-location-gate-icon">
+                        ◎
+                    </div>
+
+                    <div>
+                        <strong>
+                            Enable location for arrival times
+                        </strong>
+
+                        <p>
+                            LARGA needs your location to estimate the nearest boarding point and the next jeepney approaching it.
+                        </p>
+                    </div>
+
+                    <button
+                        class="live-enable-location"
+                        id="liveEnableLocationButton"
+                        type="button"
+                    >
+                        Use my location
+                    </button>
+                </div>
 
 
+                <section
+                    class="live-nearest-section hidden"
+                    id="liveNearestSection"
+                    aria-live="polite"
+                >
 
-                <div class="mock-map live-map">
+                    <div class="live-section-heading live-nearest-heading">
+                        <div>
+                            <p class="live-section-kicker">
+                                NEAREST JEEPNEY
+                            </p>
+
+                            <h2>
+                                Your next ride
+                            </h2>
+                        </div>
+
+                        <span
+                            class="live-nearest-eta"
+                            id="liveNearestEta"
+                        >
+                            -- min
+                        </span>
+                    </div>
 
 
+                    <article class="live-nearest-card">
 
-                    <span class="map-label">
+                        <div class="live-nearest-main">
 
-                        LIVE MAP
+                            <div
+                                class="live-nearest-route-icon"
+                                id="liveNearestRouteIcon"
+                                aria-hidden="true"
+                            >
+                                <span class="live-mini-jeep-body">
+                                    <i></i>
+                                    <b></b>
+                                    <b></b>
+                                </span>
+                            </div>
 
+                            <div class="live-nearest-copy">
+
+                                <div class="live-nearest-title-row">
+                                    <strong
+                                        id="liveNearestRouteName"
+                                    >
+                                        Route 1
+                                    </strong>
+
+                                    <span class="live-simulated-label">
+                                        SIMULATED
+                                    </span>
+                                </div>
+
+                                <span
+                                    class="live-nearest-plate"
+                                    id="liveNearestPlate"
+                                >
+                                    LJR 4821
+                                </span>
+
+                                <small
+                                    id="liveNearestDistance"
+                                >
+                                    Calculating distance…
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="live-notify-control">
+
+                            <label for="liveNotifyThreshold">
+                                Notify me when it is
+                            </label>
+
+                            <div class="live-notify-row">
+
+                                <select
+                                    id="liveNotifyThreshold"
+                                    aria-label="Notification time before jeepney arrival"
+                                >
+                                    <option value="1">
+                                        1 min away
+                                    </option>
+
+                                    <option value="5" selected>
+                                        5 min away
+                                    </option>
+
+                                    <option value="10">
+                                        10 min away
+                                    </option>
+                                </select>
+
+                                <button
+                                    class="live-notify-button"
+                                    id="liveNotifyButton"
+                                    type="button"
+                                >
+                                    <span aria-hidden="true">♢</span>
+                                    Notify me
+                                </button>
+
+                            </div>
+
+                            <p
+                                class="live-notify-status"
+                                id="liveNotifyStatus"
+                            >
+                                Choose an alert time for this jeepney.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <div class="live-other-heading">
+                        <strong>
+                            Other jeepneys on this route
+                        </strong>
+
+                        <span id="liveOtherCount">
+                            0 vehicles
+                        </span>
+                    </div>
+
+
+                    <div
+                        class="live-vehicle-list"
+                        id="liveVehicleList"
+                    ></div>
+
+                </section>
+
+
+                <p class="live-prototype-note">
+                    Prototype simulation. Vehicle locations, plate numbers, and ETAs are generated for demonstration and are not connected to actual jeepneys.
+                </p>
+
+
+                <div
+                    class="larga-live-toast hidden"
+                    id="largaLiveToast"
+                    role="status"
+                    aria-live="assertive"
+                >
+                    <span class="larga-live-toast-icon">
+                        ♢
                     </span>
 
+                    <div>
+                        <strong id="largaLiveToastTitle">
+                            Get ready to board
+                        </strong>
 
-
-
-
-                    <div
-
-                        class="live-path path-bajada"
-
-                        data-route="Bajada"
-
-                    ></div>
-
-
-
-                    <div
-
-                        class="live-path path-matina hidden"
-
-                        data-route="Matina"
-
-                    ></div>
-
-
-
-                    <div
-
-                        class="live-path path-toril hidden"
-
-                        data-route="Toril"
-
-                    ></div>
-
-
-
-
-
-                    <div
-
-                        class="live-jeep live-jeep-1"
-
-                        data-route="Bajada"
-
-                    >
-
-                        🚐
-
+                        <span id="largaLiveToastMessage">
+                            Your jeepney is approaching.
+                        </span>
                     </div>
-
-
-
-                    <div
-
-                        class="live-jeep live-jeep-2"
-
-                        data-route="Bajada"
-
-                    >
-
-                        🚐
-
-                    </div>
-
-
-
-                    <div
-
-                        class="live-jeep live-jeep-3 hidden"
-
-                        data-route="Matina"
-
-                    >
-
-                        🚐
-
-                    </div>
-
-
-
-                    <div
-
-                        class="live-jeep live-jeep-4 hidden"
-
-                        data-route="Toril"
-
-                    >
-
-                        🚐
-
-                    </div>
-
-
-
-
-
-                    <p
-
-                        class="map-empty-message hidden"
-
-                        id="mapEmptyMessage"
-
-                    >
-
-                        Select a route to view jeepneys.
-
-                    </p>
-
-
-
                 </div>
-
-
-
-
-
-                <div class="nearby-section">
-
-
-
-                    <h3>
-
-                        Nearby Jeepneys
-
-                    </h3>
-
-
-
-                    <div
-
-                        class="nearby-list"
-
-                        id="nearbyJeepneys"
-
-                    ></div>
-
-
-
-                </div>
-
-
 
             </section>
-
-
-
-
 
 
 
