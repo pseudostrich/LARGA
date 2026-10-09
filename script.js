@@ -4029,8 +4029,6 @@ window.addEventListener(
             const state = expandedRouteCardState;
             const card = state.card;
             const placeholder = state.placeholder;
-            const mainRect = mainApp.getBoundingClientRect();
-            const targetRect = placeholder.getBoundingClientRect();
 
             if (routeDetailRevealTimer) {
                 clearTimeout(routeDetailRevealTimer);
@@ -4040,18 +4038,12 @@ window.addEventListener(
             routeDetailAnimating = true;
 
             function finishRestore() {
-                // Clear any finished WAAPI effects before returning the card to
-                // its normal DOM position. Leaving a fill:forwards animation
-                // attached is what can cause a one-frame jump on close.
-                card.getAnimations().forEach(function (activeAnimation) {
-                    activeAnimation.cancel();
-                });
-                routeDetailGlass.getAnimations().forEach(function (activeAnimation) {
-                    activeAnimation.cancel();
-                });
-
+                // At this point the floating card already has the exact size
+                // and screen position of its placeholder. Moving the same DOM
+                // node back into the carousel therefore creates no visual jump.
                 routeDetailOverlay.appendChild(routeDetailGlass);
                 placeholder.replaceWith(card);
+
                 card.classList.remove(
                     "route-card-expanded",
                     "route-card-morphing",
@@ -4060,10 +4052,22 @@ window.addEventListener(
                     "route-card-show-mini",
                     "detail-source-hidden"
                 );
+
                 clearExpandedCardGeometry(card);
+
+                routeDetailGlass.getAnimations().forEach(function (activeAnimation) {
+                    activeAnimation.cancel();
+                });
+
+                routeDetailBackdrop.getAnimations().forEach(function (activeAnimation) {
+                    activeAnimation.cancel();
+                });
+
                 routeDetailGlass.style.removeProperty("opacity");
+
                 routeDetailOverlay.classList.remove("is-open", "card-morph-open");
                 routeDetailOverlay.setAttribute("aria-hidden", "true");
+
                 expandedRouteCardState = null;
                 routeDetailAnimating = false;
             }
@@ -4073,54 +4077,94 @@ window.addEventListener(
                 return;
             }
 
+            const overlayRect = routeDetailOverlay.getBoundingClientRect();
             const currentRect = card.getBoundingClientRect();
-            const dx = targetRect.left - currentRect.left;
-            const dy = targetRect.top - currentRect.top;
-            const scaleX = targetRect.width / currentRect.width;
-            const scaleY = targetRect.height / currentRect.height;
+            const placeholderRect = placeholder.getBoundingClientRect();
+
+            // Convert both rectangles to the overlay's coordinate system.
+            // Using real left/top/width/height values avoids the scale/transform
+            // mismatch that previously made the card dip downward before it
+            // snapped back into the carousel.
+            const current = {
+                left: currentRect.left - overlayRect.left,
+                top: currentRect.top - overlayRect.top,
+                width: currentRect.width,
+                height: currentRect.height
+            };
+
+            const target = {
+                left: placeholderRect.left - overlayRect.left,
+                top: placeholderRect.top - overlayRect.top,
+                width: placeholderRect.width,
+                height: placeholderRect.height
+            };
 
             card.classList.add("route-card-morphing-out");
 
-            // Start the return motion immediately. The detail content fades
-            // while the card is already shrinking, eliminating the old pause.
+            // Fade the detailed contents while the card is already moving.
+            // No delayed mini-card state is used; that was the source of the
+            // small floating card seen near the bottom of the blurred screen.
             routeDetailGlass.animate(
                 [
-                    { opacity: 1, transform: "translateY(0)" },
-                    { opacity: 0, transform: "translateY(5px)" }
+                    { opacity: 1 },
+                    { opacity: 0 }
                 ],
                 {
-                    duration: 130,
-                    easing: "ease-out",
+                    duration: 180,
+                    easing: "cubic-bezier(0.4, 0, 1, 1)",
                     fill: "forwards"
                 }
             );
 
-            setTimeout(function () {
-                card.classList.add("route-card-show-mini");
-            }, 115);
-
-            const animation = card.animate(
+            // Fade the blurred background at the same time as the card returns.
+            routeDetailBackdrop.animate(
                 [
-                    {
-                        transform: "translate3d(0, 0, 0) scale(1, 1)",
-                        borderRadius: "30px"
-                    },
-                    {
-                        transform:
-                            "translate3d(" + dx + "px, " + dy + "px, 0) " +
-                            "scale(" + scaleX + ", " + scaleY + ")",
-                        borderRadius: "23px"
-                    }
+                    { opacity: 1 },
+                    { opacity: 0 }
                 ],
                 {
-                    duration: 390,
+                    duration: 340,
                     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                     fill: "forwards"
                 }
             );
 
-            animation.onfinish = finishRestore;
-            animation.oncancel = function () {
+            // Set the underlying geometry to the final destination BEFORE the
+            // animation. The keyframes visually interpolate from the expanded
+            // box to these values, and when the effect ends there is nothing
+            // left to snap or reflow.
+            card.style.left = target.left + "px";
+            card.style.top = target.top + "px";
+            card.style.width = target.width + "px";
+            card.style.minWidth = target.width + "px";
+            card.style.height = target.height + "px";
+
+            const closingAnimation = card.animate(
+                [
+                    {
+                        left: current.left + "px",
+                        top: current.top + "px",
+                        width: current.width + "px",
+                        height: current.height + "px",
+                        borderRadius: "30px"
+                    },
+                    {
+                        left: target.left + "px",
+                        top: target.top + "px",
+                        width: target.width + "px",
+                        height: target.height + "px",
+                        borderRadius: "23px"
+                    }
+                ],
+                {
+                    duration: 360,
+                    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                    fill: "none"
+                }
+            );
+
+            closingAnimation.onfinish = finishRestore;
+            closingAnimation.oncancel = function () {
                 if (expandedRouteCardState) {
                     finishRestore();
                 }
@@ -4203,7 +4247,13 @@ window.addEventListener(
 
             expandedRouteCardState = {
                 card: card,
-                placeholder: placeholder
+                placeholder: placeholder,
+                sourceRect: {
+                    left: cardRect.left,
+                    top: cardRect.top,
+                    width: cardRect.width,
+                    height: cardRect.height
+                }
             };
 
             routeDetailOverlay.classList.add("card-morph-open", "is-open");

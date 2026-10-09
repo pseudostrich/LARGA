@@ -9740,3 +9740,48 @@ button {
         margin-top: 13px;
     }
 }
+
+
+/* ==========================================================
+   GUIDE 3.4 - STABLE CARD RETURN MORPH
+   Smooth close animation with exact carousel restoration.
+   ========================================================== */
+
+.route-detail-backdrop {
+    will-change: opacity;
+}
+
+.guide-route-card.route-card-expanded {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    contain: paint;
+}
+
+.guide-route-card.route-card-expanded.route-card-morphing-out {
+    pointer-events: none;
+    will-change: left, top, width, height, border-radius;
+    transition: none !important;
+}
+
+/* Do not reveal the small card face while the card is still floating.
+   It reappears only after the same card has returned to its placeholder. */
+.guide-route-card.route-card-expanded.route-card-morphing-out
+    > .route-card-select-area,
+.guide-route-card.route-card-expanded.route-card-morphing-out
+    > .route-card-more {
+    opacity: 0 !important;
+    transition: none !important;
+}
+
+/* During close, WAAPI controls the detail fade directly. Avoid a competing
+   CSS transform transition, which caused visible jitter on some browsers. */
+.guide-route-card.route-card-expanded.route-card-morphing-out
+    .route-detail-glass {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* The background blur remains visually continuous while its opacity fades. */
+.route-detail-overlay.card-morph-open .route-detail-backdrop {
+    will-change: opacity;
+}
