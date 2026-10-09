@@ -2372,7 +2372,7 @@
 
 
 
-                    <div
+                    <p id="connectionStatus" class="connection-status hidden" role="status"></p><div id="sharedTripBanner" class="shared-trip-banner hidden">A shared trip is ready. <button id="openSharedTrip" type="button">Open shared trip</button></div><details class="journey-tools hidden" id="journeyEditor"><summary>Edit places and stop order</summary><ol id="journeyEditStops" class="journey-edit-stops"></ol><div id="journeyEditSearchBox" class="hidden"><label for="journeyEditSearch">Replace this place</label><input id="journeyEditSearch" placeholder="Place or saved landmark" autocomplete="off"><div id="journeyEditResults" class="journey-edit-results"></div></div><button id="applyJourneyEdits" type="button" class="main-button">Update trip</button><p id="journeyEditStatus" role="status"></p></details><details id="journeyCompare" class="journey-tools hidden"><summary>Compare available routes</summary><label for="journeyCompareMode">Prefer</label><select id="journeyCompareMode"><option value="transfers">Fewer transfers</option><option value="walk">Less estimated walking</option></select><div id="journeyCompareOptions"></div><p id="journeyCompareNote"></p></details><button id="shareCurrentTrip" type="button" class="hidden">Share trip</button><div class="journey-controls hidden" id="journeyControls"><button id="viewPlanLive" type="button" class="plan-live-action" aria-label="View suggested routes in Live" title="View in Live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>View in Live</span></button></div><div id="tripRideInstructions" class="trip-ride-instructions hidden"></div><div
                         class="route-carousel"
                         id="routeCarousel"
                         aria-label="Popular downtown jeepney routes"
@@ -2423,7 +2423,7 @@
 
                                 <input
                                     id="routeSearchInput"
-                                    type="search"
+                                    type="text"
                                     placeholder="Route name, landmark, or road"
                                     autocomplete="off"
                                 >
@@ -2464,7 +2464,7 @@
                                         autocomplete="off"
                                         aria-autocomplete="list"
                                         aria-controls="guidePlaceResults"
-                                    >
+                                    ><button type="button" class="planner-field-clear hidden" id="clearTripFrom" aria-label="Clear starting point">×</button>
                                 </div>
 
                                 <span class="guide-trip-arrow">→</span>
@@ -2478,7 +2478,7 @@
                                         autocomplete="off"
                                         aria-autocomplete="list"
                                         aria-controls="guidePlaceResults"
-                                    >
+                                    ><button type="button" class="planner-field-clear hidden" id="clearTripTo" aria-label="Clear destination">×</button>
                                 </div>
 
                             </div>
@@ -2533,19 +2533,7 @@
                 id="livePage"
             >
 
-                <div class="live-intro">
-                    <p class="eyebrow">
-                        LIVE JEEPNEY TRACKING
-                    </p>
-
-                    <h1>
-                        Track your ride
-                    </h1>
-
-                    <p>
-                        Pick one route to see jeepneys and arrival estimates.
-                    </p>
-                </div>
+                
 
 
                 <div class="live-route-section">
@@ -2891,10 +2879,10 @@
 
 
             <section class="page trips-library-page" id="tripsPage">
- <div class="page-heading"><p class="eyebrow">YOUR JOURNEYS</p><h1>Trips</h1><p>Keep your routes and plans ready for school, work, or wherever you go.</p></div>
+ <div class="page-heading"><h1>Your saved routes</h1><p>Keep your routes and plans ready for school, work, or wherever you go.</p></div>
  <button type="button" class="main-button" id="newSavedTripButton">Plan a new trip</button>
  <p id="tripsLibraryStatus" class="guide-message" role="status"></p>
- <div id="savedRoutesContainer"></div>
+ <div class="trip-library-filters premium-trip-filters"><input type="search" id="tripLibrarySearch" aria-label="Search your trips" placeholder="Search trips or routes"><div class="legacy-filter-selects" hidden><select id="tripLibraryLabel" aria-label="Filter trips by label"><option value="">All labels</option></select><select id="tripLibrarySort" aria-label="Sort trips"><option value="saved">Recently saved</option><option value="used">Recently used</option><option value="name">Name</option></select></div><div class="trip-filter-icons"><button type="button" id="tripLabelMenuButton" aria-label="Filter trip labels" aria-expanded="false" aria-controls="tripLabelsMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h8l10 10-7 7L3 10Z"/><circle cx="7.5" cy="8" r="1"/></svg></button><button type="button" id="tripFilterMenuButton" aria-label="Filter and sort trips" aria-expanded="false" aria-controls="tripFiltersMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8Z"/></svg></button></div><section class="trip-filter-dropdown hidden" id="tripLabelsMenu" aria-label="Trip labels"><strong>Labels</strong><div id="tripLabelChecklist"></div><button type="button" id="resetTripLabels">All labels</button></section><section class="trip-filter-dropdown hidden" id="tripFiltersMenu" aria-label="Trip filters"><strong>Show</strong><label><input type="checkbox" data-library-type="route" checked> Saved routes</label><label><input type="checkbox" data-library-type="plan" checked> Trip plans</label><strong>Sort by</strong><label><input type="radio" name="librarySort" value="saved" checked> Recently saved</label><label><input type="radio" name="librarySort" value="used"> Recently used</label><label><input type="radio" name="librarySort" value="name"> Name</label></section></div><h2 class="trip-list-heading">Saved trips</h2><div id="savedRoutesContainer"></div><h2 class="trip-list-heading">Recent trips</h2><div id="recentTripsContainer"></div>
  <div class="legacy-trip-view" aria-hidden="true">
 
 
@@ -3137,16 +3125,16 @@
 
 
             <section class="page discover-page" id="discoverPage">
- <div class="page-heading"><p class="eyebrow">EXPLORE DAVAO</p><h1>Discover</h1><p>Find a place and plan how to get there.</p></div>
+ <div class="page-heading"><p class="eyebrow">EXPLORE DAVAO</p><h1>Find your next stop</h1><p>Find a place and plan how to get there.</p></div>
  <label class="discover-search-label" for="discoverSearchInput">Search places</label>
- <input id="discoverSearchInput" class="discover-search-input" type="search" placeholder="Malls, restaurants, parks…" autocomplete="off" aria-controls="discoverResults">
- <div class="discover-categories"><button type="button" data-discover-query="mall Davao">Malls</button><button type="button" data-discover-query="restaurant Davao">Food</button><button type="button" data-discover-query="park Davao">Parks</button><button type="button" data-discover-query="university Davao">Schools</button></div>
- <p id="discoverStatus" class="guide-message" role="status">Search for a place to explore.</p><div id="discoverResults"></div>
+ <input id="discoverSearchInput" class="discover-search-input" type="search" placeholder="Food, Malls, Parks, Items…" autocomplete="off" aria-controls="discoverResults">
+ <div class="discover-categories"><button type="button" data-discover-query="restaurants in Davao City">Restaurants</button><button type="button" data-discover-query="activities in Davao City">Activities</button><button type="button" data-discover-query="malls in Davao City">Malls</button><button type="button" data-discover-query="parks in Davao City">Parks</button><button type="button" data-discover-query="hotels in Davao City">Hotels</button><button type="button" data-discover-query="inns in Davao City">Inns</button><button type="button" data-discover-query="shops in Davao City">Shops</button><button type="button" data-discover-query="cafes in Davao City">Cafés</button><button type="button" data-discover-query="museums in Davao City">Museums</button><button type="button" data-discover-query="gyms in Davao City">Fitness</button><button type="button" data-discover-query="cinemas in Davao City">Movies</button><button type="button" data-discover-query="markets in Davao City">Markets</button><button type="button" data-discover-query="attractions in Davao City">Attractions</button></div>
+ <section class="discover-stops hidden" id="discoverStopsTray"><h2>Your stops</h2><p>Visit these places in the order below.</p><ol id="discoverStopsList"></ol><p id="discoverStopsStatus" role="status"></p><button type="button" class="main-button" id="buildDiscoverStops">Plan these stops</button></section><div class="discover-filters"><label>Rating <select id="discoverMinRating"><option value="0">Any rating</option><option value="4">4.0+</option><option value="4.5">4.5+</option></select></label><label><input type="checkbox" id="discoverOpenNow">Open now</label></div><p id="discoverStatus" class="guide-message" role="status">Search for a place to explore.</p><div id="discoverResults"></div>
 </section>
 
 
 
-        </main><div class="trip-save-overlay hidden" id="tripSaveOverlay"><form id="tripSaveForm" class="trip-save-dialog" role="dialog" aria-modal="true" aria-labelledby="tripSaveTitle"><h2 id="tripSaveTitle">Save your trip</h2><label for="tripLabelInput">Trip label</label><input id="tripLabelInput" maxlength="40" placeholder="e.g. School, Work, Gym" autocomplete="off"><div class="trip-label-presets"><button type="button" data-trip-label="School">School</button><button type="button" data-trip-label="Work">Work</button><button type="button" data-trip-label="Gym">Gym</button><button type="button" data-trip-label="Home">Home</button></div><p id="tripSaveStatus" role="status"></p><div class="trip-save-actions"><button type="button" id="cancelTripSaveButton">Cancel</button><button type="submit" class="main-button">Save</button></div></form></div>
+        </main><div class="share-trip-overlay hidden" id="shareTripOverlay"><section class="share-trip-dialog" role="dialog" aria-modal="true" aria-labelledby="shareTripTitle"><h2 id="shareTripTitle">Share your trip</h2><input id="shareTripLink" aria-label="Trip link" readonly><p id="shareTripStatus" role="status"></p><button type="button" id="copyShareTrip">Copy link</button><button type="button" id="closeShareTrip">Close</button></section></div><div class="profile-menu hidden" id="profileMenu"><button type="button" data-profile-panel="account" aria-expanded="false">Account <span>›</span></button><div class="profile-option-panel hidden" id="profileAccount"><strong id="profileAccountName">Guest</strong></div><button type="button" data-profile-panel="accessibility" aria-expanded="false">Accessibility <span>›</span></button><div class="profile-option-panel hidden" id="profileAccessibility"><label><input type="checkbox" id="profileLargerText"> Larger text</label><label><input type="checkbox" id="profileReducedMotion"> Reduce motion</label></div><button type="button" data-profile-panel="settings" aria-expanded="false">Settings <span>›</span></button><div class="profile-option-panel hidden" id="profileSettings"><label><input type="checkbox" id="profileDarkMode"> Dark mode</label><label><input type="checkbox" id="profileRideAlerts" checked> Ride alerts</label><p id="offlineReadyStatus">Preparing offline route reference…</p></div></div><div class="discover-trip-overlay hidden" id="discoverTripOverlay"><section class="discover-trip-dialog" role="dialog" aria-modal="true" aria-labelledby="discoverTripTitle"><button type="button" class="discover-trip-close" id="discoverTripClose" aria-label="Close trip preview">×</button><p class="eyebrow">YOUR RIDE</p><h2 id="discoverTripTitle">Plan your ride</h2><p id="discoverTripMessage" role="status"></p><p id="discoverTripSummary"></p><button type="button" class="main-button" id="discoverTripView" disabled>View trip</button><button type="button" class="discover-secondary hidden" id="discoverTripRetry">Try location again</button><button type="button" class="discover-secondary" id="discoverTripChooseStart">Choose starting point</button></section></div><div class="trip-save-overlay hidden" id="tripSaveOverlay"><form id="tripSaveForm" class="trip-save-dialog" role="dialog" aria-modal="true" aria-labelledby="tripSaveTitle"><h2 id="tripSaveTitle">Save your trip</h2><label for="tripLabelInput">Trip label</label><input id="tripLabelInput" maxlength="40" placeholder="e.g. School, Work, Gym" autocomplete="off"><div class="trip-label-presets"><button type="button" data-trip-label="School">School</button><button type="button" data-trip-label="Work">Work</button><button type="button" data-trip-label="Gym">Gym</button><button type="button" data-trip-label="Home">Home</button></div><p id="tripSaveStatus" role="status"></p><div class="trip-save-actions"><button type="button" id="cancelTripSaveButton">Cancel</button><button type="submit" class="main-button">Save</button></div></form></div>
 
 
 
@@ -3287,7 +3275,7 @@
 
             >
 
-                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="m16.5 7.5-3 6-6 3 3-6 6-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
 
                 <p>Guide</p>
 
@@ -3307,7 +3295,7 @@
 
             >
 
-                <span>◎</span>
+                <span class="live-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></span>
 
                 <p>Live</p>
 
@@ -3327,7 +3315,7 @@
 
             >
 
-                <span>➜</span>
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="1.4" fill="currentColor"/><circle cx="4" cy="12" r="1.4" fill="currentColor"/><circle cx="4" cy="18" r="1.4" fill="currentColor"/></svg></span>
 
                 <p>Trips</p>
 

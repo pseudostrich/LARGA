@@ -86,5 +86,212 @@
     },
     "storageScope": "same browser and origin",
     "realGpsAndNotificationDeliveryTested": false
+  },
+  "discoverGuideRefinement": {
+    "isolated": {
+      "photoRenderingWithAttribution": true,
+      "reviewRenderingAndToggle": true,
+      "unsafeContentUsesText": true,
+      "unsafeLinksRejected": true,
+      "savedNamesRefreshAutomatically": true,
+      "googleNamesNotPersisted": true
+    },
+    "browser": {
+      "nearbySuggestions": true,
+      "restaurantCategorySearch": true,
+      "realRatingsAndCounts": true,
+      "automaticTripPreview": true,
+      "viewTripHandoff": true,
+      "locationDeniedFallback": true,
+      "savedGoogleEndpointNamesAfterReload": true,
+      "repeatEarlyLearnMoreClose": true,
+      "expandedMapHeightPixels": 345.59375,
+      "routeOptionsVisibleBelowMap": true,
+      "guideScrollableContentHeight": 859,
+      "endpointPinBackground": "transparent",
+      "endpointPinBorder": "0px",
+      "compassAndListIcons": true
+    },
+    "realGpsPermissionTested": false,
+    "locationFixturesUsed": true,
+    "livePhotosReturned": false,
+    "liveWrittenReviewsReturned": false,
+    "mediaLimit": "Current Google setup returned no photos or written reviews for tested places. Rendering validated with isolated data."
+  },
+  "usabilityMultiStop": {
+    "isolated": {
+      "orderedStopsComposition": true,
+      "unsupportedStopRejectsWholePlan": true,
+      "allStopPlaceIdsPersist": true,
+      "stopNamesRemovedFromStoredRideLabels": true,
+      "stopEndpointIndicesPersist": true,
+      "duplicateRecentSignaturesIgnoreLabels": true,
+      "transferExample": {
+        "from": "Toril",
+        "to": "SM Lanang",
+        "transfers": [
+          "McArthur Highway"
+        ],
+        "routes": [
+          "Toril",
+          "Panacan - SM City Davao"
+        ]
+      }
+    },
+    "transferPoints": {
+      "transferPointsNearBothStoredRoutes": true,
+      "point": {
+        "afterLeg": 0,
+        "label": "McArthur Highway",
+        "location": {
+          "lat": 7.070747,
+          "lng": 125.60587
+        },
+        "walkMeters": 0
+      },
+      "calculationMilliseconds": 15
+    },
+    "browser": {
+      "profileDropdown": true,
+      "accessibilityPreferences": true,
+      "favoriteOrderingAndReloadPersistence": true,
+      "guideCardRestoredFullyInBounds": true,
+      "liveCardRestoredFullyInBounds": true,
+      "singleBrowseClearControl": true,
+      "plannerClearControls": true,
+      "matchingPlannerButtonFontPx": 13,
+      "transferInstructionsAndMapPoint": true,
+      "multiStopPreviewAndHandoff": true,
+      "independentRouteVisibility": true,
+      "saveAndReloadAllStopNames": true,
+      "recentToSaved": true,
+      "stopReorderingAndRemoval": true,
+      "loadedCreditedArchivePhotos": 3
+    },
+    "realGpsPermissionTested": false,
+    "notificationDeliveryTested": false,
+    "transferPointLimit": "Suggested route overlap, not a verified boarding stop",
+    "stopOrdering": "User selected order, no optimization",
+    "mediaFallback": "Credited Wikimedia archive photos for three matched locations; labeled category illustrations elsewhere"
+  },
+  "coordinatedUi": {
+    "journey": {
+      "segmentBoardingProjection": true,
+      "finiteEstimatedWalking": true,
+      "multiStopComparisonsPreserveStopOrder": true,
+      "walkingPreferenceSorted": true,
+      "sharedLinkPlaceIds": true,
+      "deviceOriginExcludedFromSharedLink": true,
+      "invalidSharedRoutesRejected": true
+    },
+    "feedAndOffline": {
+      "validatedIncomingPositions": true,
+      "rejectsOutOfOrderAndFutureUpdates": true,
+      "rejectsUnknownRoutesAndOutsidePositions": true,
+      "stoppedVehicleSpeedPreserved": true,
+      "offlineShellFallback": true,
+      "offlineUnknownNavigationFallback": true,
+      "keyAndGoogleDataExcludedFromCache": true,
+      "unrelatedCachesPreserved": true
+    },
+    "browser": {
+      "compactDiscover": true,
+      "liveGoogleRatingAndOpenNowFilters": true,
+      "tripLibraryFilters": true,
+      "replaceOrigin": true,
+      "reorderStopsAndRecalculate": true,
+      "sharedTripReconstructedAfterReload": true,
+      "mapAndCollapsibleTimeline": true,
+      "glassBackdropBlurPixels": 22,
+      "loadedArchivePhoto": true,
+      "incomingFreshVehicle": true,
+      "staleEtaSuppressed": true,
+      "staleAlertsDisabled": true,
+      "offlineRouteReferenceFixture": true,
+      "earlyLearnMoreClose": true,
+      "consoleErrors": 0
+    },
+    "limits": {
+      "walking": "Straight-line estimates, not verified walking paths",
+      "transfers": "Suggested route overlaps, not verified boarding stops",
+      "comparison": "Bounded candidate search, not exhaustive or traffic-aware",
+      "offline": "Online visit required; Google data and key excluded",
+      "live": "Generated position driver with optional feed adapter; no production feed connected",
+      "realGpsAndNotificationsTested": false,
+      "actualNetworkOfflineBrowserTested": false
+    }
+  },
+  "premiumCardsAndSampleAds": {
+    "routeContextRanking": true,
+    "categoryPreferenceRanking": true,
+    "nearbyRankingUsesResolvedCoordinates": true,
+    "noInventedUserLocation": true,
+    "multipleLabelsAndTypeFilter": true,
+    "browser": {
+      "guideAndLiveLearnMore": true,
+      "lightRouteTextContrast": true,
+      "scrollableTransparentFooter": true,
+      "labelChecklistFiltering": true,
+      "freshDotBelowMap": true,
+      "resolvedSponsoredPlacePreview": true,
+      "addStopWithActualName": true,
+      "automaticTripHandoff": true,
+      "finalBrowserErrors": 0
+    },
+    "samplePlacementsOnly": true,
+    "gpsUsedIsolatedFixture": true
+  },
+  "nightNearbyUpdate": {
+    "sponsorRanking": {
+      "routeContextRanking": true,
+      "categoryPreferenceRanking": true,
+      "nearbyRankingUsesResolvedCoordinates": true,
+      "closestBranchChangesWithMovingPosition": true,
+      "selectedVehiclePositionUsed": true,
+      "locationFallbackWithoutVehicles": true,
+      "noInventedUserLocation": true,
+      "multipleLabelsAndTypeFilter": true
+    },
+    "photos": {
+      "photoRenderingWithAttribution": true,
+      "galleryChangesPhotoAndAttribution": true,
+      "reviewRenderingAndToggle": true,
+      "unsafeContentUsesText": true,
+      "unsafeLinksRejected": true,
+      "savedNamesRefreshAutomatically": true,
+      "googleNamesNotPersisted": true
+    },
+    "sponsorCatalogEntries": 16,
+    "archivePhotoMatches": 10,
+    "browser": {
+      "darkModePersistsAfterReload": true,
+      "singleRowTripIcons": true,
+      "categoriesWheelScrollPixels": 324,
+      "downtownToNorthChangesBusiness": true,
+      "resolvedBranchPreview": true,
+      "gmallAndSmArchiveImagesLoaded": true
+    },
+    "laterGoogleChecks": "Demo key daily Maps JavaScript 2D quota reached; fresh Google-backed checks limited",
+    "realGpsOrProductionFeedTested": false
+  },
+  "placePlanFixes": {
+    "independentRouteToggles": true,
+    "allDeselectedClearsMap": true,
+    "landmarkFallbackSearch": true,
+    "noInventedCoordinatesOrRatings": true,
+    "localEndpointsSaveAsLandmarks": true,
+    "quotaCooldownAvoidsRepeatedRequests": true,
+    "explicitRetryCanRecover": true,
+    "browserChecks": {
+      "adToTripAteneo": true,
+      "localSearchToPlanAbreeza": true,
+      "multipleSelections": true,
+      "liveSuggestedCards": 5,
+      "liveDefaultRestoredCards": 8,
+      "searchIconInsideInput": true,
+      "darkGuideContrast": true,
+      "minimalShareDialog": true
+    },
+    "externalLimitation": "Google Places SearchTextRequest daily quota exhausted on demo project; saved-landmark fallback verified. Full Google results require reset or working key."
   }
 }
