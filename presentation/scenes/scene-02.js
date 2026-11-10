@@ -19,7 +19,7 @@
   [5,'TRIPS','Plan the','whole ride.','Trip planning, transfers and saved trips',4000],
   [6,'DISCOVER','Find a place.','Then get there.','Local discovery and route planning',5000]
  ];
- const beats=order.map((n,i)=>i===reelBeat?{label:'02 · APP DEMO',line:'Live, Guide, Trips and Discover.',note:'One automatic 18-second sequence. Vehicle locations and ETAs are simulated.'}:overviewBeats[n]);
+ const beats=order.map((n,i)=>i===reelBeat?{label:'02 · APP DEMO',line:'Live, Guide, Trips and Discover.',note:'One automatic 20-second sequence. Vehicle locations and ETAs are simulated.'}:overviewBeats[n]);
  let previousPhone=null,root,serial=0,animations=[],pending=new Set(),raf=null,driveResolve=null,samples=[],routeSamples=[],resizeObserver;
  const heads=[['',''],['',''],['COMMUTING.','MADE <em class="shine-text">CLEARER.</em>'],['KNOW WHAT TO','<em>RIDE.</em>'],['KNOW <em>WHEN</em>','IT ARRIVES.'],['KNOW <em>HOW</em>','TO GET THERE.'],['<em>DISCOVER</em>','WHAT’S AROUND YOU.'],['SEE YOUR RIDE.','<em class="shine-text">PLAN YOUR TRIP.</em>']];
  const p=data.points;
@@ -39,7 +39,7 @@
  <div class="reveal-eta"><span>JEEPNEY APPROACHING</span><strong>3 <small>MIN AWAY</small></strong></div>
  <div class="reveal-trip"><div><span>START</span><strong>Board the first route</strong></div><div><span>TRANSFER</span><strong>Follow the next ride</strong></div><div><span>DESTINATION</span><strong>Follow your ride instructions</strong></div></div>
  <div class="reveal-feature-orbit"><span>GUIDE</span><span>LIVE</span><span>TRIPS</span><span>DISCOVER</span><svg viewBox="0 0 1000 600" preserveAspectRatio="none"><path d="M340 220H470M660 220H530M340 390H470M660 390H530" pathLength="1"/></svg></div>
- <div class="reel-composition"></div><audio class="reel-narration" preload="auto" src="assets/audio/product-demo-vo.mp3"></audio><div class="reel-copy"><span class="reel-feature"></span><h2><span></span><em></em></h2><p></p></div><div class="reveal-closing-line"></div>
+ <div class="reel-composition"></div><audio class="reel-narration" preload="auto" src="assets/audio/product-demo-fullscreen.mp3"></audio><div class="reel-copy"><span class="reel-feature"></span><h2><span></span><em></em></h2><p></p></div><div class="reveal-closing-line"></div>
  </section>`;}
  function stop(){++serial;const voice=root?.querySelector('.reel-narration');if(voice){voice.pause();voice.currentTime=0;}animations.forEach(a=>a.cancel());animations=[];pending.forEach(t=>{clearTimeout(t.id);t.resolve(false)});pending.clear();if(raf!==null)cancelAnimationFrame(raf);raf=null;driveResolve?.();driveResolve=null;root?.querySelectorAll('.reveal-bridge-ghost').forEach(el=>el.remove());root?.classList.remove('reveal-entering');}
  function wait(ms,token){return new Promise(resolve=>{const t={id:null,resolve};t.id=setTimeout(()=>{pending.delete(t);resolve(token===serial)},ms/(window.LargaMotionRate??1));pending.add(t)});}
@@ -54,7 +54,7 @@
  function drive(token){const start=performance.now();return new Promise(resolve=>{driveResolve=resolve;const tick=now=>{if(token!==serial){resolve();return;}const t=Math.min(1,(((now-start)*(window.LargaMotionRate??1)))/1450),e=t*t*(3-2*t);positionVehicle(.12+.3*e);if(t<1)raf=requestAnimationFrame(tick);else{raf=null;driveResolve=null;resolve()}};tick(start)});}
  function baseState(n){root.dataset.beat=String(n);const routeIndex=n===4?1:n===5?2:0;root.querySelector('#revealRoute').setAttribute('d',data.routes[routeIndex].path);if(routeSamples.length)samples=routeSamples[routeIndex];if(samples.length){const first=data.routes[0].path.match(/^M([\d.]+) ([\d.]+)/),origin=n===4?samples[0]:{x:+first[1],y:+first[2]};root.querySelector('.origin-point').setAttribute('transform',`translate(${origin.x} ${origin.y})`);root.querySelector('#revealLiveLink').setAttribute('x1',origin.x);root.querySelector('#revealLiveLink').setAttribute('y1',origin.y);}const heading=root.querySelector('.reveal-heading');heading.children[0].innerHTML=heads[n][0];heading.children[1].innerHTML=heads[n][1];updateSize();screen(n);if(n===4)positionVehicle(.42);}
  function mount(host){host.innerHTML=markup();root=host.querySelector('#scene02');const path=root.querySelector('#revealRoute');routeSamples=data.routes.map(r=>{path.setAttribute('d',r.path);const len=path.getTotalLength();return Array.from({length:257},(_,i)=>path.getPointAtLength(len*i/256))});samples=routeSamples[0];root.querySelector('iframe').addEventListener('load',()=>screen(Number(root.dataset.beat)));window.addEventListener('message',e=>{if(e.source!==root.querySelector('iframe').contentWindow||e.origin!==location.origin)return;if(e.data?.type==='larga-embedded-ready')screen(Number(root.dataset.beat));if(e.data?.type==='larga-embedded-key')document.dispatchEvent(new KeyboardEvent('keydown',{code:e.data.code,bubbles:true}));});baseState(0);resizeObserver=new ResizeObserver(updateSize);resizeObserver.observe(root.querySelector('.product-phone'));}
- function state(n){root.dataset.reel=String(n===reelBeat);root.dataset.demo='false';root.dataset.step=String(n);if(n===reelBeat)showShot(0);else{baseState(order[n]);if(n===2)window.LargaCenteredReel.prepare(root.querySelector('.reel-composition'));}}
+ function state(n){root.dataset.reel=String(n===reelBeat);root.dataset.demo='false';root.dataset.step=String(n);if(n===reelBeat){const host=root.querySelector('.reel-composition');host.dataset.mode='welcome';root.dataset.reelTitle='false';window.LargaCenteredReel.prepare(host);}else{baseState(order[n]);if(n===2)window.LargaCenteredReel.prepare(root.querySelector('.reel-composition'));}}
  function setBeat(n){stop();state(n);}
  async function baseTransition(n,from){
   stop();const token=serial,phoneBefore=previousPhone||measure('.product-phone'),brandBefore=measure('.reveal-brand'),mapBefore=measure('.reveal-map');previousPhone=null;baseState(n);
@@ -95,33 +95,40 @@
   for(let attempt=0;attempt<25&&!reel.ready(host);attempt++)if(!await hold(100))return;
   voice.muted=Boolean(window.LargaPresentation?.getState().muted);
   void voice.play().catch(()=>{});
-  const phone=host.querySelector('.reel-camera'),cut=host.querySelector('.reel-cut'),line=host.querySelector('.reel-handoff');
-  for(const [index,shot] of reelShots.entries()){
-   showShot(index);
-   if(!reduced){
-    move(cut,[{opacity:.95,clipPath:'inset(0 0 0 0)'},{opacity:0,clipPath:'inset(0 0 0 100%)'}],{duration:450,easing:out});
-    move(copy,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,fill:'backwards',easing:out});
-    const tilt=index%2?3:-3;
-    const camera=[
-     {opacity:0,transform:'translate(-50%,-40%) rotate('+tilt+'deg) scale(.82)'},
-     {opacity:1,transform:'translate(-50%,-50%) rotate(0) scale(1)',offset:.17},
-     {opacity:1,transform:'translate(-50%,-50%) scale(1)',offset:.30},
-     {opacity:1,transform:'translate(-50%,-47%) scale(1.28)',offset:.48},
-     {opacity:1,transform:'translate(-50%,-47%) scale(1.28)',offset:.73},
-     {opacity:1,transform:'translate(-50%,-50%) scale(1)',offset:1}
-    ];
-    move(phone,camera,{duration:shot[5]*(window.LargaMotionRate??1),easing:'ease-in-out'});
-   }
-   const focusTime=index===0?1880:1300;
-   if(!await hold(focusTime))return;
+  const started=performance.now();
+  const at=ms=>hold(Math.max(0,ms-(performance.now()-started)));
+  const animate=(node,frames,duration,options={})=>{if(!reduced)move(node,frames,{duration:duration*(window.LargaMotionRate??1),...options});};
+  const splash=host.querySelector('.reel-splash'),cut=host.querySelector('.reel-cut');
+  animate(splash,[{opacity:0,transform:'translate(-50%,-44%)'},{opacity:1,transform:'translate(-50%,-50%)'}],460);
+  if(!await at(1300))return;
+  host.dataset.mode='enter';
+  showShot(0);
+  animate(splash,[{opacity:1,transform:'translate(-50%,-50%) scale(1)'},{opacity:1,transform:'translate(-50%,-50%) scale(2.3)',offset:.68},{opacity:0,transform:'translate(-50%,-50%) scale(5.8)'}],2500,{fill:'forwards',easing:'cubic-bezier(.52,0,.22,1)'});
+  animate(host.querySelector('.reel-app-screen'),[{opacity:0,clipPath:'inset(0 32% 0 32%)'},{opacity:1,clipPath:'inset(0)'}],950,{delay:1450/(window.LargaMotionRate??1),fill:'backwards'});
+  const shots=[
+   {start:3900,action:5550,finish:7600},
+   {start:8000,action:9420,finish:11100},
+   {start:11400,action:12500,finish:13420},
+   {start:14700,action:15800,finish:16800}
+  ];
+  for(const [index,shot] of shots.entries()){
+   if(!await at(shot.start))return;
+   host.dataset.mode='feature';root.dataset.reelTitle='true';
+   if(index!==0)showShot(index);
+   animate(copy,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],420);
+   if(index!==0)animate(cut,[{opacity:.9,clipPath:'inset(0 0 0 0)'},{opacity:0,clipPath:'inset(0 0 0 100%)'}],320,{easing:out});
+   if(!await at(shot.action))return;
    reel.command(host,'feature',index);
-   if(!await hold(shot[5]-focusTime-(index===3?650:0)))return;
-   if(index===3){
-    reel.command(host,'clear',index);
-    if(!reduced)move(line,[{opacity:0,transform:'scaleX(.02)'},{opacity:1,transform:'scaleX(1)'}],{duration:650,fill:'forwards'});
-    if(!await hold(650))return;
-   }
+   if(!await at(shot.finish))return;
+   reel.command(host,'finish',index);
   }
+  if(!await at(18800))return;
+  root.dataset.reelTitle='false';host.dataset.mode='end';
+  reel.command(host,'clear');
+  const ending=host.querySelector('.reel-end');
+  animate(ending.querySelector('i'),[{transform:'scaleX(.06)'},{transform:'scaleX(1)'}],750,{fill:'both',easing:out});
+  animate(ending.querySelector('strong'),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],650,{fill:'both',easing:out});
+  await at(20000);
  }
  async function transitionTo(n,from){
   if(n===reelBeat){await playReel();return;}

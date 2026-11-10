@@ -10904,81 +10904,144 @@ window.addEventListener(
             "LARGA loaded successfully."
         );
 
-        // Presentation-only controls for the bundled app copy.
+        // Showcase controls for the presentation copy. Move the real Live map
+        // and lift individual app controls onto a separate 16:9 composition.
         document.body.classList.add('pitch-demo');
         launchShown=true;
         hide(onboardingScreen);
         selectedRole='commuter';isGuest=true;currentUserName='';
         finishAuthentication();
         const pitchRoute=getRouteById('route-1');
-        const pitchPlace='Bankerohan Public Market';
-        let pitchLift=null;
-        function clearPitchLift(){pitchLift?.remove();pitchLift=null;}
-        function pitchFocus(element){
-            element?.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+        const pitchOrigin='Marfori Heights',pitchPlace='Bankerohan Public Market';
+        const pitchStage=document.createElement('div');
+        pitchStage.className='pitch-feature-stage';
+        mainApp.appendChild(pitchStage);
+        const pitchMap=document.querySelector('.live-map-section');
+        const pitchMapHome=document.createComment('live map position');
+        pitchMap.before(pitchMapHome);
+        const pitchPanel=document.createElement('div');
+        pitchPanel.className='pitch-feature-panel';
+        let pitchShot=null;
+        function clearPitchStage(){
+            pitchMapHome.after(pitchMap);
+            pitchStage.replaceChildren();
+            delete pitchStage.dataset.feature;
         }
-        function liftPitchCard(element){
-            if(!element||element.classList.contains('hidden'))return;
-            clearPitchLift();
-            pitchLift=element.cloneNode(true);
-            pitchLift.removeAttribute('id');
-            pitchLift.querySelectorAll('[id]').forEach(child=>child.removeAttribute('id'));
-            pitchLift.setAttribute('aria-hidden','true');
-            pitchLift.classList.add('pitch-lift');
-            document.body.appendChild(pitchLift);
-            if(!matchMedia('(prefers-reduced-motion: reduce)').matches)pitchLift.animate([
-                {opacity:0,transform:'translate(-50%,-39%) scale(.87)'},
-                {opacity:1,transform:'translate(-50%,-50%) scale(1)'}
-            ],{duration:480,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'});
+        function clonePitch(node,tag){
+            if(!node)return null;
+            const copy=node.cloneNode(true);
+            copy.removeAttribute('id');
+            copy.querySelectorAll('[id]').forEach(child=>child.removeAttribute('id'));
+            copy.classList.remove('hidden');
+            copy.classList.add(tag);
+            return copy;
+        }
+        function pitchText(tag,text,style){
+            const element=document.createElement(tag);
+            element.textContent=text;
+            if(style)element.className=style;
+            return element;
+        }
+        function showPitchStage(feature){
+            clearPitchStage();
+            pitchStage.dataset.feature=feature;
+            pitchPanel.replaceChildren();
+            pitchStage.append(pitchPanel);
+        }
+        function pitchBoarding(){
+            const marker=pitchText('div','', 'pitch-boarding');
+            marker.append(pitchText('span','', 'pitch-boarding-dot'),pitchText('strong','Board at '+pitchOrigin),pitchText('small',pitchRoute.name+' · '+pitchRoute.short));
+            return marker;
+        }
+        function pitchRouteStroke(){
+            const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+            svg.setAttribute('viewBox','0 0 1200 400');
+            svg.setAttribute('class','pitch-route-stroke');
+            svg.innerHTML='<path d="M30 342H320Q420 342 420 240V155Q420 81 503 81H1125" pathLength="1"/><circle cx="503" cy="81" r="10"/>';
+            return svg;
+        }
+        function showLivePitch(){
+            showPitchStage('live');
+            const [lng,lat]=pitchRoute.coordinates[42];
+            liveUserCoordinates={lat,lng};
+            openPage('live');
+            pitchStage.prepend(pitchMap);
+            void selectLiveRoute('route-1',{fitMap:true}).then(()=>{
+                if(pitchShot!==0)return;
+                liveGoogleMap?.resize?.();
+            });
+            liveGoogleMap?.resize?.();
+        }
+        function showGuidePitch(){
+            showPitchStage('guide');
+            openPage('guide');setGuideMode('browse');ensureGuideRouteSelected('route-1',false);
+            const card=clonePitch(document.querySelector('.guide-route-card[data-route-id="route-1"]'),'pitch-route-card');
+            if(card)pitchPanel.append(card);
+        }
+        function showTripsPitch(){
+            showPitchStage('trips');
+            openPage('guide');setGuideMode('plan');resetTripPlanView();
+            tripFromInput.value=pitchOrigin;tripToInput.value=pitchPlace;
+            const fields=clonePitch(tripPlannerPanel,'pitch-fields');
+            if(fields){
+                const values=fields.querySelectorAll('input');
+                if(values[0])values[0].value=pitchOrigin;
+                if(values[1])values[1].value=pitchPlace;
+                fields.querySelectorAll('.guide-save-trip-button,.plan-action-bar,.guide-place-results').forEach(node=>node.remove());
+                pitchPanel.append(fields);
+            }
+        }
+        function showDiscoverPitch(){
+            showPitchStage('discover');
+            openPage('discover');
+            discoverInput.value=pitchPlace;
+            const generation=++discoverGeneration;
+            discoverResults.replaceChildren();
+            localDiscoverPlaces(pitchPlace).forEach(place=>renderDiscoverPlace(place,generation));
+            const search=clonePitch(discoverInput.closest('.discover-search')||discoverInput,'pitch-search');
+            if(search){
+                const field=search.matches('input')?search:search.querySelector('input');
+                if(field)field.value=pitchPlace;
+                pitchPanel.append(search);
+            }
         }
         window.LargaPitchDemo={
-            clear:clearPitchLift,
+            clear(){pitchShot=null;clearPitchStage();},
             show(shot){
-                clearPitchLift();
-                if(shot===0){
-                    const [lng,lat]=pitchRoute.coordinates[42];
-                    liveUserCoordinates={lat,lng};
-                    openPage('live');
-                    void selectLiveRoute('route-1',{fitMap:true});
-                    pitchFocus(document.querySelector('.live-map-section'));
-                }else if(shot===1){
-                    openPage('guide');setGuideMode('browse');
-                    ensureGuideRouteSelected('route-1',false);
-                    pitchFocus(document.querySelector('.guide-route-card[data-route-id="route-1"]'));
-                }else if(shot===2){
-                    openPage('guide');setGuideMode('plan');resetTripPlanView();
-                    tripFromInput.value='Marfori Heights';tripToInput.value=pitchPlace;
-                    pitchFocus(tripPlannerPanel);
-                }else{
-                    openPage('discover');
-                    discoverInput.value=pitchPlace;
-                    const generation=++discoverGeneration;
-                    discoverResults.replaceChildren();
-                    discoverStatus.textContent='';
-                    localDiscoverPlaces(pitchPlace).forEach(place=>renderDiscoverPlace(place,generation));
-                    pitchFocus(discoverInput);
-                }
+                pitchShot=shot;
+                [showLivePitch,showGuidePitch,showTripsPitch,showDiscoverPitch][shot]?.();
             },
             feature(shot){
+                if(shot!==pitchShot)return;
                 if(shot===0){
-                    const eta=get('liveNearestEta');
-                    if(eta?.textContent.trim()&&!eta.classList.contains('hidden'))liftPitchCard(eta);
-                    else pitchFocus(document.querySelector('.live-nearest-card'));
+                    if(!matchMedia('(prefers-reduced-motion: reduce)').matches)liveGoogleMap?.panBy?.([32,-18],{duration:1100});
+                    updateLiveTrackingPanels();
+                    const eta=clonePitch(get('liveNearestEta'),'pitch-eta');
+                    if(eta?.textContent.trim())pitchPanel.append(eta);
+                    else pitchPanel.append(pitchText('div','Vehicle approaching','pitch-eta'));
                 }else if(shot===1){
-                    liftPitchCard(document.querySelector('.guide-route-card[data-route-id="route-1"]'));
+                    pitchStage.prepend(pitchRouteStroke());
+                    pitchPanel.append(pitchBoarding());
                 }else if(shot===2){
-                    const from={label:'Marfori Heights'},to={label:pitchPlace};
+                    const from={label:pitchOrigin},to={label:pitchPlace};
                     const plan=findGuideTripPlan(from.label,to.label,[from,to]);
-                    if(!plan.error){
-                        plan.endpoints=[from,to];applyTripPlan(plan);
-                        const save=get('saveSuggestedTripButton');
-                        pitchFocus(save);
-                        liftPitchCard(save);
-                    }
+                    if(plan.error)return;
+                    plan.endpoints=[from,to];applyTripPlan(plan);
+                    const result=clonePitch(get('tripRideInstructions'),'pitch-trip-result');
+                    if(result){const disclosure=result.matches('details')?result:result.querySelector('details');if(disclosure)disclosure.open=true;pitchPanel.append(result);}
                 }else{
-                    const card=discoverResults.querySelector('.discover-place-card');
-                    pitchFocus(card);
-                    liftPitchCard(card?.querySelector('.discover-place-copy'));
+                    const card=clonePitch(discoverResults.querySelector('.discover-place-card'),'pitch-place');
+                    if(card)pitchPanel.append(card);
+                }
+            },
+            finish(shot){
+                if(shot!==pitchShot)return;
+                if(shot===2&&currentTripPlan){
+                    const save=clonePitch(get('saveSuggestedTripButton'),'pitch-save');
+                    if(save){save.textContent='✓ Trip saved';pitchPanel.append(save);}
+                }else if(shot===3){
+                    pitchStage.prepend(pitchRouteStroke());
+                    pitchPanel.querySelector('.main-button')?.classList.add('pitch-plan-focus');
                 }
             }
         };

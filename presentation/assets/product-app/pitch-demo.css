@@ -1,6 +1,44 @@
 html,body{scrollbar-width:none}::-webkit-scrollbar{display:none}
-body.pitch-demo :is(.sponsor-opening-overlay,.sponsor-preview-overlay,[id*="SponsorBanner"],.sponsored-route-banner){display:none!important}
-.pitch-lift{position:fixed!important;inset:auto!important;left:50%!important;top:52%!important;width:76%!important;max-width:320px!important;height:auto!important;max-height:48vh!important;overflow:hidden!important;z-index:2000!important;pointer-events:none!important;transform:translate(-50%,-50%);box-sizing:border-box;box-shadow:0 14px 55px #020a20a8;outline:1px solid #ff974d;border-radius:18px;opacity:1}
-.pitch-lift:is(button,.live-eta){padding:12px 18px;background:#1d426b;color:#fff}
-body.pitch-demo .launch-ad-overlay{display:none!important}
-body.pitch-demo :is(#liveLocationGate,#liveLocationButton){display:none!important}
+body.pitch-demo :is(.sponsor-opening-overlay,.sponsor-preview-overlay,[id*="SponsorBanner"],.sponsored-route-banner,.launch-ad-overlay,#liveLocationGate,#liveLocationButton){display:none!important}
+body.pitch-demo,body.pitch-demo #mainApp{background:transparent!important;max-width:none!important;width:100vw!important;height:100vh!important}
+body.pitch-demo #mainApp>.pitch-feature-stage:not([data-feature]){display:none}
+body.pitch-demo #mainApp:has(.pitch-feature-stage[data-feature])>:not(.pitch-feature-stage){visibility:hidden}
+.pitch-feature-stage{position:fixed;inset:0;overflow:hidden;z-index:900;background:radial-gradient(ellipse at 50% 64%,#205889,#092744 72%);font-family:inherit}
+.pitch-feature-stage[data-feature="guide"]{background:radial-gradient(ellipse at 48% 60%,#14647f,#09253d 73%)}
+.pitch-feature-stage[data-feature="trips"]{background:radial-gradient(ellipse at 51% 62%,#305786,#101e3e 75%)}
+.pitch-feature-stage[data-feature="discover"]{background:radial-gradient(ellipse at 49% 58%,#255b77,#0b2944 75%)}
+.pitch-feature-panel{position:absolute;inset:24% 13% 8%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;z-index:2}
+#mainApp .pitch-feature-stage[data-feature="live"] .live-map-section{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;max-width:none!important;margin:0!important;border-radius:0!important;overflow:hidden}
+#mainApp .pitch-feature-stage[data-feature="live"] #liveGoogleMap{height:100%!important;width:100%!important;min-height:100%!important;border-radius:0!important}
+.pitch-feature-stage[data-feature="live"]:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(#04172cec,transparent 29%,transparent 74%,#031b3060);z-index:1}
+.pitch-feature-stage .live-map-topbar{top:auto!important;bottom:28px!important;left:28px!important}
+.pitch-feature-stage .live-map-legend{display:none!important}
+#mainApp .pitch-eta{position:absolute;left:57%;top:58%;padding:17px 28px;border:2px solid #ffab6c;border-radius:50px;background:#0b3157;color:#fff;font-size:34px;line-height:1.05;box-shadow:0 9px 40px #021526a6;animation:pitch-eta-in .48s cubic-bezier(.19,1,.22,1) both}
+#mainApp .pitch-route-card{width:min(480px,82vw)!important;min-height:170px!important;margin:0!important;padding:22px!important;border-radius:20px;animation:pitch-route-in .68s cubic-bezier(.19,1,.22,1) both}
+.pitch-route-card :is(h2,h3,strong){font-size:32px!important}
+.pitch-route-card p{font-size:20px!important}
+.pitch-boarding{width:min(480px,82vw);padding:18px 22px;display:grid;grid-template-columns:16px 1fr;align-items:center;column-gap:14px;row-gap:6px;color:#f3fbff;background:#0d2c48;border:1px solid #7fc5ea70;border-radius:16px;animation:pitch-rise .6s cubic-bezier(.2,.7,.22,1) both}
+.pitch-boarding strong{font-size:24px}
+.pitch-boarding small{grid-column:2;color:#bfe2f6;font-size:16px}
+.pitch-boarding-dot{width:13px;height:13px;border-radius:50%;background:#ff8233;box-shadow:0 0 18px #ff8233}
+.pitch-route-stroke{position:absolute;inset:28% 4% auto;width:92%;height:65%;fill:#ff9655;opacity:.7}
+.pitch-route-stroke path{fill:none;stroke:#ff9655;stroke-width:3;stroke-linecap:round;stroke-dasharray:1;animation:pitch-trace .85s ease both}
+#mainApp .pitch-fields{width:min(720px,86vw);max-width:none;margin:0;padding:25px;border:1px solid #94c8eb75;border-radius:22px;background:#dbeafe;box-shadow:0 18px 50px #020b2d57;animation:pitch-rise .56s cubic-bezier(.19,1,.22,1) both}
+#mainApp .pitch-fields input{font-size:21px!important}
+#mainApp .pitch-fields label{font-size:14px!important}
+.pitch-fields .planner-field:first-child{animation:pitch-rise .46s .12s both}
+.pitch-fields .planner-field:nth-child(2){animation:pitch-rise .46s .28s both}
+#mainApp .pitch-trip-result{width:min(600px,80vw);max-height:245px;overflow:hidden;margin:0;border-radius:20px;padding:14px 22px;background:#f0f8ff;color:#112a4b;animation:pitch-rise .48s ease both}
+.pitch-feature-panel:has(.pitch-trip-result) .pitch-fields{zoom:.82}
+#mainApp .pitch-save{margin:0;min-height:0;width:auto;padding:11px 24px;font-size:20px;background:#f98031;color:#132239;border-radius:40px;animation:pitch-eta-in .45s cubic-bezier(.19,1,.22,1) both}
+#mainApp .pitch-search{width:min(580px,80vw);background:#e8f3ff;color:#132e4c;padding:14px 20px;border-radius:40px;font-size:21px;animation:pitch-rise .4s ease both}
+#mainApp .pitch-place{width:min(540px,78vw);max-width:none;margin:0;overflow:hidden;border-radius:20px;background:#f0f8ff;animation:pitch-card-unfold .65s cubic-bezier(.2,.7,.22,1) both}
+#mainApp .pitch-place :is(.discover-place-visual,.discover-photo-gallery,.discover-photo-frame){max-height:170px;min-height:90px;overflow:hidden}
+#mainApp .pitch-place h2{font-size:27px}
+#mainApp .pitch-place .pitch-plan-focus{outline:3px solid #ff8c42;outline-offset:3px;box-shadow:0 0 24px #ff985f}
+@keyframes pitch-route-in{from{opacity:.15;transform:translateY(20px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pitch-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pitch-eta-in{from{opacity:0;transform:translateY(16px) scale(.8)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pitch-card-unfold{from{opacity:0;clip-path:inset(0 0 100% 0);transform:translateY(-10px)}to{opacity:1;clip-path:inset(0);transform:translateY(0)}}
+@keyframes pitch-trace{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.pitch-feature-stage *{animation:none!important}}
