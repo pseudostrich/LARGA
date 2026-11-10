@@ -1,0 +1,14 @@
+/* Preserve the app's map sizing after MapLibre adds its container class. */
+#guideGoogleMap.maplibregl-map,
+#liveGoogleMap.maplibregl-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+#guideGoogleMap .maplibregl-ctrl-bottom-right,
+#liveGoogleMap .maplibregl-ctrl-bottom-right { bottom: 6px; right: 5px; }
+#guideGoogleMap .maplibregl-ctrl-attrib,
+#liveGoogleMap .maplibregl-ctrl-attrib { font-size: 10px; }
+#liveGoogleMap .maplibregl-ctrl-group { margin-bottom: 36px; }
+.larga-open-marker button { pointer-events: auto; }
+.lab-walking { margin-top: 6px; }
+.lab-walking button { min-height: 38px; border: 1px solid var(--ui-border); border-radius: 10px; padding: 6px 10px; color: var(--ui-ink); background: var(--ui-surface); cursor: pointer; }
+.lab-walking p:empty { display: none; }
+.lab-walking a[hidden] { display: none; }

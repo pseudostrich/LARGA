@@ -1,0 +1,51 @@
+@font-face{font-family:'General Sans';src:url('assets/fonts/GeneralSans-Variable.woff2') format('woff2');font-style:normal;font-weight:200 900;font-display:swap}
+@font-face{font-family:'Montserrat';src:url('assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');font-style:normal;font-weight:100 900;font-display:swap}
+/* LARGA PRESENTATION DESIGN SYSTEM — Based on the user-supplied LARGA CSS */
+/* When you supply your original font files, we can enable their @font-face declarations. */
+:root {
+  --orange:#f56600;--orange-light:#ff7919;--blue-top:#075dbc;--blue-mid:#064a96;--navy:#002b56;
+  --ink:#05101c;--pale:#eef4fc;--muted:#94aabe;
+  --ease-in-out:cubic-bezier(.65,0,.35,1);--ease-out:cubic-bezier(.22,1,.36,1);
+  --font:'General Sans','Segoe UI',Arial,sans-serif;--font-secondary:'Montserrat','Segoe UI',Arial,sans-serif;
+}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{color:white;background:#03080f;font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--orange-light);outline-offset:4px}.presentation{width:100vw;height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:10px 20px 14px;background:radial-gradient(ellipse at 50% 6%,#0b2034 0%,#03080f 75%)}
+.stage{width:min(100%,calc((100dvh - 80px)*16/9));aspect-ratio:16/9;position:relative;overflow:hidden;background:#01060d;flex:none;isolation:isolate;box-shadow:0 25px 85px #000a;border:1px solid #24374a66}
+.scene-host,.scene-root{position:absolute;inset:0}.scene-root{overflow:hidden}.stage-hud,.stage-bottom{position:absolute;left:4%;right:4%;z-index:30;display:flex;justify-content:space-between;pointer-events:none;font-size:clamp(7px,.75vw,12px);letter-spacing:.21em;font-weight:700;color:#8da7c0}.stage-hud{top:4.8%;align-items:center}.stage-hud-left{display:flex;align-items:center;gap:11px}.stage-hud-square{display:inline-block;width:7px;height:7px;background:var(--orange);box-shadow:0 0 17px #f566007a;transform:rotate(45deg)}.stage-hud-right{color:#6e889f}.stage-bottom{bottom:5.8%;color:#8ca3b8}.stage-progress{position:absolute;bottom:0;left:0;height:3px;right:0;z-index:31;background:#18364c6b}.stage-progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--orange),#ffb55a);transition:width .72s var(--ease-in-out);box-shadow:0 0 13px #f566007a}
+.control-strip{width:min(100%,calc((100dvh - 80px)*16/9));display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px;min-height:46px}.control-brand{display:flex;align-items:center;gap:14px;white-space:nowrap}.control-brand img{width:77px;height:auto}.control-brand>span{color:#788da0;font-size:10px;letter-spacing:.15em;font-weight:750}.control-brand i{font-style:normal;color:var(--orange)}.control-center{display:flex;align-items:center;gap:12px}.control-button{width:37px;height:37px;border:1px solid #29455a;background:#101c29;color:#dbe9f8;border-radius:12px;font-size:19px;transition:background .25s var(--ease-out),border-color .25s var(--ease-out),transform .25s var(--ease-out)}.control-button:hover:not(:disabled){background:#223549;border-color:#5c7d97;transform:translateY(-2px)}.control-button:disabled{opacity:.25;cursor:default}.control-button.is-main{background:var(--orange);border-color:var(--orange);color:#fff}.control-button.is-main:hover:not(:disabled){background:#ff8529}.control-status{font:700 10px/1.2 var(--font-secondary);letter-spacing:.17em;color:#c2d1df;min-width:106px;text-align:center}.control-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px}.tool-button{border:0;background:transparent;color:#91a8bc;font-size:10px;font-weight:750;letter-spacing:.12em;padding:9px 2px;white-space:nowrap}.tool-button:hover{color:#fff}.tool-button[aria-pressed="true"]{color:#ff9c50}kbd{font-family:var(--font-secondary);color:#59728a;margin-left:3px;font-size:10px}
+.presenter-notes{position:absolute;z-index:60;left:4%;bottom:11%;width:min(49%,600px);background:rgba(6,19,31,.93);border:1px solid #5b75935e;box-shadow:0 18px 62px #000a;border-radius:18px;padding:clamp(13px,1.7vw,26px);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.presenter-notes[hidden]{display:none}.notes-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:clamp(8px,.85vw,11px);letter-spacing:.15em;color:#ff9a51}.notes-top span{color:#68829a}.notes-line{font-size:clamp(12px,1.5vw,23px);font-weight:680;line-height:1.35;margin:17px 0 9px}.notes-details,.notes-audio{font-size:clamp(9px,.95vw,14px);line-height:1.55;color:#b0c4d5;margin:7px 0}.notes-audio{color:#f4b98e}.onstage-alert{position:absolute;z-index:70;top:10%;left:50%;transform:translate(-50%,-12px);background:#111f30e8;border:1px solid #7386a35d;color:#fff;padding:10px 17px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;font-size:12px;white-space:nowrap}.onstage-alert.is-visible{opacity:1;transform:translate(-50%,0)}
+.presentation:fullscreen{background:#01050a;padding:0;gap:0;justify-content:center}.presentation:fullscreen .stage{width:min(100vw,177.77778vh);height:min(100vh,56.25vw);border:0;box-shadow:none}.presentation:fullscreen .control-strip{display:none}.presentation:fullscreen .stage-hud,.presentation:fullscreen .stage-bottom{opacity:.75}
+@media(max-width:900px){.presentation{padding:10px;gap:9px}.control-strip{grid-template-columns:1fr auto}.control-brand>span,.control-actions{display:none}.control-center{justify-self:end}.stage-hud,.stage-bottom{font-size:8px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
+/* v0.2 fullscreen is the film: no permanent annotations or controller chrome. */
+.presentation:fullscreen .stage-hud,
+.presentation:fullscreen .stage-bottom,
+.presentation:fullscreen .stage-progress,
+.presentation:fullscreen .presenter-notes,
+.presentation:fullscreen .onstage-alert,
+.presentation:fullscreen .control-strip{display:none!important}
+.presentation.cursor-hidden:fullscreen,.presentation.cursor-hidden:fullscreen *{cursor:none!important}
+/* Windowed display can retain the editing/diagnostic controls. */
+
+/* Seamless presentation canvas, including displays that are not 16:9. */
+.presentation{padding:0;gap:0;background:#064a96}
+.stage{border:0;box-shadow:none;width:100vw;flex:1;aspect-ratio:auto;min-height:0;background:#064a96}
+.stage-hud,.stage-bottom,.stage-progress{display:none}
+.control-strip{width:100%;padding:6px 20px;background:#031326}
+.presentation:fullscreen .stage{width:100vw;height:100dvh;flex:none}
+
+.trigger-jump{display:flex;align-items:center;gap:6px;margin:0}.trigger-jump label{font-size:9px;color:#91a8bc;letter-spacing:.1em}.trigger-jump input{width:54px;height:32px;border:1px solid #355269;border-radius:7px;background:#101c29;color:#fff;font:600 13px var(--font);padding:4px 6px}.trigger-jump button{height:32px;padding:0 9px;border:1px solid #355269;border-radius:7px;background:#182c3d;color:#ffab70;font-size:10px;font-weight:700}.trigger-jump input:focus-visible{outline:2px solid #ff7919;outline-offset:2px}.presentation:fullscreen .trigger-jump{display:none}@media(max-width:650px){.control-brand{display:none}.control-strip{display:flex;justify-content:center}.control-center{gap:6px}.control-status{min-width:65px}.trigger-jump label{display:none}}
+
+.scene-slot{position:absolute;inset:0;isolation:isolate}.scene-root{isolation:isolate}
+
+/* Presenter topic shortcuts: scene starts come from the live sequence, never fixed numbers. */
+.presenter-tabs .topic-nav{display:flex;align-items:center;gap:3px;flex:1;min-width:0;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:#31516b transparent;padding:2px 0}
+.presenter-tabs .topic-nav button{flex:none;padding:7px 9px;border-radius:5px;font:550 10px/1.2 var(--font);letter-spacing:0;white-space:nowrap;color:#8eafc8}
+.presenter-tabs .topic-nav button:hover:not(:disabled){background:#ffffff0b;color:#fff}
+.presenter-tabs .topic-nav button[aria-current="location"]{background:#f566001a;border-color:#ff791950;color:#ffb57e}
+.presenter-tabs .topic-nav button:disabled{opacity:.5;cursor:default}
+.presenter-tabs>span:first-child{font-size:9px;letter-spacing:.06em;white-space:nowrap}
+.presentation#presentation:fullscreen>.presenter-tabs{display:flex;position:absolute;inset:0 0 auto;z-index:100;transform:translateY(calc(-100% + 6px));opacity:0;transition:transform .18s ease,opacity .18s ease}
+.presentation:fullscreen>.presenter-tabs:hover,.presentation:fullscreen>.presenter-tabs:focus-within{transform:translateY(0);opacity:1}
+@media(max-width:1200px){.presenter-tabs>span:first-child{display:none}.presenter-tabs{padding-inline:10px;gap:7px}.presenter-tabs .topic-nav button{font-size:10px;padding:7px 8px}}
+
+/* Keep scene-specific branding for the reveal and closing. */
+.market-brand,.biz-brand,.position-brand,.gtm-brand,.fin-brand,.end-brand>img,.end-brand>span,.stage-hud-left{visibility:hidden}

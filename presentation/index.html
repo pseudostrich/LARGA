@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#061529">
+  <title>LARGA | Final Presentation</title>
+  <link rel="icon" href="assets/branding/larga-emblem-orange.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=1.15.0">
+  <link rel="stylesheet" href="scenes/scene-00.css?v=shadow-fade">
+  <link rel="stylesheet" href="scenes/scene-01.css?v=1.14.0">
+  <link rel="stylesheet" href="scenes/scene-02.css?v=app-reel-clean">
+  <link rel="stylesheet" href="scenes/scene-02-centered.css?v=label">
+  <script src="motion-timing.js" defer></script>
+  <script src="scenes/scene-00.js?v=ripple-fade" defer></script>
+  <script src="scenes/scene-01-data.js" defer></script>
+  <script src="scenes/scene-01.js?v=quicker-pitch" defer></script>
+  <script src="scenes/scene-02-data.js" defer></script>
+  <script src="scenes/scene-02-centered.js" defer></script>
+  <script src="scenes/scene-02.js?v=centered-vo-2" defer></script>
+  <link rel="stylesheet" href="scenes/scene-04.css?v=som-circle">
+  <script src="scenes/scene-04.js?v=citywide-benchmark" defer></script>
+  <link rel="stylesheet" href="scenes/scene-05.css">
+  <script src="scenes/scene-05.js?v=quicker-pitch" defer></script>
+  <link rel="stylesheet" href="scenes/scene-06.css">
+  <script src="scenes/scene-06.js?v=quicker-pitch" defer></script>
+  <link rel="stylesheet" href="scenes/scene-07.css">
+  <script src="scenes/scene-07-map.js" defer></script>
+  <script src="scenes/scene-07-morph.js" defer></script>
+  <script src="scenes/scene-07.js?v=quicker-pitch" defer></script>
+  <link rel="stylesheet" href="scenes/scene-08.css?v=1.16.1">
+  <script src="finance.js" defer></script>
+  <script src="scenes/scene-08-data.js?v=final-pitch" defer></script>
+  <script src="scenes/scene-08.js?v=quicker-pitch" defer></script>
+  <link rel="stylesheet" href="scenes/scene-09.css">
+  <script src="scenes/scene-09.js?v=quicker-pitch" defer></script>
+  <link rel="stylesheet" href="scenes/scene-10.css">
+  <script src="scenes/scene-10.js?v=quicker-pitch" defer></script>
+  <script src="scenes/presentation-sequence.js?v=3ps-first" defer></script>
+  <script src="script.js?v=app-reel" defer></script>
+  <link rel="stylesheet" href="review.css?v=1.14.0">
+  <script src="review-data.js?v=citywide-benchmark" defer></script>
+  <script src="review.js?v=p-shortcut" defer></script>
+  <link rel="stylesheet" href="mobile.css?v=1.16.0">
+  <script src="mobile.js?v=1.16.0" defer></script>
+</head>
+<body>
+  <div class="presentation" id="presentation">
+    <header class="presenter-tabs"><span>PRESENTER VIEW</span><nav class="topic-nav" aria-label="Pitch sections"><button type="button" data-topic-scene="00">Intro</button><button type="button" data-topic-scene="01">1 · 3Ps & Validation</button><button type="button" data-topic-scene="04">2 · Target Market</button><button type="button" data-topic-scene="05">3 · Competition & Model</button><button type="button" data-topic-scene="07">4 · Go-to-Market</button><button type="button" data-topic-scene="08">5 · Financial Model</button><button type="button" data-topic-scene="09">6 · Execution & Closing</button></nav><span id="presenterViewStatus" class="presenter-view-status" role="status"></span><div role="tablist" aria-label="Presenter views"><button id="presentationTab" type="button" role="tab" aria-selected="true" aria-controls="stage" aria-keyshortcuts="P">Presentation <kbd>P</kbd></button><button id="reviewTab" type="button" role="tab" aria-selected="false" aria-controls="reviewView">Review <kbd>R</kbd></button></div></header>
+    <aside class="rotate-prompt" role="status" aria-label="Turn your phone landscape for a better experience"><svg class="rotate-phone-icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="41" y="25" width="38" height="70" rx="7" transform="rotate(35 60 60)"/><path class="rotate-arrow" d="M23 61A38 38 0 0 1 85 28 M86 14V29H71 M97 59A38 38 0 0 1 35 92 M34 106V91H49"/><path d="M45 82L55 89"/></svg><h1>Turn your phone landscape<br>for a better experience.</h1><p>Tap left to go back · Tap right to continue</p></aside>
+    <main class="stage" id="stage" tabindex="-1" aria-label="LARGA final product pitch scene" role="region">
+      <div class="scene-host" id="sceneHost"></div><button class="mobile-tap-zone mobile-tap-left" id="mobilePrevious" type="button" aria-label="Previous slide"></button><button class="mobile-tap-zone mobile-tap-right" id="mobileNext" type="button" aria-label="Next slide"></button>
+      <div class="stage-hud" aria-hidden="true">
+        <div class="stage-hud-left"><span class="stage-hud-square"></span><span>LARGA / FINAL PITCH</span></div>
+        <span class="stage-hud-right" id="hudScene">00 — THE WAIT</span>
+      </div>
+      <div class="stage-bottom" aria-hidden="true"><span id="stageBeatLabel">PRESS → TO BEGIN</span><span id="stageBeatCount">00 / 08</span></div>
+      <div class="stage-progress" aria-hidden="true"><div id="stageProgressFill"></div></div>
+      <div class="onstage-alert" id="onstageAlert" role="status" aria-live="polite"></div>
+    </main>
+    <section id="reviewView" hidden aria-label="Consolidated review slides"></section>
+    <footer class="control-strip" id="controlStrip">
+      <div class="control-brand"><img src="assets/branding/larga-wordmark.png" alt="LARGA"/></div>
+      <div class="control-center">
+        <button id="previousButton" class="control-button" type="button" title="Previous beat (left arrow)" aria-label="Previous animation beat">←</button>
+        <span class="control-status" id="controlStatus">STANDBY</span><form class="trigger-jump" id="triggerJumpForm"><label for="triggerJumpInput">TRIGGER</label><input id="triggerJumpInput" type="number" min="1" step="1" required inputmode="numeric" aria-label="Jump to trigger number"><button type="submit">GO</button></form>
+        <button id="nextButton" class="control-button is-main" type="button" title="Next beat (right arrow)" aria-label="Next animation beat">→</button>
+      </div>
+      <div class="control-actions">
+        <button id="soundButton" class="tool-button" type="button" title="Mute all audio (M)" aria-label="Mute all audio" aria-pressed="false">MUTE <kbd>M</kbd></button>
+        <button id="fullscreenButton" class="tool-button" type="button" title="Fullscreen (F)">FULLSCREEN <kbd>F</kbd></button>
+      </div>
+    </footer>
+  </div>
+  <audio id="narratorAudio" preload="none"></audio>
+  <audio id="musicAudio" preload="none" loop></audio>
+</body>
+</html>
+

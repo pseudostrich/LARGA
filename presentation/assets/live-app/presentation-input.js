@@ -1,0 +1,6 @@
+/* Presentation-only keyboard bridge; original app source is untouched. */
+(function(){if(parent===window)return;let accessible=false;try{accessible=parent.location.origin===location.origin}catch{}
+document.addEventListener('keydown',event=>{if(accessible){try{if(parent.LargaPresentation?.handleKey(event)){event.stopImmediatePropagation();return}}catch{accessible=false}}const isR=event.code==='KeyR'||String(event.key||'').toLowerCase()==='r';if(!isR||event.repeat||event.ctrlKey||event.metaKey||event.altKey||event.target?.matches?.('textarea,select,[contenteditable="true"],input:not([type="number"])'))return;event.preventDefault();event.stopImmediatePropagation();parent.postMessage({type:'larga-review-toggle'},location.origin==='null'?'*':location.origin)},true);
+if(!accessible)return;document.addEventListener('mousedown',event=>{if(event.button!==3&&event.button!==4)return;event.preventDefault();event.stopImmediatePropagation();if(event.button===4)parent.LargaPresentation?.next();else parent.LargaPresentation?.previous()},true);
+for(const type of ['auxclick','mouseup'])document.addEventListener(type,event=>{if(event.button===3||event.button===4){event.preventDefault();event.stopImmediatePropagation()}},true);
+})();

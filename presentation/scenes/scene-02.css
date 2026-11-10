@@ -1,0 +1,94 @@
+.scene-02{position:absolute;inset:0;overflow:hidden;color:#fff;container-type:size;background:#002b56;font-family:'General Sans',sans-serif}
+.reveal-backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 48% 40%,#075dbc,#002b56 85%)}
+.reveal-backdrop>.research-background{position:absolute;inset:0}.reveal-entering .reveal-backdrop{opacity:0}
+.reveal-seed,.reveal-brand,.product-phone,.reveal-map{position:absolute;transform:translate(-50%,-50%);transform-origin:center}
+.reveal-seed{left:50%;top:50%;width:8cqw;opacity:0;visibility:hidden}.reveal-seed img{width:100%;display:block}.reveal-seed span{position:absolute;inset:-20%;border:2px solid #ff7919;border-radius:50%;opacity:0}
+[data-beat="0"] .reveal-seed{opacity:1;visibility:visible}
+.reveal-brand{left:12%;top:10%;width:15cqw;z-index:4;opacity:1}.reveal-brand>img{display:block;width:100%;height:auto}.reveal-brand p{margin:1cqh 0 0;font-size:.9cqw;letter-spacing:.13em;white-space:nowrap}.reveal-brand p span{display:inline-block}
+[data-beat="0"] .reveal-brand{opacity:0;visibility:hidden}[data-beat="1"] .reveal-brand{left:50%;top:47%;width:36cqw}[data-beat="1"] .reveal-brand p{font-size:1.7cqw;text-align:center;margin-top:4cqh}
+.reveal-heading{position:absolute;left:7%;top:20%;margin:0;z-index:4;font-size:4.5cqw;line-height:1.06;letter-spacing:-.045em;font-weight:750;max-width:64%;}.reveal-heading>span{display:block}.reveal-heading em{font-style:normal;color:#ff7919}
+[data-beat="0"] .reveal-heading,[data-beat="1"] .reveal-heading{visibility:hidden}[data-beat="2"] .reveal-heading{top:38%;max-width:55%;font-size:5.2cqw}
+.product-phone{left:82%;top:57%;height:72cqh;aspect-ratio:390/780;z-index:5;border-radius:3cqw;background:#001a32;box-shadow:0 3cqh 6cqh #00172b80;opacity:1;overflow:hidden;will-change:transform}
+[data-beat="0"] .product-phone,[data-beat="1"] .product-phone{opacity:0;visibility:hidden}[data-beat="2"] .product-phone{left:74%;height:76cqh}
+.product-phone-stroke{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;fill:none;stroke:#ff7919;stroke-width:3}
+.product-screen{position:absolute;inset:6px;overflow:hidden;border-radius:2cqw;background:#fff}.product-screen iframe{border:0;width:390px;height:780px;transform:scale(var(--preview-scale,1));transform-origin:0 0;pointer-events:none;display:block;background:#fff}
+.product-speaker{position:absolute;left:42%;top:1%;width:16%;height:3px;border-radius:3px;background:#14384b;z-index:4}
+.reveal-map{left:34%;top:64%;width:58%;height:57%;opacity:0;visibility:hidden;z-index:2;border-radius:2cqw;background:linear-gradient(145deg,#063d7080,#001f4150);box-shadow:0 2cqh 5cqh #00182b40;overflow:hidden;will-change:transform}
+[data-beat="3"] .reveal-map,[data-beat="4"] .reveal-map,[data-beat="5"] .reveal-map,[data-beat="6"] .reveal-map{opacity:1;visibility:visible}
+.reveal-map-svg{width:100%;height:100%;overflow:visible}.reveal-road{fill:none;stroke-linecap:round;stroke-linejoin:round}.support-road{stroke:#79adcc;stroke-width:3;opacity:.35}.selected-road{stroke:#ff7919;stroke-width:7;stroke-dasharray:1;stroke-dashoffset:0;filter:drop-shadow(0 2px 5px #f5660040)}
+.reveal-endpoint circle{fill:#fff;stroke:#f56600;stroke-width:5}.reveal-endpoint text,.discover-pins text{fill:#fff;font-size:18px;text-anchor:middle;font-weight:700;paint-order:stroke;stroke:#002b56;stroke-width:5px;stroke-linejoin:round}
+.map-geometry-note{position:absolute;bottom:1.5cqh;left:2cqw;font-size:.75cqw;color:#c9ddeb}.reveal-jeep,.live-dotted-link,.discover-pins{visibility:hidden}.live-dotted-link{stroke:#fff;stroke-width:2;stroke-dasharray:5 8;opacity:.55}[data-beat="4"] .reveal-jeep,[data-beat="4"] .live-dotted-link{visibility:visible}.discover-pins circle{fill:#ff7919;stroke:white;stroke-width:3}[data-beat="6"] .discover-pins{visibility:visible}[data-beat="6"] .reveal-endpoint{visibility:hidden}
+.reveal-route-caption,.reveal-eta,.reveal-trip,.reveal-place{position:absolute;z-index:4;opacity:0;visibility:hidden}.reveal-route-caption{left:8%;top:34%;max-width:54%}.reveal-route-caption small,.reveal-place small{display:block;color:#ffab69;font-size:.85cqw;letter-spacing:.13em}.reveal-route-caption strong{display:block;font-size:1.4cqw;margin:.4cqh 0}.reveal-route-caption>span{font-size:.9cqw;color:#d1e5f3}.reveal-route-caption p{font-size:.8cqw;margin:.4cqh 0;color:#afcbdc}[data-beat="3"] .reveal-route-caption{visibility:visible;opacity:1}
+.reveal-eta{left:43%;top:37%;padding:1.4cqw;background:#002346eb;border:1px solid #ffffff20;border-radius:1cqw;box-shadow:0 1cqh 3cqh #00182b60}.reveal-eta>span{font-size:.8cqw;letter-spacing:.08em}.reveal-eta strong{display:block;font-size:4cqw;line-height:1.1;color:#ff7919}.reveal-eta strong small{font-size:1cqw;color:white}.reveal-eta p{font-size:.8cqw;margin:.5cqh 0 0;color:#bad6e9}[data-beat="4"] .reveal-eta{visibility:visible;opacity:1}
+[data-beat="5"] .reveal-map{left:25%;width:42%}.reveal-trip{left:49%;top:40%;width:20%}.reveal-trip>div{position:relative;padding:0 0 4cqh 1.6cqw;border-left:2px solid #ff7919}.reveal-trip>div:before{content:'';position:absolute;width:.6cqw;height:.6cqw;left:-.37cqw;top:.3cqh;border-radius:50%;background:#ff7919;box-shadow:0 0 0 .25cqw #104c7c}.reveal-trip span{display:block;font-size:.8cqw;color:#ffab69;letter-spacing:.12em}.reveal-trip strong{display:block;font-size:1.25cqw;margin-top:.6cqh}.reveal-trip>small{font-size:.8cqw;color:#bad6e9}[data-beat="5"] .reveal-trip{visibility:visible;opacity:1}
+.reveal-place{left:9%;top:79%;padding:1cqw 1.5cqw;background:#002b56ed;border:1px solid #ffffff20;border-radius:.9cqw}.reveal-place strong{display:block;font-size:1.5cqw;margin:.5cqh 0}.reveal-place>span{font-size:.9cqw;color:#d8eaf5}[data-beat="6"] .reveal-place{visibility:visible;opacity:1}
+.reveal-simulation{position:absolute;left:8%;bottom:3%;z-index:6;font-size:1.05cqw;font-weight:700;letter-spacing:.16em;color:#ffd3b1;visibility:hidden}[data-beat="4"] .reveal-simulation{visibility:visible}
+[data-beat="7"] .reveal-heading{left:8%;top:27%;width:84%;max-width:none;text-align:center;font-size:4.7cqw}[data-beat="7"] .product-phone{left:50%;top:77%;height:32cqh}
+.reveal-feature-orbit{position:absolute;inset:0;z-index:6;visibility:hidden;pointer-events:none}.reveal-feature-orbit>span{position:absolute;opacity:0;top:67%;font-size:1.5cqw;font-weight:700;letter-spacing:.12em}.reveal-feature-orbit>span:nth-child(1){left:28%}.reveal-feature-orbit>span:nth-child(2){right:28%}.reveal-feature-orbit>span:nth-child(3){left:28%;top:82%}.reveal-feature-orbit>span:nth-child(4){right:24%;top:82%}.reveal-feature-orbit svg{position:absolute;inset:0;width:100%;height:100%;opacity:0;fill:none;stroke:#ff7919;stroke-width:2;stroke-dasharray:1}[data-beat="7"] .reveal-feature-orbit{visibility:visible}
+.reveal-closing-line{position:absolute;left:32%;top:53%;width:36%;height:3px;background:#ff7919;opacity:0}[data-beat="7"] .reveal-closing-line{opacity:1}
+.reveal-bridge-ghost{position:absolute;z-index:9;transform-origin:center;pointer-events:none}.reveal-bridge-ghost>svg{width:100%;height:100%;fill:none;stroke:#ff7919;stroke-width:2}.reveal-bridge-ghost .phone-screen-glow{position:absolute;inset:10%;background:#ff791910}
+@media(prefers-reduced-motion:reduce){.scene-02 *{animation:none!important;transition:none!important}}
+
+/* Feature close-ups are separate manual beats. Keep iframe at a stable native resolution. */
+.product-phone{overflow:visible;border-radius:2cqw}.product-phone-stroke{overflow:visible}.product-screen{border-radius:2cqw}.reveal-brand p{font-weight:400}.reveal-brand b{font-weight:850}
+.scene-02[data-demo="true"] .product-phone{left:50%;top:51%;height:91cqh;z-index:10}
+.scene-02[data-demo="true"] .reveal-heading,.scene-02[data-demo="true"] .reveal-map,.scene-02[data-demo="true"] .reveal-route-caption,.scene-02[data-demo="true"] .reveal-eta,.scene-02[data-demo="true"] .reveal-trip,.scene-02[data-demo="true"] .reveal-place{opacity:0;visibility:hidden}
+.reveal-map{top:68%;height:48%}.reveal-heading{font-size:4cqw;top:19%}.reveal-route-caption{top:36%}.reveal-feature-orbit{display:none!important}.map-geometry-note,.reveal-simulation{display:none!important}
+[data-beat="4"] .support-road{opacity:.12}[data-beat="5"] .selected-road{stroke:#71c59a}[data-beat="6"] .support-road{stroke:#d0b5f5;opacity:.5}
+.reveal-place>span{display:block;line-height:1.6}.reveal-place{top:77%;max-width:45%}
+
+
+
+.product-screen .app-recording{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}.recording-poster{position:absolute;inset:0;background:#fff;display:grid;place-items:center}.recording-poster img{width:32%}.recording-poster[hidden]{display:none}.recording-status{position:absolute;bottom:10%;left:8%;right:8%;text-align:center;color:#123;font-size:14px}.recording-status[hidden]{display:none}
+
+/* Actual running app: native 390×780 viewport scaled to the phone. */
+.product-screen .actual-app-frame{width:390px;height:780px;max-width:none;max-height:none;border:0;transform:scale(var(--preview-scale,1));transform-origin:0 0;pointer-events:none;background:#fff}.scene-02[data-demo="true"] .actual-app-frame{pointer-events:auto}.app-landing{position:absolute;inset:0;background:#fff;display:grid;place-items:center;z-index:4}.app-landing img{width:32%}.app-landing[hidden]{display:none}
+
+/* One backdrop stacking context; keep the brand above all inherited background layers. */
+.scene-02{background:#062341}.reveal-backdrop{z-index:0;isolation:isolate;background:radial-gradient(ellipse at 50% 43%,#3278b1 0%,#1b5387 26%,#0c355f 61%,#062341 100%)}.reveal-seed{z-index:3;mask:none;-webkit-mask:none;background:none}.reveal-seed img{opacity:1}
+.reveal-brand{container-type:inline-size}.reveal-brand p,[data-beat="1"] .reveal-brand p{font-size:5cqw;margin:6cqw 0 0;text-align:center;letter-spacing:.13em;line-height:1.25}
+/* The source app already has a phone wrapper; only remove its external device chrome in the iframe. */
+.product-phone{box-sizing:border-box;border:2px solid #ff7919;border-radius:8.2% / 4.1%;background:#fff;overflow:hidden}.product-phone-stroke{display:none}.product-screen{inset:0;border-radius:inherit;overflow:hidden}.product-speaker{display:none}.app-landing{border-radius:inherit}
+
+[data-beat="7"] .reveal-heading em{display:inline-block;transform-origin:center}
+/* Closing device screen uses the same blue family as the brand reveal. */
+.scene-02[data-beat="7"] .app-landing{background:#075dbc}.scene-02[data-beat="7"] .product-phone{background:#075dbc}
+
+.scene-02[data-beat="7"] .app-landing{background:linear-gradient(180deg,#075dbc 0%,#064a96 45%,#002b56 100%)}
+
+/* Route annotation is part of the map card, with reserved space above its geometry. */
+.shine-text{-webkit-background-clip:text;background-clip:text}
+.scene-02 .reveal-route-caption{left:4%;top:4%;max-width:91%;padding:0;pointer-events:none}
+.scene-02 .reveal-route-caption strong{font-size:1.2cqw;line-height:1.2}
+.scene-02[data-beat="3"] .reveal-map-svg{position:absolute;left:0;top:25%;width:100%;height:75%}
+.scene-02 .selected-road{stroke-width:7;filter:drop-shadow(0 0 3px #062341)}
+.scene-02 .support-road{stroke-width:3;opacity:.28}
+.scene-02[data-beat="4"] .reveal-eta,.scene-02[data-beat="4"] .destination-point{display:none}
+.rider-symbol{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round}.origin-point .rider-symbol{display:none}
+.scene-02[data-beat="4"] .origin-point .rider-symbol{display:block}.scene-02[data-beat="4"] .origin-point>circle{display:none}
+.vehicle-eta-badge rect{fill:#062341;stroke:#ff7919;stroke-width:2}.vehicle-eta-badge text{fill:white;font-size:21px;font-weight:750;text-anchor:middle}
+.discover-pins circle{fill:#103c63;stroke:#ff7919;stroke-width:3}.discover-pins path{fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.discover-pins text{font-size:15px;letter-spacing:.05em}
+
+.scene-02 .reveal-route-caption small{font-size:.65cqw}.scene-02 .reveal-route-caption strong{font-size:1cqw}.scene-02 .reveal-route-caption>span{display:block;font-size:.8cqw;line-height:1.3}
+
+/* The name expansion belongs only to trigger17; the compact brand keeps its tagline. */
+.scene-02 .reveal-brand .brand-meaning{display:none}
+.scene-02[data-beat="1"] .reveal-brand .brand-tagline{display:none}
+.scene-02[data-beat="1"] .reveal-brand .brand-meaning{display:block;font-size:4.6cqw;line-height:1.45;letter-spacing:.025em;white-space:nowrap;margin-top:6cqw}
+.scene-02 .brand-meaning>span{display:inline}.scene-02 .brand-meaning b{color:#ff7919}
+
+.scene-02[data-beat="2"] .reveal-brand{visibility:hidden}
+.reel-copy{display:none}
+.scene-02[data-reel="true"] .reel-copy{display:block;position:absolute;top:29%;left:8%;width:49%;z-index:9}
+.reel-feature{color:#a9d6f4;font:650 1.15cqw var(--font-secondary);letter-spacing:.2em}
+.reel-copy h2{margin:2.6cqh 0;font:750 5.2cqw/.98 var(--font);letter-spacing:-.045em}
+.reel-copy h2 span,.reel-copy h2 em{display:block}
+.reel-copy h2 em{color:#ff822d;font-style:normal}
+.reel-copy p{color:#c9dff0;font:500 1.28cqw/1.4 var(--font-secondary)}
+.scene-02[data-reel="true"] :is(.reveal-brand,.reveal-heading,.reveal-map,.reveal-route-caption,.reveal-eta,.reveal-trip,.reveal-place){display:none}
+.scene-02[data-reel="true"] .product-phone{left:75%;top:50%;height:87cqh;opacity:1;visibility:visible;transition:none}
+.scene-02[data-reel="true"] .actual-app-frame{pointer-events:none}
+.scene-02[data-reel="true"] .reveal-backdrop:after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 77% 38%,var(--reel-light,#275f97),#081e3a 74%)}
+.scene-02[data-reel-shot="1"]{--reel-light:#125a76}
+.scene-02[data-reel-shot="2"]{--reel-light:#375988}
+.scene-02[data-reel-shot="3"]{--reel-light:#375c76}

@@ -1,0 +1,6 @@
+html,body{scrollbar-width:none}::-webkit-scrollbar{display:none}
+body.pitch-demo :is(.sponsor-opening-overlay,.sponsor-preview-overlay,[id*="SponsorBanner"],.sponsored-route-banner){display:none!important}
+.pitch-lift{position:fixed!important;inset:auto!important;left:50%!important;top:52%!important;width:76%!important;max-width:320px!important;height:auto!important;max-height:48vh!important;overflow:hidden!important;z-index:2000!important;pointer-events:none!important;transform:translate(-50%,-50%);box-sizing:border-box;box-shadow:0 14px 55px #020a20a8;outline:1px solid #ff974d;border-radius:18px;opacity:1}
+.pitch-lift:is(button,.live-eta){padding:12px 18px;background:#1d426b;color:#fff}
+body.pitch-demo .launch-ad-overlay{display:none!important}
+body.pitch-demo :is(#liveLocationGate,#liveLocationButton){display:none!important}
