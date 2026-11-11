@@ -5,8 +5,8 @@
   const beats=[
     {label:'01.0 · WE ASKED',line:'We wanted to understand whether other commuters experienced the same uncertainty.',note:'Research introduction. One emphasis at a time; let the statement settle.'},
     {label:'01.1 · RESPONDENTS',line:`We gathered responses from ${data.commuters} commuters and ${data.drivers} public utility jeepney drivers.`,note:'The two respondent groups. Numbers count once; labels stay visible.'},
-    {label:'01.2 · WAITING',line:data.waitingNarration,note:'Long waiting times. This display value was changed at the user’s request; consult RESEARCH-NOTES.md before using it as evidence.'},
-    {label:'01.3 · FINDING A JEEPNEY',line:'Difficulty finding a jeepney for the destination is another commuting concern.',note:'Second finding, full size and centered. Hold until the next manual trigger.'},
+    {label:'01.2 · WHERE IS MY RIDE?',line:'Commuters can be left wondering where their ride is.',note:'Qualitative problem statement.'},
+    {label:'01.3 · COMMUTE ESTIMATES',line:'It can be difficult to estimate how long the commute will take.',note:'Second finding, full size and centered. Hold until the next manual trigger.'},
     {label:'01.4 · CHOOSING A ROUTE',line:'Commuters also face uncertainty about which route to take.',note:'Third finding, full size and centered. Hold until the next manual trigger.'},
     {label:'01.5 · WHAT THIS SUGGESTS',line:'These findings point to a need for clearer, more accessible commuting information.',note:'An interpretation of the problem, not a claim that information alone explains every transport delay.'},
     {label:'01.6 · THE OPPORTUNITY',line:'That is the opportunity we identified. What if the answers were already in your hands?',note:'The underline becomes the base of a phone outline. Hold on the question. Scene 02 remains planned.',audio:'Optional narration; audio is not required.'}
@@ -19,8 +19,8 @@
     <div class="research-intro" data-panel="0"><h1>WE <em>ASKED.</em></h1><h2>COMMUTERS <em>ANSWERED.</em></h2></div>
     <div class="respondents" data-panel="1"><div class="respondent commuter-count"><svg class="respondent-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="18" r="10"/><path d="M12 54v-9c0-24 40-24 40 0v9Z"/></svg><strong data-count="commuters">${data.commuters}</strong><span>COMMUTERS</span></div><div class="respondent driver-count"><svg class="respondent-icon jeepney-icon" viewBox="0 0 76 64" aria-hidden="true"><path d="M10 24h43l6 8h9v18H8V30Z"/><path d="M16 19h34" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M17 29h12v10H17Zm18 0h13v10H35Z" fill="#07509d"/><circle cx="20" cy="51" r="6" fill="#052c56" stroke="currentColor" stroke-width="3"/><circle cx="55" cy="51" r="6" fill="#052c56" stroke="currentColor" stroke-width="3"/></svg><strong data-count="drivers">${data.drivers}</strong><span>PUJ DRIVERS</span></div><p class="research-source">LARGA market research · Respondent groups</p></div>
     <div class="research-metrics" aria-label="Commuting findings">
-      <div class="research-metric metric-waiting" data-panel="2"><p class="metric-context">${data.waitingHeadline}</p><strong class="metric-number"><span data-count="waiting">${data.metrics[0].value.toFixed(1)}</span><small>%</small></strong><h2 class="metric-label"><span class="single-label">REPORTED LONG WAITING TIMES</span><span class="pattern-label">Long waiting times</span></h2><div class="metric-track" aria-hidden="true"><span style="--value:${data.metrics[0].value/100}"></span></div></div>
-      <div class="research-metric metric-finding" data-panel="3"><p class="metric-context">ABOUT THREE IN FIVE</p><strong class="metric-number"><span data-count="finding">${data.metrics[1].value.toFixed(1)}</span><small>%</small></strong><h2 class="metric-label">DIFFICULTY FINDING A JEEPNEY</h2><div class="metric-track" aria-hidden="true"><span style="--value:${data.metrics[1].value/100}"></span></div></div>
+      <div class="research-metric metric-waiting" data-panel="2"><p class="metric-context">${data.waitingHeadline}</p><strong class="metric-number"><span data-count="waiting">${data.metrics[0].value.toFixed(1)}</span><small>%</small></strong><h2 class="metric-label"><span class="single-label">DON’T KNOW WHERE THEIR RIDE IS</span><span class="pattern-label">Long waiting times</span></h2><div class="metric-track" aria-hidden="true"><span style="--value:${data.metrics[0].value/100}"></span></div></div>
+      <div class="research-metric metric-finding" data-panel="3"><p class="metric-context">ABOUT THREE IN FIVE</p><strong class="metric-number"><span data-count="finding">${data.metrics[1].value.toFixed(1)}</span><small>%</small></strong><h2 class="metric-label">DIFFICULTY ESTIMATING COMMUTE TIME</h2><div class="metric-track" aria-hidden="true"><span style="--value:${data.metrics[1].value/100}"></span></div></div>
       <div class="research-metric metric-route" data-panel="4"><p class="metric-context">JUST OVER ONE IN TWO</p><strong class="metric-number"><span data-count="route">${data.metrics[2].value.toFixed(1)}</span><small>%</small></strong><h2 class="metric-label">UNCERTAIN WHICH ROUTE TO TAKE</h2><div class="metric-track" aria-hidden="true"><span style="--value:${data.metrics[2].value/100}"></span></div></div>
     </div>
     <div class="research-interpretation" data-panel="5"><h1>A NEED FOR CLEARER<br><em>COMMUTING INFORMATION</em></h1></div>
@@ -59,27 +59,37 @@
   function setBeat(n){stop();state(n);}
   async function transitionTo(n,from){
     stop();const token=serial;
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(n===5&&from===4&&!reduced){
+      await Promise.all(['.metric-route','.waiting-track','.research-line'].map(selector=>{
+        const el=root.querySelector(selector);
+        return animate(el,[{opacity:getComputedStyle(el).opacity},{opacity:0}],{duration:510,fill:'forwards',easing:'ease-in-out'});
+      }));
+      if(token!==serial)return;
+    }
     state(n);
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    if(reduced)return;
     if(n<from){
       const panel=root.querySelector(`[data-panel="${n}"]`)||root.querySelector('.research-metrics');
       await animate(panel,[{opacity:.25,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:650,easing:out});return;
     }
+    // let the outgoing panel clear before the incoming numbers arrive, so values never overprint
+    const lead=(n===1&&from===0)||(n===2&&from===1)?380:0;
     if(n===1){
-      count([{key:'commuters',to:data.commuters},{key:'drivers',to:data.drivers}],token);
+      count([{key:'commuters',to:data.commuters,delay:lead},{key:'drivers',to:data.drivers,delay:lead}],token);
       await Promise.all([
-        animate(root.querySelector('.commuter-count'),[{opacity:0,transform:'translateX(-52px)'},{opacity:1,transform:'translateX(0)'}],{duration:1000,easing:out}),
-        animate(root.querySelector('.driver-count'),[{opacity:0,transform:'translateX(52px)'},{opacity:1,transform:'translateX(0)'}],{duration:1000,delay:100,fill:'backwards',easing:out})
+        animate(root.querySelector('.commuter-count'),[{opacity:0,transform:'translateX(-52px)'},{opacity:1,transform:'translateX(0)'}],{duration:1000,delay:lead,fill:'backwards',easing:out}),
+        animate(root.querySelector('.driver-count'),[{opacity:0,transform:'translateX(52px)'},{opacity:1,transform:'translateX(0)'}],{duration:1000,delay:100+lead,fill:'backwards',easing:out})
       ]);
     }else if(n>=2&&n<=4){
       const metric=data.metrics[n-2],selector=['.metric-waiting','.metric-finding','.metric-route'][n-2];
-      count([{key:metric.key,to:metric.value,delay:250,decimals:1}],token);
+      count([{key:metric.key,to:metric.value,delay:250+lead,decimals:1}],token);
       await Promise.all([
-        animate(root.querySelector(selector),[{opacity:0,transform:'translateX(-50%) translateY(18px)'},{opacity:1,transform:'translateX(-50%) translateY(0)'}],{duration:850,delay:200,fill:'backwards',easing:out}),
-        animate(root.querySelector('.waiting-cursor'),[{transform:'translateX(-50%) scale(.5)',left:'0%',opacity:0},{transform:'translateX(-50%) scale(1)',left:metric.value+'%',opacity:1}],{duration:950,delay:300,fill:'both',easing:ease})
+        animate(root.querySelector(selector),[{opacity:0,transform:'translateX(-50%) translateY(18px)'},{opacity:1,transform:'translateX(-50%) translateY(0)'}],{duration:850,delay:200+lead,fill:'backwards',easing:out}),
+        animate(root.querySelector('.waiting-cursor'),[{transform:'translateX(-50%) scale(.5)',left:'0%',opacity:0},{transform:'translateX(-50%) scale(1)',left:metric.value+'%',opacity:1}],{duration:950,delay:300+lead,fill:'both',easing:ease})
       ]);
     }else if(n===5){
-      await animate(root.querySelector('.research-interpretation'),[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}],{duration:850,delay:200,fill:'backwards',easing:out});
+      await animate(root.querySelector('.research-interpretation'),[{opacity:0},{opacity:1}],{duration:1120,fill:'backwards',easing:'ease-in-out'});
     }else if(n===6){
       await Promise.all([
         animate(root.querySelector('.phone-outline'),[{strokeDashoffset:1},{strokeDashoffset:0}],{duration:1050,delay:150,fill:'backwards'}),

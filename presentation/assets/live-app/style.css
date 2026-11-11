@@ -11866,6 +11866,3 @@ html.dark-mode,html.dark-mode body{background:#111720;color:#e9edf3;}
 .dark-mode .share-trip-dialog{background:#242e3cf5;color:#edf2f8;}.dark-mode .share-trip-dialog p{color:#b2bece;}.dark-mode .share-trip-dialog button:not(#copyShareTrip){background:#303c4c;color:#edf2f8;border-color:#ffffff24;}
 
 .dark-mode #guidePage .journey-route-card.dimmed-journey-card{opacity:1;filter:grayscale(.85);}.dark-mode #guidePage #tripPlannerPanel{background:transparent;}
-
-
-.guide-map-setup,.live-map-loading{display:none!important}.public-route-map{width:100%;height:100%;display:block;background:#eaf1f6}.public-map-label{position:absolute;left:12px;bottom:12px;background:#fffE;color:#47677f;border-radius:6px;padding:5px 8px;font:500 10px sans-serif;pointer-events:none}

@@ -8,7 +8,7 @@
   const visualBeats=[0,2,3,4,5,6,7];
   const beats = [
     {label:'01 · SIGNAL', line:'AI voice (optional): “Every journey begins somewhere.”', note:'Scene opens directly on a pulsing orange beacon. Let its outward ripples breathe. No on-screen prompt.', audio:'Optional: assets/audio/vo-01-opening.mp3'},
-    {label:'02 · THE CITY', line:'“A commuter stands beside a busy road in Davao City.”', note:'Reveal the stylized Davao-inspired blue road network. The graphic is illustrative.'},
+    {label:'02 · THE CITY', line:'“A commuter stands beside a busy road in Davao City.”', note:'Reveal the stylized Davao-inspired blue road network.'},
     {label:'03 · THE WAIT', line:'“There’s somewhere they need to be. Jeepneys pass. Cars move. The city is already awake. But the commuter is still standing there.”', note:'Focus on the motionless commuter as jeepney indicators move along the roads.'},
     {label:'04 · QUESTION ONE', line:'“Unsa akong sakyan?”', note:'UNSA appears in LARGA orange, with AKONG SAKYAN? in white.'},
     {label:'05 · QUESTION TWO', line:'“Asa ko maghulat?”', note:'The first question recedes upward as ASA KO MAGHULAT? takes focus. ASA is orange.'},
@@ -69,7 +69,7 @@
           <circle cx="37" cy="-32" r="6" fill="#f56600"/>
         </g>
       </svg>
-      <div class="map-location"><svg class="location-pin" viewBox="0 0 64 80" aria-hidden="true"><path d="M32 3C16 3 5 15 5 30c0 20 27 46 27 46s27-26 27-46C59 15 48 3 32 3ZM42 29a10 10 0 1 0-20 0a10 10 0 1 0 20 0Z" fill="#f56600" fill-rule="evenodd"/></svg><span>DAVAO CITY</span></div><div class="map-city-chip"><span class="city-chip-dot"></span>DAVAO CITY <small>ILLUSTRATIVE DIGITAL NETWORK</small></div>
+      <div class="map-location"><svg class="location-pin" viewBox="0 0 64 80" aria-hidden="true"><path d="M32 3C16 3 5 15 5 30c0 20 27 46 27 46s27-26 27-46C59 15 48 3 32 3ZM42 29a10 10 0 1 0-20 0a10 10 0 1 0 20 0Z" fill="#f56600" fill-rule="evenodd"/></svg><span>DAVAO CITY</span></div><div class="map-city-chip"><span class="city-chip-dot"></span>DAVAO CITY <small>COMMUTER NETWORK</small></div>
     </div>
     <div class="scene00-pulse" id="signalPulse" aria-hidden="true">
       <div class="signal-waves"><div class="signal-aura"></div><span class="signal-ring ring-one"></span><span class="signal-ring ring-two"></span><span class="signal-ring ring-three"></span></div><svg class="location-pin" viewBox="0 0 64 80" aria-hidden="true"><path d="M32 3C16 3 5 15 5 30c0 20 27 46 27 46s27-26 27-46C59 15 48 3 32 3ZM42 29a10 10 0 1 0-20 0a10 10 0 1 0 20 0Z" fill="#f56600" fill-rule="evenodd"/></svg>

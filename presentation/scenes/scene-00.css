@@ -285,3 +285,6 @@
 .scene-00[data-beat='2'] .scene00-pulse:after{opacity:1;transition-delay:.3s}
 .map-location span:before{opacity:0;transition:opacity .85s ease}
 .scene-00[data-beat='2'] .map-location span:before{opacity:1;transition-delay:.5s}
+
+/* incoming question waits for the previous one to move off-centre, so the two never overprint */
+.scene-00[data-beat="5"] .question-two,.scene-00[data-beat="6"] .question-three{transition:transform 1.05s cubic-bezier(.22,1,.36,1) .38s,top 1.05s cubic-bezier(.22,1,.36,1) .38s,opacity .7s ease .42s}

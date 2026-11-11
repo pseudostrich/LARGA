@@ -1,0 +1,588 @@
+{
+  "version": "2026-11-09",
+  "attribution": "Place locations © OpenStreetMap contributors",
+  "license": "https://www.openstreetmap.org/copyright",
+  "notes": "Mapped facility points and bounding-box centers are approximate place locations, not verified boarding points. Names/areas were reviewed to distinguish branches. Photos are visually approved; no paid partnerships or public-use rights are asserted.",
+  "campaigns": [
+    {
+      "id": "campaign-01",
+      "approvalId": "01",
+      "name": "SM City Davao",
+      "query": "SM City Davao Ecoland Davao City",
+      "category": "Shopping",
+      "area": "Ecoland",
+      "address": "Quimpo Boulevard, Ecoland, Davao City",
+      "cta": "Shop, dine & unwind",
+      "initials": "SM",
+      "color": "#2468ae",
+      "match": "ecoland|matina|quimpo|sm city",
+      "image": "Assets/Ads/01.webp",
+      "imageWidth": 1360,
+      "launchEligible": true,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.0490636,
+        "lng": 125.5885011
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/28978622",
+        "name": "SM City Davao",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-02",
+      "approvalId": "02",
+      "name": "SM Lanang",
+      "query": "SM Lanang Lanang Davao City",
+      "category": "Shopping",
+      "area": "Lanang",
+      "address": "J. P. Laurel Avenue, Lanang, Davao City",
+      "cta": "Discover your next stop",
+      "initials": "SM",
+      "color": "#1661b3",
+      "match": "lanang|sasa|panacan|laurel",
+      "image": "Assets/Ads/02.png",
+      "imageWidth": 864,
+      "launchEligible": false,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.098964,
+        "lng": 125.6308967
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/1200041101",
+        "name": "SM Lanang Premier",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-03",
+      "approvalId": "03",
+      "name": "Abreeza",
+      "query": "Abreeza Bajada Davao City",
+      "category": "Shopping",
+      "area": "Bajada",
+      "address": "J. P. Laurel Avenue, Bajada, Davao City",
+      "cta": "Find your next favorite",
+      "initials": "AB",
+      "color": "#856747",
+      "match": "abreeza|bajada|laurel",
+      "image": "Assets/Ads/03.jpg",
+      "imageWidth": 1024,
+      "launchEligible": true,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.0912152,
+        "lng": 125.6113381
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/117593466",
+        "name": "Abreeza Ayala Mall Davao",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-04",
+      "approvalId": "04",
+      "name": "GMall of Davao",
+      "query": "GMall of Davao Bajada Davao City",
+      "category": "Shopping",
+      "area": "Bajada",
+      "address": "J. P. Laurel Avenue, Bajada, Davao City",
+      "cta": "Shop the city",
+      "initials": "GM",
+      "color": "#cd3e35",
+      "match": "gmall|bajada|laurel|obrero",
+      "image": "Assets/Ads/04.jpg",
+      "imageWidth": 1200,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0777027,
+        "lng": 125.6141834
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/31756544",
+        "name": "Gaisano Mall of Davao",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-05",
+      "approvalId": "05",
+      "name": "NCCC Mall Buhangin",
+      "query": "NCCC Mall Buhangin Buhangin Davao City",
+      "category": "Shopping",
+      "area": "Buhangin",
+      "address": "Buhangin, Davao City",
+      "cta": "Explore more nearby",
+      "initials": "NC",
+      "color": "#187a58",
+      "match": "buhangin|cabantian|tigatto",
+      "image": "Assets/Ads/05.jpg",
+      "imageWidth": 1200,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.1106296,
+        "lng": 125.6118956
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/674358367",
+        "name": "NCCC Mall Buhangin",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-06",
+      "approvalId": "06",
+      "name": "GMall of Toril",
+      "query": "GMall of Toril Toril Davao City",
+      "category": "Shopping",
+      "area": "Toril",
+      "address": "MacArthur Highway, Toril, Davao City",
+      "cta": "Your Toril shopping stop",
+      "initials": "GM",
+      "color": "#bd473b",
+      "match": "toril|ulas",
+      "image": "Assets/Ads/06.jpg",
+      "imageWidth": 1200,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0166685,
+        "lng": 125.4938465
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/845223151",
+        "name": "Gaisano Mall of Toril",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-07",
+      "approvalId": "07",
+      "name": "McDonald’s — Bajada",
+      "query": "McDonald’s — Bajada Bajada Davao City",
+      "category": "Food",
+      "area": "Bajada",
+      "address": "Bajada, Davao City",
+      "cta": "Take a burger break",
+      "initials": "McD",
+      "color": "#bd302e",
+      "match": "bajada|laurel|obrero",
+      "image": "Assets/Ads/07.jpg",
+      "imageWidth": 500,
+      "launchEligible": false,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.0848934,
+        "lng": 125.6120771
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/406210876",
+        "name": "McDonald's",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-08",
+      "approvalId": "08",
+      "name": "Jollibee — Bolton",
+      "query": "Jollibee — Bolton Bolton Street Davao City",
+      "category": "Food",
+      "area": "Bolton Street",
+      "address": "Bolton Street, Davao City",
+      "cta": "Make time for Chickenjoy",
+      "initials": "JB",
+      "color": "#cf2939",
+      "match": "bolton|san pedro|downtown",
+      "image": "Assets/Ads/08.jpg",
+      "imageWidth": 1200,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0661689,
+        "lng": 125.6092927
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/node/13271467551",
+        "name": "Jollibee",
+        "geometry": "POI position",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-09",
+      "approvalId": "09",
+      "name": "Mang Inasal — SM Lanang",
+      "query": "Mang Inasal — SM Lanang SM Lanang, Lanang Davao City",
+      "category": "Food",
+      "area": "SM Lanang, Lanang",
+      "address": "J. P. Laurel Avenue, SM Lanang, Lanang, Davao City",
+      "cta": "Enjoy a grilled favorite",
+      "initials": "MI",
+      "color": "#188141",
+      "match": "lanang|sasa|panacan",
+      "image": "Assets/Ads/09.png",
+      "imageWidth": 400,
+      "launchEligible": false,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0985452,
+        "lng": 125.6312345
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/node/6174649508",
+        "name": "Mang Inasal",
+        "geometry": "POI position",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-10",
+      "approvalId": "10",
+      "name": "Starbucks — Abreeza",
+      "query": "Starbucks — Abreeza Abreeza, Bajada Davao City",
+      "category": "Café",
+      "area": "Abreeza, Bajada",
+      "address": "Abreeza, Bajada, Davao City",
+      "cta": "Pause for coffee",
+      "initials": "SB",
+      "color": "#12775b",
+      "match": "abreeza|bajada",
+      "image": "Assets/Ads/10.jpg",
+      "imageWidth": 1024,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0907417,
+        "lng": 125.6118058
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/node/1301781145",
+        "name": "Starbucks",
+        "geometry": "POI position",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-11",
+      "approvalId": "11",
+      "name": "Lachi’s Sans Rival Atbp.",
+      "query": "Lachi’s Sans Rival Atbp. Marfori Davao City",
+      "category": "Food",
+      "area": "Marfori",
+      "address": "Ruby Street, Marfori, Davao City",
+      "cta": "Leave room for dessert",
+      "initials": "LA",
+      "color": "#ad5a73",
+      "match": "marfori|rubber|circumferential",
+      "image": "Assets/Ads/11.jpg",
+      "imageWidth": 2048,
+      "launchEligible": false,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0818624,
+        "lng": 125.6015043
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/node/867943271",
+        "name": "Lachi's",
+        "geometry": "POI position",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-12",
+      "approvalId": "12",
+      "name": "Ateneo de Davao — Roxas campus",
+      "query": "Ateneo de Davao — Roxas campus Roxas / Jacinto, Downtown Davao City",
+      "category": "Campus",
+      "area": "Roxas / Jacinto, Downtown",
+      "address": "E. Jacinto Street, Roxas / Jacinto, Downtown, Davao City",
+      "cta": "Explore admissions",
+      "initials": "AD",
+      "color": "#184677",
+      "match": "roxas|jacinto|claveria|recto|downtown",
+      "image": "Assets/Ads/12.png",
+      "imageWidth": 1024,
+      "launchEligible": true,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.0719949,
+        "lng": 125.6132733
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/28993853",
+        "name": "Ateneo de Davao University",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-13",
+      "approvalId": "13",
+      "name": "University of Mindanao — Matina",
+      "query": "University of Mindanao — Matina Matina Davao City",
+      "category": "Campus",
+      "area": "Matina",
+      "address": "Matina, Davao City",
+      "cta": "Explore your next chapter",
+      "initials": "UM",
+      "color": "#a73430",
+      "match": "matina|maa|mcarthur|macarthur",
+      "image": "Assets/Ads/13.jpg",
+      "imageWidth": 640,
+      "launchEligible": false,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0671464,
+        "lng": 125.5950556
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/relation/12622446",
+        "name": "University of Mindanao - Matina Campus",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-14",
+      "approvalId": "14",
+      "name": "Mapúa Malayan Colleges Mindanao",
+      "query": "Mapúa Malayan Colleges Mindanao Matina Davao City",
+      "category": "Campus",
+      "area": "Matina",
+      "address": "MacArthur Highway, Matina, Davao City",
+      "cta": "Discover your future",
+      "initials": "MM",
+      "color": "#1b6390",
+      "match": "matina|maa|mcarthur|macarthur",
+      "image": "Assets/Ads/14.jpg",
+      "imageWidth": 2600,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0639737,
+        "lng": 125.595693
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/817843230",
+        "name": "Mapúa Malayan Colleges Mindanao",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-15",
+      "approvalId": "15",
+      "name": "Park Inn by Radisson Davao",
+      "query": "Park Inn by Radisson Davao Lanang Davao City",
+      "category": "Stay",
+      "area": "Lanang",
+      "address": "Lanang, Davao City",
+      "cta": "Plan a city stay",
+      "initials": "PI",
+      "color": "#3e7ea0",
+      "match": "lanang|sasa|panacan",
+      "image": "Assets/Ads/15.jpg",
+      "imageWidth": 2000,
+      "launchEligible": true,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.0973602,
+        "lng": 125.6304876
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/916376203",
+        "name": "Park Inn",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-16",
+      "approvalId": "16",
+      "name": "dusitD2 Davao",
+      "query": "dusitD2 Davao Lanang Davao City",
+      "category": "Stay",
+      "area": "Lanang",
+      "address": "Davao-Agusan National Highway, Lanang, Davao City",
+      "cta": "Make room for a getaway",
+      "initials": "D2",
+      "color": "#72589c",
+      "match": "lanang|sasa|panacan",
+      "image": "Assets/Ads/16.jpg",
+      "imageWidth": 2560,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.109339,
+        "lng": 125.650483
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/660689947",
+        "name": "Dusit D2",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-17",
+      "approvalId": "17",
+      "name": "Malagos Garden Resort",
+      "query": "Malagos Garden Resort Malagos Davao City",
+      "category": "Activities",
+      "area": "Malagos",
+      "address": "Malagos, Davao City",
+      "cta": "Explore a garden escape",
+      "initials": "MG",
+      "color": "#348259",
+      "match": "malagos|calinan",
+      "image": "Assets/Ads/17.jpg",
+      "imageWidth": 1708,
+      "launchEligible": true,
+      "boostTier": 3,
+      "location": {
+        "lat": 7.1910141,
+        "lng": 125.4273824
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/976238615",
+        "name": "Malagos Garden Resort",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-18",
+      "approvalId": "18",
+      "name": "Davao Crocodile Park & Zoo",
+      "query": "Davao Crocodile Park & Zoo Ma-a Davao City",
+      "category": "Activities",
+      "area": "Ma-a",
+      "address": "Mississipi Street, Ma-a, Davao City",
+      "cta": "Discover a wild day out",
+      "initials": "CP",
+      "color": "#46836c",
+      "match": "maa|ma-a|buhangin",
+      "image": "Assets/Ads/18.webp",
+      "imageWidth": 1360,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0972103,
+        "lng": 125.598976
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/81347693",
+        "name": "Davao Crocodile Park & Zoo",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-19",
+      "approvalId": "19",
+      "name": "Davao Doctors Hospital",
+      "query": "Davao Doctors Hospital Quirino Avenue Davao City",
+      "category": "Healthcare",
+      "area": "Quirino Avenue",
+      "address": "E. Quirino Avenue, Quirino Avenue, Davao City",
+      "cta": "Explore hospital services",
+      "initials": "DD",
+      "color": "#2874a0",
+      "match": "quirino|bankerohan|san pedro",
+      "image": "Assets/Ads/19.jpg",
+      "imageWidth": 1600,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0704561,
+        "lng": 125.6038438
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/115065012",
+        "name": "Davao Doctors Hospital",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    },
+    {
+      "id": "campaign-20",
+      "approvalId": "20",
+      "name": "Poblacion Market Central",
+      "query": "Poblacion Market Central C. Bangoy Street, Downtown Davao City",
+      "category": "Shopping",
+      "area": "C. Bangoy Street, Downtown",
+      "address": "C. Bangoy Street, C. Bangoy Street, Downtown, Davao City",
+      "cta": "Shop local. Discover Davao.",
+      "initials": "PM",
+      "color": "#9e694b",
+      "match": "bangoy|magsaysay|roxas|downtown",
+      "image": "Assets/Ads/20.jpg",
+      "imageWidth": 1200,
+      "launchEligible": true,
+      "boostTier": 2,
+      "location": {
+        "lat": 7.0745253,
+        "lng": 125.6108403
+      },
+      "locationSource": {
+        "url": "https://www.openstreetmap.org/way/35933072",
+        "name": "Poblacion Market Central",
+        "geometry": "Mapped facility bounding-box center",
+        "checkedOn": "2026-11-09"
+      },
+      "visualApproval": "approved",
+      "rightsClearance": "unverified; local prototype only"
+    }
+  ]
+}

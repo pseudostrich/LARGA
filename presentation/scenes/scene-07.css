@@ -36,3 +36,34 @@
 .gtm-people-link{opacity:.58;stroke-width:.85}
 .gtm-commuter{fill:#c4e6ff;stroke:#c4e6ff;stroke-width:1.15}
 .gtm-map-tag{top:1.5cqh;right:1cqw}
+
+/* Trigger 29 uses the supplied campaign mockups; the operations beat keeps its icons. */
+.gtm-channel-image{display:none}
+.scene-07[data-beat="1"] .gtm-nodes,.gtm-nodes[data-source-beat="1"]{top:29%;left:8%;right:8%;gap:4%}
+.scene-07[data-beat="1"] .gtm-title{top:14%;left:8%;right:8%;max-width:none;text-align:center;font-size:2.8cqw}
+.scene-07[data-beat="1"] .gtm-node-symbol,.scene-07[data-beat="1"] .gtm-node-index,.gtm-nodes[data-source-beat="1"] :is(.gtm-node-symbol,.gtm-node-index){display:none}
+.scene-07[data-beat="1"] .gtm-channel-image,.gtm-nodes[data-source-beat="1"] .gtm-channel-image{display:block;width:auto;height:47cqh;max-width:100%;object-fit:contain;margin:0 auto 1.6cqh;border:1px solid #8db9de65;border-radius:.65cqw;box-shadow:0 .8cqw 2cqw #02172e65}
+.scene-07[data-beat="1"] .gtm-node h2,.gtm-nodes[data-source-beat="1"] .gtm-node h2{min-height:0;margin-bottom:.5cqh;font-size:1.35cqw}
+.scene-07[data-beat="1"] .gtm-node p,.gtm-nodes[data-source-beat="1"] .gtm-node p{display:none}
+.scene-07[data-beat="1"] .gtm-acquisition-flow{top:88%;left:20%;right:20%;padding-top:1.6cqh}
+
+/* Keep the three acquisition stages aligned with their photographs. */
+.scene-07[data-beat="1"] .gtm-nodes,.gtm-nodes[data-source-beat="1"]{top:25%;left:13%;right:13%;gap:4%}
+.scene-07[data-beat="1"] .gtm-channel-image,.gtm-nodes[data-source-beat="1"] .gtm-channel-image{height:51cqh;margin-bottom:2.1cqh;border-radius:1.05cqw;border-color:#88b6da80;box-shadow:0 .6cqw 1.6cqw #00132670}
+.scene-07[data-beat="1"] .gtm-node h2,.gtm-nodes[data-source-beat="1"] .gtm-node h2{font-size:1.45cqw}
+.scene-07[data-beat="1"] .gtm-acquisition-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:4%;left:13%;right:13%;top:86%;text-align:center;padding-top:1.9cqh}
+.scene-07[data-beat="1"] .gtm-acquisition-flow strong{color:#ffc393}
+.scene-07[data-beat="1"] .gtm-acquisition-flow>span{position:absolute;top:1.75cqh;left:32.67%;transform:translateX(-50%)}
+.scene-07[data-beat="1"] .gtm-acquisition-flow>span:nth-of-type(2){left:67.33%}
+
+.scene-07[data-beat="3"] .gtm-title{top:9%;left:8%;right:8%;max-width:none;text-align:center;font-size:2.25cqw;line-height:1.1}
+.scene-07[data-beat="3"] .gtm-map{left:30%;top:25%;width:40%;height:59%}
+.scene-07[data-beat="3"] .gtm-scale-copy{left:10%;top:84%;width:80%;text-align:center}
+.scene-07[data-beat="3"] .gtm-scale-copy p{margin:.7cqh 0 0}
+.scene-07[data-beat="3"] .gtm-scale-copy span{display:none}
+
+/* Slide 29: four channels, including the proposed LGU partnership. */
+.gtm-nodes[data-source-beat="1"]{left:7%!important;right:7%!important;gap:2.6%!important}
+.gtm-nodes[data-source-beat="1"] .gtm-node{width:23.05%}
+.gtm-nodes[data-source-beat="1"] .gtm-channel-image{height:47cqh!important}
+.scene-07[data-beat="1"] .gtm-acquisition-flow{left:7%;right:7%}

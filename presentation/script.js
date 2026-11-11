@@ -40,7 +40,7 @@
   triggerInput.max=String(scene.beats.length);
   triggerForm.addEventListener('submit',event=>{event.preventDefault();const number=Number(triggerInput.value);if(!Number.isInteger(number)||number<1||number>scene.beats.length){triggerInput.reportValidity();return;}triggerInput.blur();jump(number-1);stage.focus({preventScroll:true});});
   const topicButtons=Array.from(document.querySelectorAll?.('[data-topic-scene]')||[]);
-  topicButtons.forEach(button=>{const sceneId=button.getAttribute('data-topic-scene'),index=scene.beats.findIndex(beat=>beat.sceneId===sceneId);button.title=button.textContent+' · Trigger '+(index+1);button.addEventListener('click',()=>{if(animating||index<0)return;window.LargaReview?.close?.();jump(index);stage.focus({preventScroll:true})})});
+  topicButtons.forEach(button=>{const sceneId=button.getAttribute('data-topic-scene'),index=scene.beats.findIndex(beat=>beat.chapterStart===sceneId);button.title=button.textContent+' · Trigger '+(index+1);button.addEventListener('click',()=>{if(animating||index<0)return;window.LargaReview?.close?.();jump(index);stage.focus({preventScroll:true})})});
   function controls(){
     const b=scene.beats[activeBeat];
     topicButtons.forEach(button=>{const selected=button.getAttribute('data-topic-scene')===b.chapterStart;button.setAttribute('aria-current',selected?'location':'false');button.disabled=animating});
@@ -51,13 +51,24 @@
     stageBeatCount.textContent=`${String(activeBeat+1).padStart(2,'0')} / ${String(scene.beats.length).padStart(2,'0')}`;
     controlStatus.textContent=`${String(activeBeat+1).padStart(2,'0')} / ${String(scene.beats.length).padStart(2,'0')}`;
     progressFill.style.width=`${(activeBeat+1)/scene.beats.length*100}%`;
-    previousButton.disabled=animating||activeBeat===0;
+    previousButton.disabled=activeBeat===0;
     nextButton.disabled=animating||activeBeat===scene.beats.length-1;triggerInput.disabled=animating;const goButton=triggerForm.querySelector?.('button');if(goButton)goButton.disabled=animating;stage.setAttribute('aria-busy',String(animating));
   }
   function enqueue(direction){
-    if(animating||window.LargaReview?.isOpen?.())return; // A press during a transition is discarded, never queued.
+    if(window.LargaReview?.isOpen?.())return;
     const from=activeBeat,to=from+direction;if(to<0||to>=scene.beats.length)return;
-    const generation=++navigationGeneration;animating=true;activeBeat=to;stopVoice();controls();
+    if(animating){
+      if(direction>0)return;
+      ++navigationGeneration;
+      activeBeat=to;
+      stopVoice();
+      scene.setBeat(to);
+      animating=false;
+      controls();
+      stage.focus({preventScroll:true});
+      return;
+    }
+    const generation=++navigationGeneration;animating=true;activeBeat=to;stopVoice();controls();if(direction>0)keepBrowserBackLocal();
     void (async()=>{try{await scene.transitionTo(to,from);if(generation===navigationGeneration&&!window.LargaReview?.isOpen?.()&&!window.LargaScenes?.scene02?.isInteractive?.())stage.focus({preventScroll:true});}finally{if(generation===navigationGeneration){animating=false;controls();}}})();
   }
   function next(){enqueue(1);}
@@ -94,12 +105,15 @@
   function handleKey(event){
     if(window.LargaReview?.handleShortcut?.(event))return true;
     if(window.LargaReview?.isOpen?.())return false;
-    if(event.repeat||event.altKey||event.ctrlKey||event.metaKey)return;
+    if(event.repeat||event.ctrlKey||event.metaKey)return;
+    const browserBack=event.key==='BrowserBack'||event.code==='BrowserBack'||(event.altKey&&event.key==='ArrowLeft');
+    if(browserBack){event.preventDefault();sideAction(3);return true;}
+    if(event.altKey)return;
     if(event.target?.matches?.('input,textarea,select,[contenteditable="true"]'))return;
     const code=event.code||({ArrowRight:'ArrowRight',ArrowLeft:'ArrowLeft',Home:'Home',' ':'Space',f:'KeyF',F:'KeyF',m:'KeyM',M:'KeyM',v:'KeyV',V:'KeyV'}[event.key]);
     switch(code){
-      case 'ArrowRight':case 'Space':event.preventDefault();next();break;
-      case 'ArrowLeft':event.preventDefault();previous();break;
+      case 'BrowserForward':case 'ArrowRight':case 'Space':event.preventDefault();next();break;
+      case 'BrowserBack':case 'ArrowLeft':event.preventDefault();previous();break;
       case 'Home':event.preventDefault();jump(0);break;
       case 'KeyM':event.preventDefault();toggleMute();break;
       case 'KeyF':event.preventDefault();void toggleFullscreen();break;
@@ -109,27 +123,72 @@
     return true;
   }
   document.addEventListener('keydown',handleKey,true);
-  // Logitech G304 browser Back and Forward. Mousedown fires once per physical press.
-  // auxclick is *only* suppressed, never used to navigate, avoiding double-triggering.
-  document.addEventListener('mousedown',event=>{
-    if(event.button!==3&&event.button!==4)return;
+  // A side button can arrive as a pointer, mouse, or browser history event.
+  const sidePresses=new Map();
+  const sideDocuments=new WeakSet();
+  const historyKey='largaPresenterBackGuard';
+  let lastBackInput=-Infinity;
+  function armBrowserBack(){
+    if(activeBeat===0||window.LargaReview?.isOpen?.()||history.state?.[historyKey])return;
+    try{history.pushState({...history.state,[historyKey]:true},'',location.href);}catch{}
+  }
+  let browserGuard=false;
+  function keepBrowserBackLocal(){
+    armBrowserBack();
+    browserGuard=Boolean(history.state?.[historyKey]);
+  }
+  window.addEventListener('popstate',event=>{
+    if(event.state?.[historyKey]){browserGuard=true;return;}
+    if(!browserGuard)return;
+    browserGuard=false;
+    if(activeBeat===0||window.LargaReview?.isOpen?.())return;
+    if(performance.now()-lastBackInput>280)previous();
+    keepBrowserBackLocal();
+  });
+  function sideAction(button){
+    if(button===3)lastBackInput=performance.now();
+    enqueue(button===3?-1:1);
+  }
+  function sideEvent(event){
+    const button=event.button;
+    if(button!==3&&button!==4)return;
     event.preventDefault();event.stopPropagation();
-    if(event.button===3)previous();else next();
-  },true);
-  document.addEventListener('auxclick',event=>{
-    if(event.button===3||event.button===4){event.preventDefault();event.stopPropagation();}
-  },true);
-  document.addEventListener('mouseup',event=>{
-    if(event.button===3||event.button===4)event.preventDefault();
-  },true);
+    const now=performance.now(),press=sidePresses.get(button);
+    const down=event.type==='pointerdown'||event.type==='mousedown';
+    if(down){
+      if(event.type==='mousedown'&&press?.type==='pointerdown'&&now-press.time<80)return;
+      sidePresses.set(button,{type:event.type,time:now});
+    }else{
+      if(press){
+        const recent=now-press.time<120;
+        sidePresses.set(button,{type:'release',time:now});
+        if(press.type!=='release'||recent)return;
+      }else sidePresses.set(button,{type:'release',time:now});
+    }
+    sideAction(button);
+  }
+  function bindSideButtons(doc){
+    if(!doc||sideDocuments.has(doc))return;
+    sideDocuments.add(doc);
+    ['pointerdown','mousedown','pointerup','mouseup','auxclick'].forEach(type=>doc.addEventListener(type,sideEvent,true));
+    doc.addEventListener('pointercancel',()=>sidePresses.clear(),true);
+    doc.addEventListener('load',event=>{if(event.target?.tagName==='IFRAME')bindSideFrame(event.target);},true);
+    doc.querySelectorAll('iframe').forEach(bindSideFrame);
+  }
+  function bindSideFrame(frame){
+    try{bindSideButtons(frame.contentDocument);}catch{}
+  }
+  bindSideButtons(document);
+  window.addEventListener('blur',()=>sidePresses.clear());
+
   controls();stage.focus({preventScroll:true});
   function jump(index){
     if(animating||window.LargaReview?.isOpen?.())return;
     const value=Math.round(Number(index));if(!Number.isFinite(value)||value<0||value>=scene.beats.length)return;
-    const generation=++navigationGeneration;requests.length=0;animating=false;scene.setBeat(value);activeBeat=value;controls();stopVoice();
+    const generation=++navigationGeneration;requests.length=0;animating=false;scene.setBeat(value);activeBeat=value;controls();stopVoice();keepBrowserBackLocal();
     const closing=window.LargaScenes?.scene10;
     const selected=scene.beats[value],product=window.LargaScenes?.scene02;
-    const replay=selected.sceneId==='10'?closing?.replay:selected.sceneId==='02'&&product?.isReel(selected.localBeat)?product.playReel:null;
+    const replay=selected.sceneId==='10'?closing?.replay:selected.sceneId==='02'&&product?.isReel(selected.localBeat)?product.playReel:selected.sceneId==='08'&&selected.localBeat===0?window.LargaScenes.scene08.replayOffers:selected.sceneId==='09'&&selected.localBeat===4?window.LargaScenes.scene09.playRisks:null;
     if(replay){animating=true;controls();void replay().finally(()=>{if(generation===navigationGeneration){animating=false;controls();}});}
   }
   window.LargaPresentation=Object.freeze({next,previous,handleKey,toggleFullscreen,goToBeat:jump,

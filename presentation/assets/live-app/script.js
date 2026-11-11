@@ -4654,7 +4654,45 @@ window.addEventListener(
         let googleRoutePolylines = [];
         let googleRouteMarkers = [];
 
-        async function loadGoogleMapsDemoKey() { return; }
+        async function loadGoogleMapsDemoKey() {
+            if (hasGoogleMapsDemoKey()) {
+                return;
+            }
+
+            try {
+                const response =
+                    await fetch(
+                        LARGA_GOOGLE_MAPS_CONFIG.demoKeyFile,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const key =
+                    (await response.text()).trim();
+
+                if (
+                    key.length > 12 &&
+                    !key.includes("PASTE_") &&
+                    !key.includes("YOUR_")
+                ) {
+                    LARGA_GOOGLE_MAPS_CONFIG.demoKey =
+                        key;
+                }
+            }
+            catch (error) {
+                // The rest of LARGA must remain fully usable even when
+                // the key file is missing or Live Server is not running.
+                console.warn(
+                    "Maps Demo Key file was not loaded:",
+                    error
+                );
+            }
+        }
 
         function hasGoogleMapsDemoKey() {
             const key =
@@ -10797,6 +10835,7 @@ window.addEventListener(
         const mapRetry=uiButton('Retry map',async()=>{mapRetry.disabled=true;try{document.querySelector('script[data-larga-google-maps="true"]')?.remove();await initializeGoogleGuideMap();}finally{mapRetry.disabled=false;}},'map-retry');get('guideMapSetup').appendChild(mapRetry);
         function updateConnection(){get('connectionStatus').textContent=navigator.onLine?'':'Offline · stored routes and local trips are available';get('connectionStatus').classList.toggle('hidden',navigator.onLine);}
         window.addEventListener('online',updateConnection);window.addEventListener('offline',updateConnection);updateConnection();
+        if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{get('offlineReadyStatus').textContent='Route reference available offline after this visit.';}).catch(()=>{get('offlineReadyStatus').textContent='Offline caching unavailable in this browser.';});
         const feedStatusNode=document.createElement('p');feedStatusNode.id='liveFeedStatus';feedStatusNode.className='live-feed-status';feedStatusNode.setAttribute('role','status');document.querySelector('#livePage .live-map-section').after(feedStatusNode);
         const feedState={external:false,lastReceived:0,socket:null,records:new Map()},STALE_POSITION_MS=45000;
         function acceptVehiclePositions(records){if(!Array.isArray(records))return 0;let count=0;const now=Date.now();for(const record of records.slice(0,200)){const route=getRouteById(record?.routeId),timestamp=typeof record?.timestamp==='string'?Date.parse(record.timestamp):record?.timestamp;if(!route || typeof record.id!=='string' || record.id.length>100 || !Number.isFinite(record.lat)||!Number.isFinite(record.lng)||record.lat<-90||record.lat>90||record.lng<-180||record.lng>180 || !Number.isFinite(timestamp)||timestamp>now+10000||timestamp<now-86400000)continue;const previous=feedState.records.get(record.id);if(previous && previous.timestamp>=timestamp)continue;const projection=projectRoutePoint(route,{lat:record.lat,lng:record.lng});if(projection.meters>500)continue;feedState.records.set(record.id,{...record,timestamp,plate:String(record.plate || record.id).slice(0,20),speedKph:Number.isFinite(record.speedKph)?Math.max(0,Math.min(100,record.speedKph)):20,distanceOnRoute:projection.along,position:{lat:record.lat,lng:record.lng}});count++;}if(count){feedState.external=true;feedState.lastReceived=now;syncExternalVehicles();}return count;}

@@ -1,22 +1,57 @@
-.scene-02[data-reel="true"] .product-phone{display:none}
+/* Scene 02 · trigger 18 product film. The phone keeps the app's own light UI; the stage around it stays LARGA blue. */
+.scene-02[data-reel="true"][data-beat] .product-phone{display:block;left:50%;top:50%;height:calc(76cqh * 1.5);z-index:7;opacity:1;visibility:visible;border-width:3px}
+.scene-02:is([data-beat="2"],[data-reel="true"]) .actual-app-frame{visibility:hidden}
+.scene-02[data-reel="true"] .reveal-backdrop:after{display:none}
+.scene-02[data-reel="true"][data-reel-bridge] .reveal-heading{display:block}
+.scene-02[data-reel="true"] .reel-copy{display:none}
+.reel-app-screen{display:none;position:absolute;inset:0;overflow:hidden;background:#0a315c}
+.scene-02:is([data-beat="2"],[data-reel="true"]) .reel-app-screen{display:block}
+.reel-app-screen iframe{position:absolute;left:0;top:0;width:390px;height:780px;border:0;transform-origin:top left;pointer-events:none;background:#f4f6f9}
+.scene-02:is([data-beat='2'],[data-reel='true']) .reveal-end-mark{display:none}
+.scene-02[data-reel='true'] .app-landing[hidden]{display:none}
+.scene-02[data-reel="true"] .product-phone{will-change:transform;box-shadow:0 7.5cqh 17cqh #00142a99}
+
 .reel-composition{display:none}
-.scene-02[data-reel="true"] .reel-composition{display:block;position:absolute;inset:0;z-index:6;overflow:hidden;pointer-events:none}
-.reel-app-screen{position:absolute;inset:0;overflow:hidden}
-.reel-app-screen iframe{position:absolute;left:0;top:0;display:block;width:1280px;height:720px;border:0;transform-origin:top left}
-.reel-splash{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);width:35cqh;height:72cqh;border:2px solid #7cb9e4;border-radius:2.2cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2cqh;background:linear-gradient(180deg,#075dbc,#064a96 45%,#002b56);box-shadow:0 0 0 .35cqw #091c31,0 1.45cqw 4cqw #020b1c9c;will-change:transform,opacity}
-.reel-splash img:first-child{width:27%;height:auto}
-.reel-splash img:nth-child(2){width:65%;height:auto}
-.reel-splash span{font:700 1.05cqw var(--font);color:#fff}
-.reel-composition:not([data-mode="welcome"]):not([data-mode="enter"]) .reel-splash,.reel-composition[data-mode="end"] .reel-app-screen{visibility:hidden}
-.reel-composition[data-mode="welcome"] .reel-app-screen{visibility:hidden}
-.scene-02[data-reel="true"] .reel-copy{top:5%;left:5%;width:90%;text-align:center;pointer-events:none}
-.scene-02[data-reel="true"]:not([data-reel-title="true"]) .reel-copy{visibility:hidden}
-.reel-feature{display:block;color:#bfe3ff!important;font-size:.95cqw!important}
-.scene-02[data-reel="true"] .reel-copy h2{display:flex;justify-content:center;align-items:baseline;gap:.25em;margin:1cqh 0;font-size:3.3cqw;line-height:1.05}
-.scene-02[data-reel="true"] .reel-copy p{display:inline-block;padding:.5cqh .75cqw;border-radius:1cqw;background:#081e38d9;color:#e1f1ff;font-size:.8cqw;margin:.3cqh 0}
-.reel-cut{position:absolute;inset:0;opacity:0;z-index:4;background:linear-gradient(105deg,#0c2b4a,#1a5c8f 74%,#f47a31);pointer-events:none}
-.reel-end{display:none;position:absolute;inset:0;place-content:center;text-align:center;gap:4cqh;background:radial-gradient(ellipse,#17477a,#071c34 72%)}
-.reel-composition[data-mode="end"] .reel-end{display:grid}
-.reel-end strong{font:750 5.4cqw/.98 var(--font);letter-spacing:-.045em}
-.reel-end em{font-style:normal;color:#ff822d}
-.reel-end i{width:100%;height:2px;background:#ff822d}
+.scene-02[data-reel="true"] .reel-composition{display:block;position:absolute;inset:0;z-index:8;pointer-events:none}
+
+/* Focus light: soft blue blooms behind the phone. Each section crossfades its own fixed layer (opacity only, so it
+   costs nothing to animate). */
+.film-light{position:absolute;inset:0;pointer-events:none;z-index:1}
+.film-light i{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;will-change:opacity}
+.film-light i[data-k="live"]{background:radial-gradient(ellipse 46% 56% at 38% 44%,#3f8ad066,transparent 70%)}
+.film-light i[data-k="guide"]{background:radial-gradient(ellipse 46% 56% at 62% 56%,#357fc466,transparent 70%)}
+.film-light i[data-k="trips"]{background:radial-gradient(ellipse 50% 56% at 44% 60%,#4c8fd666,transparent 70%)}
+.film-light i[data-k="discover"]{background:radial-gradient(ellipse 46% 56% at 58% 38%,#3b8bd466,transparent 70%)}
+.film-light i[data-k="end"]{background:radial-gradient(ellipse 50% 60% at 50% 50%,#3a86c84d,transparent 72%)}
+.scene-02[data-reel="true"][data-film-light="live"] .film-light i[data-k="live"],
+.scene-02[data-reel="true"][data-film-light="guide"] .film-light i[data-k="guide"],
+.scene-02[data-reel="true"][data-film-light="trips"] .film-light i[data-k="trips"],
+.scene-02[data-reel="true"][data-film-light="discover"] .film-light i[data-k="discover"],
+.scene-02[data-reel="true"][data-film-light="end"] .film-light i[data-k="end"]{opacity:1}
+
+/* Section kicker: the only typography inside the film. */
+.film-kicker{position:absolute;left:5.2%;top:9%;display:flex;align-items:center;gap:1cqw;color:#e9f4ff;opacity:0;transform:translateY(.8cqh);
+ font:700 1.35cqw/1 var(--font,'General Sans',sans-serif);letter-spacing:.22em;transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1);
+ padding:1cqh 1.2cqw;border-radius:99px;background:#06213fe6}
+.film-kicker i{width:2.2cqw;height:2px;background:#ff7919;display:block}
+.reel-composition[data-kicker="true"] .film-kicker{opacity:1;transform:none}
+
+/* Simulation disclosure, shown whenever live tracking or ETA is on screen. */
+.film-sim{position:absolute;left:3%;bottom:7.5%;display:flex;align-items:center;gap:.8cqw;padding:1cqh 1.3cqw;border-radius:99px;
+ background:#06213fe6;color:#dcecff;opacity:0;font:600 1.02cqw/1.2 var(--font,'General Sans',sans-serif);letter-spacing:.01em;transition:opacity .3s ease}
+.film-sim b{width:.7cqw;height:.7cqw;border-radius:50%;background:#ffb067;box-shadow:0 0 0 .35cqw #ff791933}
+.reel-composition[data-sim="true"] .film-sim{opacity:1}
+
+/* Closing accent: a restrained orange route line under the settled phone. */
+.film-accent{position:absolute;left:16%;width:68%;bottom:6%;height:9cqh;overflow:visible;opacity:0}
+.film-accent path{fill:none;stroke:#ff7919;stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
+.reel-composition[data-mode="end"] .film-accent{opacity:.85}
+.reel-composition[data-mode="end"] .film-accent path{animation:film-route 1.1s cubic-bezier(.45,0,.2,1) forwards}
+@keyframes film-route{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.reel-composition *{animation:none!important;transition:none!important}.film-accent path{stroke-dashoffset:0}}
+
+/* Outro: the app gives way to the LARGA mark that trigger 18 opens with. */
+.scene-02[data-reel="true"][data-outro] .app-landing{display:grid!important;background:#075dbc}
+.scene-02[data-reel="true"][data-outro] .product-phone{background:#075dbc}
+.scene-02[data-reel="true"][data-outro] .reveal-end-mark{display:block!important}
+.scene-02[data-reel="true"][data-outro] .reel-app-screen{opacity:0;transition:opacity .9s ease .1s}

@@ -1,0 +1,243 @@
+/* Approved photo campaigns: compact placements, readable overlays, theme-aware previews. */
+#mainApp .photo-sponsor-banner{position:relative;display:block;margin:12px 18px 8px;padding:0;overflow:hidden;border-radius:20px;border:1px solid var(--ui-border);background:#263744;box-shadow:none;touch-action:pan-y;}
+#mainApp .photo-sponsor-banner .sponsor-banner-main{position:relative;display:block;width:100%;height:166px;min-height:166px;padding:0;border:0;border-radius:0;background:#263744;color:white;text-align:left;overflow:hidden;}
+#mainApp .photo-sponsor-banner .sponsor-banner-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
+#mainApp .photo-sponsor-banner .sponsor-copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:3px;padding:17px 44px 18px;background:linear-gradient(90deg,#101d2de8 0%,#101d2d83 55%,#101d2d14 100%);box-sizing:border-box;}
+#mainApp .photo-sponsor-banner .sponsor-copy small{font:600 9px/1.3 var(--general);color:#fff;letter-spacing:.03em;background:#ffffff1c;border:1px solid #ffffff24;border-radius:5px;padding:3px 5px;margin-bottom:5px;}
+#mainApp .photo-sponsor-banner .sponsor-copy strong{font:750 21px/1.14 var(--general);letter-spacing:-.4px;color:white;max-width:320px;display:block;overflow:visible;}
+#mainApp .photo-sponsor-banner .sponsor-copy>span{font:500 10px/1.3 var(--general);color:#e1e6ec;}
+#mainApp .photo-sponsor-banner .sponsor-copy .sponsor-cta{flex:initial;max-width:none;margin:6px 0 0;padding:0;font:650 12px/1.3 var(--general);color:#fff;text-align:left;}
+#mainApp .photo-sponsor-banner .sponsor-arrow{position:absolute;top:calc(50% - 22px);z-index:2;width:30px;min-height:44px;border:0;background:#14213250;color:white;border-radius:10px;font:400 25px/1 var(--general);padding:0;cursor:pointer;}
+#mainApp .photo-sponsor-banner .sponsor-prev{left:5px;}#mainApp .photo-sponsor-banner .sponsor-next{right:5px;}
+#mainApp .photo-sponsor-banner .sponsor-dismiss{z-index:3;top:4px;right:4px;display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:#14213280;color:white;font:400 20px/1 var(--general);cursor:pointer;}
+#mainApp .sponsor-nearby{margin:0 18px 17px;color:var(--ui-ink);}
+.sponsor-nearby>p{font:600 10px/1.4 var(--general);color:var(--ui-muted);margin:10px 0 7px;}
+.sponsor-nearby-row,.boosted-discover-row{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:2px 2px 7px;}
+.sponsor-nearby-row::-webkit-scrollbar,.boosted-discover-row::-webkit-scrollbar{display:none;}
+#mainApp .sponsor-mini-card{flex:0 0 132px;width:132px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;padding:0 0 6px;border:0;border-radius:11px;background:transparent;color:var(--ui-ink);text-align:left;cursor:pointer;scroll-snap-align:start;}
+.sponsor-mini-card img{width:132px;height:69px;object-fit:cover;border-radius:11px;}
+.sponsor-mini-card strong{font:650 11px/1.25 var(--general);padding:0 1px;white-space:normal;}
+.sponsor-mini-card small{font:500 9px/1.3 var(--general);color:var(--ui-muted);}
+#mainApp .sponsor-credit{display:block;font:500 8px/1.5 var(--general);color:var(--ui-muted);text-decoration:none;margin-top:5px;}
+#mainApp .sponsor-credit:hover{text-decoration:underline;}
+#mainApp .photo-sponsor-overlay,#mainApp .launch-ad-overlay{box-sizing:border-box;padding:18px;background:#10203070;backdrop-filter:blur(12px);z-index:7400;overflow:hidden;}
+#mainApp .ad-poster {
+    --ad-accent: #164976;
+    --ad-ink: color-mix(in srgb, var(--ad-accent) 58%, #091f32);
+    --ad-shade: color-mix(in srgb, var(--ad-accent) 28%, #071725);
+    --ad-header: color-mix(in srgb, var(--ad-accent) 8%, white);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 430px;
+    max-height: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--ui-border);
+    border-radius: 24px;
+    background: var(--ui-surface);
+    color: var(--ui-ink);
+    box-shadow: 0 22px 70px #0004;
+}
+html.dark-mode #mainApp .ad-poster {
+    --ad-header: color-mix(in srgb, var(--ad-accent) 18%, #17202c);
+}
+.ad-poster-header {
+    position: relative;
+    flex: none;
+    padding: 16px 65px 17px 20px;
+    background: var(--ad-header);
+    color: var(--ad-ink);
+}
+html.dark-mode .ad-poster-header { color: #f1f6fb; }
+.ad-poster-header small {
+    display: block;
+    margin-bottom: 11px;
+    font: 600 11px/1.4 var(--general);
+}
+#mainApp .ad-poster .ad-poster-header h2 {
+    margin: 0;
+    padding: 2px 0 2px 11px;
+    border-left: 4px solid var(--ad-accent);
+    color: inherit;
+    font: 800 clamp(20px, 5.5vw, 25px)/1.12 var(--general);
+    letter-spacing: -.025em;
+    overflow-wrap: anywhere;
+}
+#mainApp .ad-poster .ad-poster-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font: 400 25px/1 var(--general);
+    cursor: pointer;
+}
+#mainApp .ad-poster .ad-poster-close:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+.ad-poster-body {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+}
+.ad-poster-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(230px, 53dvh, 370px);
+    background: var(--ad-shade);
+}
+.photo-sponsor-dialog .ad-poster-hero { min-height: clamp(172px, 33dvh, 252px); }
+.ad-poster-photo,
+.ad-poster-hero::before { position: absolute; inset: 0; }
+.ad-poster-photo { z-index: -2; }
+.ad-poster-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ad-poster-hero::before {
+    z-index: -1;
+    content: '';
+    background: linear-gradient(to bottom, transparent 12%, color-mix(in srgb, var(--ad-shade) 74%, transparent) 59%, var(--ad-shade) 91%);
+}
+.ad-poster-copy {
+    width: 100%;
+    padding: 100px 20px 20px;
+}
+#mainApp .ad-poster .ad-poster-headline {
+    margin: 0 0 5px;
+    color: #fff;
+    font: 800 clamp(22px, 6vw, 30px)/1.08 var(--general);
+    letter-spacing: -.035em;
+    text-wrap: balance;
+}
+#mainApp .ad-poster .ad-poster-caption {
+    margin: 0;
+    color: #e5eef6;
+    font: 500 13px/1.45 var(--general);
+}
+#mainApp .ad-poster .launch-ad-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 18px;
+    padding: 10px 15px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--ui-orange);
+    color: #fff;
+    text-align: left;
+    font: 750 14px/1.3 var(--general);
+    cursor: pointer;
+}
+#mainApp .ad-poster .launch-ad-view:hover { background: color-mix(in srgb, var(--ui-orange) 88%, white); }
+.sponsor-preview-copy { padding: 16px 20px; }
+#mainApp .photo-sponsor-dialog .sponsor-preview-actions { display: flex; gap: 9px; margin: 0 0 10px; }
+#mainApp .photo-sponsor-dialog .sponsor-preview-actions button { flex: 1; min-height: 44px; border-radius: 12px; font: 700 12px/1.3 var(--general); padding: 10px; border: 1px solid var(--ui-border); background: var(--ui-bg); color: var(--ui-ink); cursor: pointer; }
+#mainApp .photo-sponsor-dialog .sponsor-preview-actions .main-button { background: var(--ad-ink); color: #fff; border-color: var(--ad-ink); }
+html.dark-mode #mainApp .photo-sponsor-dialog .sponsor-preview-actions .main-button { background: #eef4fb; color: var(--ad-ink); }
+#mainApp .photo-sponsor-dialog .sponsor-preview-actions button:disabled { opacity: .5; cursor: default; }
+#sponsorMapsLink { display: inline-block; color: var(--ui-ink); font: 650 12px/1.5 var(--general); text-decoration: none; padding: 4px 0; }
+#mainApp .photo-sponsor-dialog .sponsor-location-note { color: var(--ui-muted); font: 500 11px/1.5 var(--general); margin: 5px 0; }
+/* One photo pin and one vehicle ad tag keep the map readable at phone width. */
+#mainApp .photo-map-tag {
+    position: relative;
+    display: grid;
+    grid-template-rows: 29px 12px;
+    justify-items: center;
+    align-items: center;
+    width: 44px;
+    min-height: 49px;
+    padding: 3px 3px 2px;
+    border: 1px solid #d9b17f;
+    border-radius: 11px;
+    background: var(--ui-surface);
+    box-shadow: 0 3px 9px #17243345;
+    cursor: pointer;
+}
+#mainApp .photo-map-tag::after {
+    position: absolute;
+    bottom: -4px;
+    left: calc(50% - 4px);
+    width: 8px;
+    height: 8px;
+    content: '';
+    transform: rotate(45deg);
+    border-right: 1px solid #d9b17f;
+    border-bottom: 1px solid #d9b17f;
+    background: var(--ui-surface);
+}
+.photo-map-tag img,
+.sponsor-pin-initials {
+    grid-area: 1 / 1;
+    width: 36px;
+    height: 29px;
+    border-radius: 7px;
+}
+.photo-map-tag img { display: block; object-fit: cover; }
+.sponsor-pin-initials {
+    display: grid;
+    place-items: center;
+    background: #f4e7d5;
+    color: #593d26;
+    font: 750 11px/1 var(--general);
+}
+.sponsor-pin-label { grid-area: 2 / 1; z-index: 1; color: var(--ui-ink); font: 750 9px/1 var(--general); }
+#mainApp .sponsor-jeepney-badge {
+    top: -10px;
+    right: -8px;
+    width: 28px;
+    min-width: 28px;
+    height: 21px;
+    min-height: 21px;
+    padding: 0;
+    border: 1px solid #e2b681;
+    border-radius: 8px;
+    background: #fff1dd;
+    color: #613b16;
+    box-shadow: 0 2px 6px #17243338;
+    font: 800 9px/1 var(--general);
+}
+.boosted-discover{margin:17px 0 22px;}.boosted-discover>h2{font:750 18px/1.2 var(--general);letter-spacing:-.3px;margin:0 0 3px;color:var(--ui-ink);}.boosted-discover>small{display:block;font:500 10px/1.4 var(--general);color:var(--ui-muted);margin-bottom:9px;}
+.boosted-place-card{flex:0 0 232px;min-width:0;border:1px solid var(--ui-border);border-radius:18px;background:var(--ui-surface);overflow:hidden;scroll-snap-align:start;}
+.boosted-place-preview{display:flex;flex-direction:column;align-items:flex-start;gap:5px;width:100%;padding:0 0 13px;border:0;background:transparent;text-align:left;color:var(--ui-ink);cursor:pointer;}.boosted-place-preview img{width:100%;height:132px;object-fit:cover;}.boosted-place-preview strong{font:750 15px/1.2 var(--general);padding:8px 12px 0;min-height:36px;}.boosted-place-preview>span{font:500 10px/1.3 var(--general);color:var(--ui-muted);padding:0 12px;}
+#mainApp .boosted-place-actions{display:flex;gap:6px;padding:0 11px 12px;}.boosted-place-actions button{flex:1;border:1px solid var(--ui-border);border-radius:11px;background:var(--ui-bg);color:var(--ui-ink);padding:8px 6px;font:650 11px/1.2 var(--general);min-height:39px;cursor:pointer;}#mainApp .boosted-place-actions .main-button{min-height:39px;border-radius:11px;font-size:11px;background:var(--ui-orange);color:#fff;border-color:var(--ui-orange);}.boosted-place-actions button:disabled{opacity:.5;}
+#mainApp .photo-sponsor-banner.hidden,#mainApp .sponsor-nearby.hidden,#mainApp .boosted-discover.hidden,#mainApp .photo-sponsor-overlay.hidden,#mainApp .launch-ad-overlay.hidden{display:none;}
+@media(max-width:390px){#mainApp .photo-sponsor-banner{margin-inline:12px;}#mainApp .sponsor-nearby{margin-inline:12px;}#mainApp .photo-sponsor-banner .sponsor-banner-main{height:154px;min-height:154px;}#mainApp .photo-sponsor-banner .sponsor-copy strong{font-size:19px;}.boosted-place-card{flex-basis:216px;}}
+@media(prefers-reduced-motion:reduce){.photo-sponsor-banner *,.launch-ad-overlay *,.photo-sponsor-overlay *{animation:none!important;transition:none!important;}}
+/* One contextual placement per page; primary trip/ride actions stay ahead of ads. */
+#mainApp .page-ad-section{display:block;min-width:0;margin:19px 18px 22px;padding:15px 0 0;border-top:1px solid var(--ui-border);color:var(--ui-ink);}
+#mainApp .page-ad-section.hidden{display:none;}
+#mainApp .page-ad-section>h2{font:750 16px/1.25 var(--general);letter-spacing:-.25px;margin:0 0 4px;color:var(--ui-ink);}
+#mainApp .page-ad-section>.page-ad-context{font:500 10px/1.45 var(--general);margin:0 0 11px;color:var(--ui-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+#mainApp .page-ad-section .photo-sponsor-banner{margin:0;border-radius:17px;}
+#mainApp .page-ad-section>.sponsor-credit{margin-top:7px;}
+#guidePage .page-ad-section{margin:17px 18px 20px;flex:none;}
+#liveNearestSection .page-ad-section{margin:20px 0;}
+#tripsPage .page-ad-section{margin:22px 0 25px;}
+#mainApp .page-ad-section .sponsor-banner-main{height:158px;min-height:158px;}
+#mainApp .page-ad-section .sponsor-copy strong{font-size:19px;line-height:1.17;}
+#mainApp .page-ad-section .sponsor-copy{padding-top:14px;padding-bottom:14px;}
+#mainApp #tripsSponsoredSection .sponsor-banner-main{height:156px;min-height:156px;background:var(--ui-surface);}
+#mainApp #tripsSponsoredSection .sponsor-banner-photo{width:32%;object-position:center;}
+#mainApp #tripsSponsoredSection .sponsor-copy{left:32%;padding:14px 29px 13px 14px;background:var(--ui-surface);justify-content:center;gap:4px;}
+#mainApp #tripsSponsoredSection .sponsor-copy small{align-self:flex-start;font-size:8px;padding:0;margin-bottom:1px;border:0;background:none;color:var(--ui-muted);}
+#mainApp #tripsSponsoredSection .sponsor-copy strong{font-size:15px;letter-spacing:-.2px;color:var(--ui-ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#mainApp #tripsSponsoredSection .sponsor-copy>span{font-size:9px;line-height:1.35;color:var(--ui-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#mainApp #tripsSponsoredSection .sponsor-copy .sponsor-cta{font-size:11px;color:var(--ui-orange);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#mainApp #tripsSponsoredSection .sponsor-next{right:0;width:24px;background:transparent;color:var(--ui-muted);}
+#mainApp #tripsSponsoredSection .sponsor-dismiss{top:0;right:0;width:29px;height:29px;border-radius:9px;background:transparent;color:var(--ui-muted);}
+@media(max-width:390px){#mainApp .page-ad-section{margin-inline:12px;}#guidePage .page-ad-section{margin-inline:6px;}#liveNearestSection .page-ad-section,#tripsPage .page-ad-section{margin-inline:0;}}

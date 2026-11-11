@@ -67,3 +67,7 @@
 .fin-ad-hero .fin-ad-campus-photo{z-index:0}.fin-ad-hero::after{z-index:1}.fin-ad-hero .fin-ad-copy,.fin-ad-hero .fin-ad-continue{position:relative;z-index:2}
 
 .fin-timing{display:flex;gap:1.55cqw;margin-left:auto;color:#bdd6e7;font-size:.77cqw;white-space:nowrap}.fin-timing b{margin-left:.25cqw;color:#ffab70}
+
+.fin-statement .fin-capital-row{border-top:1px solid #6eacce80;color:#a8d8f6;background:#21557530}.fin-statement .fin-capital-row th{color:inherit}
+
+.scene-08[data-beat='3'] .fin-heading{left:6%;right:6%;max-width:none;text-align:center}

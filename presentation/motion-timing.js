@@ -1,1 +1,1 @@
-window.LargaMotionRate=1.18;
+window.LargaMotionRate=2.2176;

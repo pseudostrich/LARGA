@@ -75,3 +75,19 @@
 
 .scene-09[data-page="roadmap"]>.end-subtitle{visibility:hidden}
 .end-stage h2,.end-stage-icon svg{transition:color 450ms ease,stroke 450ms ease}
+
+/* Mitigation plans · two centered rows with a clear risk-to-action hierarchy. */
+.scene-09[data-page="risks"] .end-title{top:13%;left:8%;right:8%;width:auto;max-width:none;text-align:center;font-size:3.2cqw}
+.scene-09[data-page="risks"] .end-act{visibility:hidden}
+.scene-09[data-page="risks"] .end-risks{top:29%;left:8%;right:8%;bottom:auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2.15cqh 1.2cqw}
+.scene-09[data-page="risks"] .end-risk-labels{display:none}
+.scene-09[data-page="risks"] .end-risk{grid-column:span 2;display:grid;grid-template-columns:3.7cqw minmax(0,1fr);align-content:start;align-items:start;text-align:left;gap:1.35cqh 1.15cqw;min-height:21cqh;padding:2.15cqh 1.3cqw;border:1px solid #8bc6ec42!important;border-radius:1cqw;background:linear-gradient(155deg,#28689438,#0e365886);box-shadow:0 .7cqw 1.6cqw #041c3330}
+.scene-09[data-page="risks"] .end-risk:nth-of-type(4){grid-column:2/span 2}
+.scene-09[data-page="risks"] .end-risk:nth-of-type(5){grid-column:4/span 2}
+.scene-09[data-page="risks"] .end-risk-icon{width:3.7cqw;height:3.7cqw;background:#092c49;border-color:#83c3ea55}
+.scene-09[data-page="risks"] .end-risk h2{display:block;min-height:0;margin:0 0 .7cqh;font-size:1.22cqw;line-height:1.18}
+.scene-09[data-page="risks"] .end-risk-description{min-height:0;font-size:.89cqw;color:#a9cbe1}
+.scene-09[data-page="risks"] .end-response{grid-column:1/-1;display:grid;grid-template-columns:1.3cqw minmax(0,1fr);align-items:start;gap:.65cqw;width:auto;padding-top:1.35cqh;border-top:1px solid #a2d0ed2c}
+.scene-09[data-page="risks"] .end-response-trace{width:1.3cqw;height:2cqh;transform:none}
+.scene-09[data-page="risks"] .end-response-trace path{stroke:#ff9a50}
+.scene-09[data-page="risks"] .end-response p{margin:0;color:#ffd2ab;font-size:.98cqw;line-height:1.38}

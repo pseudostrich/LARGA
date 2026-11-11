@@ -49,3 +49,10 @@
 
 /* Keep scene-specific branding for the reveal and closing. */
 .market-brand,.biz-brand,.position-brand,.gtm-brand,.fin-brand,.end-brand>img,.end-brand>span,.stage-hud-left{visibility:hidden}
+
+.scene-host.scene-reversing{view-transition-name:larga-reverse-stage}
+html:has(.scene-reversing)::view-transition-group(root){animation:none}
+html:has(.scene-reversing)::view-transition-old(root){animation:none;opacity:0}
+html:has(.scene-reversing)::view-transition-new(root){animation:none;opacity:1}
+::view-transition-group(larga-reverse-stage){animation-duration:130ms;animation-timing-function:ease-out}
+::view-transition-old(larga-reverse-stage),::view-transition-new(larga-reverse-stage){animation-duration:130ms;animation-timing-function:ease-out}

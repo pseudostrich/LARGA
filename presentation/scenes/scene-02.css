@@ -2,7 +2,7 @@
 .reveal-backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 48% 40%,#075dbc,#002b56 85%)}
 .reveal-backdrop>.research-background{position:absolute;inset:0}.reveal-entering .reveal-backdrop{opacity:0}
 .reveal-seed,.reveal-brand,.product-phone,.reveal-map{position:absolute;transform:translate(-50%,-50%);transform-origin:center}
-.reveal-seed{left:50%;top:50%;width:8cqw;opacity:0;visibility:hidden}.reveal-seed img{width:100%;display:block}.reveal-seed span{position:absolute;inset:-20%;border:2px solid #ff7919;border-radius:50%;opacity:0}
+.reveal-seed{left:50%;top:50%;width:9.6cqw;opacity:0;visibility:hidden}.reveal-seed img{width:100%;display:block}.reveal-seed span{position:absolute;inset:-20%;border:2px solid #ff7919;border-radius:50%;opacity:0}
 [data-beat="0"] .reveal-seed{opacity:1;visibility:visible}
 .reveal-brand{left:12%;top:10%;width:15cqw;z-index:4;opacity:1}.reveal-brand>img{display:block;width:100%;height:auto}.reveal-brand p{margin:1cqh 0 0;font-size:.9cqw;letter-spacing:.13em;white-space:nowrap}.reveal-brand p span{display:inline-block}
 [data-beat="0"] .reveal-brand{opacity:0;visibility:hidden}[data-beat="1"] .reveal-brand{left:50%;top:47%;width:36cqw}[data-beat="1"] .reveal-brand p{font-size:1.7cqw;text-align:center;margin-top:4cqh}
@@ -92,3 +92,23 @@
 .scene-02[data-reel-shot="1"]{--reel-light:#125a76}
 .scene-02[data-reel-shot="2"]{--reel-light:#375988}
 .scene-02[data-reel-shot="3"]{--reel-light:#375c76}
+
+.scene-02:is([data-beat="0"],.reveal-morphing) .reveal-backdrop::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 28% 39% at 50% 49%,#a0d7ff70 0%,#478fd039 43%,transparent 82%),radial-gradient(ellipse 71% 84% at 50% 49%,transparent 23%,#021631b8 100%)}
+.scene-02[data-beat="1"] .brand-meaning{font-size:1.85cqw;letter-spacing:.045em}
+.scene-02[data-beat="1"] .brand-meaning b{color:#ff913a}
+
+@media(prefers-reduced-motion:no-preference){
+ .scene-02[data-beat="0"]:not([data-reel="true"]) .reveal-backdrop::before{animation:larga-spotlight-breathe 4.4s ease-in-out infinite}
+}
+@keyframes larga-spotlight-breathe{
+ 0%,100%{opacity:.76;transform:scale(1)}
+ 50%{opacity:1;transform:scale(1.065)}
+}
+
+.reveal-mark-morph{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+
+.scene-02.reveal-morphing .reveal-backdrop::before{animation:larga-spotlight-settle var(--morph-light-time) ease-in-out both}
+@keyframes larga-spotlight-settle{
+ from{opacity:var(--morph-light-opacity);transform:var(--morph-light-transform)}
+ to{opacity:0;transform:scale(1.08)}
+}

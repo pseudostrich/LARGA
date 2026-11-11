@@ -14,7 +14,7 @@
 
 
 /* 27 dissolves into a centered population sphere, then releases it to the right. */
-.market-reveal-content{position:absolute;inset:0;z-index:2}.market-dust-entering .market-title,.market-dust-entering .market-brand,.market-dust-entering .market-copy{opacity:0}.market-dust-entering .market-background{opacity:0}.market-dust-entering .market-particle-field{transform:translate(-22.5%,-2.222222%);transform-origin:center;will-change:transform}
+.market-reveal-content{position:absolute;inset:0;z-index:2}.market-dust-entering .market-title,.market-dust-entering .market-brand,.market-dust-entering .market-copy{opacity:0}.market-dust-entering .market-background{opacity:0}
 
 /* One outline splits at twelve o'clock; both halves meet at six o'clock. */
 .market-transform-outline{opacity:1;fill:none;stroke:#ff9142;stroke-width:2.3;stroke-dasharray:none;filter:drop-shadow(0 0 3px #f5660090) drop-shadow(0 0 7px #f566003d);transform-box:view-box}.market-outline-half{fill:none;stroke-dasharray:1;stroke-dashoffset:0;stroke-linecap:round;vector-effect:non-scaling-stroke}

@@ -1,0 +1,3364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+
+
+    <meta
+
+        name="viewport"
+
+        content="width=device-width, initial-scale=1.0"
+
+    >
+
+
+
+    <title>LARGA</title>
+
+
+
+    <!-- International phone number selector -->
+
+    <link
+
+        rel="stylesheet"
+
+        href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.3/dist/css/intlTelInput.min.css"
+
+    >
+
+
+
+    <link
+
+        rel="stylesheet"
+
+        href="style.css"
+
+    >
+
+    <link rel="stylesheet" href="ui-refresh.css?v=20261110-search-nav">
+    <link rel="stylesheet" href="maplibre-gl.css">
+    <link rel="stylesheet" href="open-maps.css">
+    <link rel="stylesheet" href="ads.css?v=20261110-map-polish2">
+</head>
+
+
+
+<body>
+
+
+
+<div class="phone">
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- ONBOARDING -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen onboarding-screen"
+
+        id="onboardingScreen"
+
+    >
+
+
+
+        <!-- SPLASH -->
+
+
+
+        <div
+
+            class="onboarding-page splash-view"
+
+            id="splashView"
+
+        >
+
+
+
+            <div class="splash-content">
+
+
+
+                <img
+
+                    src="Assets/larga-logo.png"
+
+                    alt="LARGA logo"
+
+                    class="splash-logo"
+
+                >
+
+
+
+                <img
+
+                    src="Assets/larga-wordmark.png"
+
+                    alt="LARGA"
+
+                    class="splash-wordmark"
+
+                >
+
+
+
+                <p class="splash-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 1 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide1"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-tracking.png"
+
+                    alt="Real-time vehicle tracking"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Real-Time Vehicle
+
+                    Tracking
+
+                </h1>
+
+
+
+                <p>
+
+                    Know vehicle locations instantly.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 2 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide2"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-eta.png"
+
+                    alt="Accurate ETAs and route discovery"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Accurate ETAs &
+
+                    Route Discovery
+
+                </h1>
+
+
+
+                <p>
+
+                    Cut waiting times with precise arrival estimates.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- INTRO 3 -->
+
+
+
+        <div
+
+            class="onboarding-page intro-slide hidden"
+
+            id="introSlide3"
+
+        >
+
+
+
+            <div class="intro-image-area">
+
+
+
+                <img
+
+                    src="Assets/intro-commute.png"
+
+                    alt="Predictable commute tracking"
+
+                    class="intro-image"
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="intro-copy">
+
+
+
+                <h1>
+
+                    Predictable
+
+                    Commute Tracking
+
+                </h1>
+
+
+
+                <p>
+
+                    Plan trips to school and work effortlessly.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                class="orange-button"
+
+                id="getStartedButton"
+
+                type="button"
+
+            >
+
+                Get Started
+
+            </button>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- FIXED ONBOARDING CONTROLS -->
+
+
+
+        <div
+
+            class="onboarding-controls controls-hidden"
+
+            id="onboardingControls"
+
+        >
+
+
+
+            <div class="onboarding-indicator">
+
+
+
+                <span class="onboarding-dot active"></span>
+
+                <span class="onboarding-dot"></span>
+
+                <span class="onboarding-dot"></span>
+
+
+
+            </div>
+
+
+
+
+
+            <p
+
+                class="onboarding-hint"
+
+                id="onboardingHint"
+
+            >
+
+                Click right to continue →
+
+            </p>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- ROLE SELECTION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen role-screen hidden"
+
+        id="roleScreen"
+
+    >
+
+
+
+        <div class="role-content">
+
+
+
+            <img
+
+                src="Assets/larga-logo.png"
+
+                alt="LARGA"
+
+                class="role-logo"
+
+            >
+
+
+
+            <p class="role-eyebrow">
+
+                PERSONALIZE YOUR EXPERIENCE
+
+            </p>
+
+
+
+            <h1>
+
+                I am a
+
+            </h1>
+
+
+
+
+
+            <button
+
+                class="role-button commuter-button"
+
+                id="commuterButton"
+
+                type="button"
+
+            >
+
+                Commuter
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="role-button driver-button"
+
+                id="driverButton"
+
+                type="button"
+
+            >
+
+                Driver
+
+            </button>
+
+
+
+
+
+            <button
+
+                class="text-button"
+
+                id="backToIntroButton"
+
+                type="button"
+
+            >
+
+                ← Back
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- PERSONALIZING -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen loading-screen hidden"
+
+        id="loadingScreen"
+
+    >
+
+
+
+        <div class="personalizing-content">
+
+
+
+            <h1>
+
+                Personalizing
+
+                <br>
+
+
+
+                your app for
+
+
+
+                <span>
+
+                    flawless travelling.
+
+                </span>
+
+            </h1>
+
+
+
+
+
+            <div class="simple-loader"></div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- AUTHENTICATION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen auth-screen hidden"
+
+        id="authScreen"
+
+    >
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- AUTH LANDING -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="auth-view auth-landing-view"
+
+            id="authLandingView"
+
+        >
+
+
+
+            <div class="auth-brand-lockup">
+
+
+
+                <div class="auth-brand-row">
+
+
+
+                    <img
+
+                        src="Assets/larga-logo.png"
+
+                        alt=""
+
+                        class="auth-brand-icon"
+
+                    >
+
+
+
+                    <img
+
+                        src="Assets/larga-wordmark.png"
+
+                        alt="LARGA"
+
+                        class="auth-brand-wordmark"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <p class="auth-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-landing-message">
+
+
+
+                <h1>
+
+                    Navigate your commute
+
+                    <br>
+
+                    with real-time certainty.
+
+                </h1>
+
+
+
+                <p>
+
+                    Track jeepneys and buses across the city in real time.
+
+                    No more guesswork, just smoother travel.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-primary-actions">
+
+
+
+                <button
+
+                    class="landing-button guest-landing-button"
+
+                    id="guestLandingButton"
+
+                    type="button"
+
+                >
+
+                    Continue as guest
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="landing-button create-landing-button"
+
+                    id="createAccountLandingButton"
+
+                    type="button"
+
+                >
+
+                    Create Account
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="landing-button login-landing-button"
+
+                    id="loginLandingButton"
+
+                    type="button"
+
+                >
+
+                    Login
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="social-auth social-auth-bottom">
+
+
+
+                <p>
+
+                    or continue with
+
+                </p>
+
+
+
+
+
+                <div class="social-auth-buttons">
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Google"
+
+                        type="button"
+
+                        aria-label="Continue with Google"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/google-icon.svg"
+
+                            alt="Google"
+
+                        >
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Apple"
+
+                        type="button"
+
+                        aria-label="Continue with Apple"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/apple-icon.svg"
+
+                            alt="Apple"
+
+                        >
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- LOGIN / SIGN UP -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="auth-view auth-form-view hidden"
+
+            id="authFormView"
+
+        >
+
+
+
+            <button
+
+                class="auth-back-control"
+
+                id="authFormBackButton"
+
+                type="button"
+
+                aria-label="Go back"
+
+            >
+
+                ←
+
+            </button>
+
+
+
+
+
+            <div class="auth-brand-lockup form-brand-lockup">
+
+
+
+                <div class="auth-brand-row">
+
+
+
+                    <img
+
+                        src="Assets/larga-logo.png"
+
+                        alt=""
+
+                        class="auth-brand-icon"
+
+                    >
+
+
+
+                    <img
+
+                        src="Assets/larga-wordmark.png"
+
+                        alt="LARGA"
+
+                        class="auth-brand-wordmark"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <p class="auth-tagline">
+
+                    Your Ride, On Track
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="auth-form-heading">
+
+
+
+                <h1 id="authFormTitle">
+
+                    Login
+
+                </h1>
+
+
+
+                <p id="authFormSubtitle">
+
+                    Sign in with your account details
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <!-- CONTACT NUMBER / EMAIL -->
+
+
+
+            <div class="credential-tabs">
+
+
+
+                <button
+
+                    class="credential-tab active-credential-tab"
+
+                    id="contactTab"
+
+                    type="button"
+
+                >
+
+                    Contact Number
+
+                </button>
+
+
+
+
+
+                <button
+
+                    class="credential-tab"
+
+                    id="emailTab"
+
+                    type="button"
+
+                >
+
+                    Email Address
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- FORM -->
+
+
+
+            <form
+
+                class="authentication-form"
+
+                id="authForm"
+
+                novalidate
+
+            >
+
+
+
+                <!-- FULL NAME - SIGN UP ONLY -->
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="signupNameSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input"
+
+                        type="text"
+
+                        id="nameInput"
+
+                        placeholder="Full Name"
+
+                        autocomplete="name"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- PHONE -->
+
+
+
+                <div
+
+                    class="phone-input-section"
+
+                    id="phoneFieldSection"
+
+                >
+
+
+
+                    <input
+
+                        type="tel"
+
+                        id="phoneInput"
+
+                        placeholder="Contact Number"
+
+                        autocomplete="tel"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- EMAIL -->
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="emailFieldSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input"
+
+                        type="email"
+
+                        id="emailInput"
+
+                        placeholder="Email Address"
+
+                        autocomplete="email"
+
+                    >
+
+
+
+                </div>
+
+
+
+
+
+                <!-- PASSWORD -->
+
+
+
+                <div class="password-control">
+
+
+
+                    <input
+
+                        class="auth-input password-input"
+
+                        type="password"
+
+                        id="passwordInput"
+
+                        placeholder="Password"
+
+                        autocomplete="current-password"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="password-toggle"
+
+                        type="button"
+
+                        data-target="passwordInput"
+
+                        aria-label="Show password"
+
+                    >
+
+
+
+                        <svg
+
+                            class="eye-open-icon"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+
+                            ></path>
+
+
+
+                            <circle
+
+                                cx="12"
+
+                                cy="12"
+
+                                r="2.8"
+
+                            ></circle>
+
+                        </svg>
+
+
+
+
+
+                        <svg
+
+                            class="eye-closed-icon hidden"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M3 3l18 18"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a9.8 9.8 0 0 0 3-.5"
+
+                            ></path>
+
+                        </svg>
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <!-- CONFIRM PASSWORD - SIGN UP ONLY -->
+
+
+
+                <div
+
+                    class="password-control hidden"
+
+                    id="confirmPasswordSection"
+
+                >
+
+
+
+                    <input
+
+                        class="auth-input password-input"
+
+                        type="password"
+
+                        id="confirmPasswordInput"
+
+                        placeholder="Confirm Password"
+
+                        autocomplete="new-password"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="password-toggle"
+
+                        type="button"
+
+                        data-target="confirmPasswordInput"
+
+                        aria-label="Show confirm password"
+
+                    >
+
+
+
+                        <svg
+
+                            class="eye-open-icon"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+
+                            ></path>
+
+
+
+                            <circle
+
+                                cx="12"
+
+                                cy="12"
+
+                                r="2.8"
+
+                            ></circle>
+
+                        </svg>
+
+
+
+
+
+                        <svg
+
+                            class="eye-closed-icon hidden"
+
+                            viewBox="0 0 24 24"
+
+                            aria-hidden="true"
+
+                        >
+
+                            <path
+
+                                d="M3 3l18 18"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7"
+
+                            ></path>
+
+
+
+                            <path
+
+                                d="M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a9.8 9.8 0 0 0 3-.5"
+
+                            ></path>
+
+                        </svg>
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <!-- FORGOT PASSWORD -->
+
+
+
+                <div
+
+                    class="forgot-row"
+
+                    id="forgotRow"
+
+                >
+
+
+
+                    <button
+
+                        class="forgot-password-button"
+
+                        id="forgotPasswordButton"
+
+                        type="button"
+
+                    >
+
+                        Forgot password?
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <p
+
+                    class="auth-message"
+
+                    id="authMessage"
+
+                ></p>
+
+
+
+
+
+                <button
+
+                    class="auth-submit-button"
+
+                    id="authSubmitButton"
+
+                    type="submit"
+
+                >
+
+                    Login
+
+                </button>
+
+
+
+            </form>
+
+
+
+
+
+            <!-- SOCIAL -->
+
+
+
+            <div class="social-auth form-social-auth">
+
+
+
+                <p>
+
+                    or continue with
+
+                </p>
+
+
+
+
+
+                <div class="social-auth-buttons">
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Google"
+
+                        type="button"
+
+                        aria-label="Continue with Google"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/google-icon.svg"
+
+                            alt="Google"
+
+                        >
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="social-icon-button"
+
+                        data-provider="Apple"
+
+                        type="button"
+
+                        aria-label="Continue with Apple"
+
+                    >
+
+
+
+                        <img
+
+                            src="Assets/apple-icon.svg"
+
+                            alt="Apple"
+
+                        >
+
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- ================================================== -->
+
+        <!-- MOCK GOOGLE / APPLE SIGN IN -->
+
+        <!-- ================================================== -->
+
+
+
+        <div
+
+            class="social-mock-overlay hidden"
+
+            id="socialMockOverlay"
+
+            aria-hidden="true"
+
+        >
+
+
+
+            <div
+
+                class="social-mock-card"
+
+                role="dialog"
+
+                aria-modal="true"
+
+                aria-labelledby="mockProviderTitle"
+
+            >
+
+
+
+                <button
+
+                    class="mock-close-button"
+
+                    id="mockCloseButton"
+
+                    type="button"
+
+                    aria-label="Close"
+
+                >
+
+                    ×
+
+                </button>
+
+
+
+
+
+                <div class="mock-provider-header">
+
+
+
+                    <img
+
+                        src="Assets/google-icon.svg"
+
+                        alt=""
+
+                        id="mockProviderIcon"
+
+                        class="mock-provider-icon"
+
+                    >
+
+
+
+
+
+                    <p class="mock-prototype-label">
+
+                        PROTOTYPE PREVIEW
+
+                    </p>
+
+
+
+
+
+                    <h2 id="mockProviderTitle">
+
+                        Continue with Google
+
+                    </h2>
+
+
+
+
+
+                    <p
+
+                        class="mock-provider-subtitle"
+
+                        id="mockProviderSubtitle"
+
+                    >
+
+                        Choose an account to continue to LARGA.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- GOOGLE MOCK -->
+
+
+
+                <div
+
+                    id="googleMockPanel"
+
+                    class="mock-provider-panel"
+
+                >
+
+
+
+                    <button
+
+                        class="mock-account-option"
+
+                        type="button"
+
+                        data-mock-name="Commuter"
+
+                        data-mock-email="commuter@gmail.com"
+
+                    >
+
+
+
+                        <span class="mock-avatar">
+
+                            C
+
+                        </span>
+
+
+
+                        <span class="mock-account-text">
+
+
+
+                            <strong>
+
+                                Commuter
+
+                            </strong>
+
+
+
+                            <small>
+
+                                commuter@gmail.com
+
+                            </small>
+
+
+
+                        </span>
+
+
+
+                        <span class="mock-chevron">
+
+                            ›
+
+                        </span>
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-account-option"
+
+                        type="button"
+
+                        data-mock-name="Student"
+
+                        data-mock-email="student@gmail.com"
+
+                    >
+
+
+
+                        <span class="mock-avatar">
+
+                            S
+
+                        </span>
+
+
+
+                        <span class="mock-account-text">
+
+
+
+                            <strong>
+
+                                Student
+
+                            </strong>
+
+
+
+                            <small>
+
+                                student@gmail.com
+
+                            </small>
+
+
+
+                        </span>
+
+
+
+                        <span class="mock-chevron">
+
+                            ›
+
+                        </span>
+
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-secondary-button"
+
+                        id="googleUseAnotherButton"
+
+                        type="button"
+
+                    >
+
+                        Use another account
+
+                    </button>
+
+
+
+
+
+                    <div
+
+                        class="mock-other-account hidden"
+
+                        id="googleOtherAccountSection"
+
+                    >
+
+
+
+                        <input
+
+                            class="mock-input"
+
+                            id="googleOtherEmail"
+
+                            type="email"
+
+                            placeholder="Email address"
+
+                        >
+
+
+
+
+
+                        <button
+
+                            class="mock-primary-button"
+
+                            id="googleOtherContinue"
+
+                            type="button"
+
+                        >
+
+                            Continue
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- APPLE MOCK -->
+
+
+
+                <div
+
+                    id="appleMockPanel"
+
+                    class="mock-provider-panel hidden"
+
+                >
+
+
+
+                    <label
+
+                        class="mock-input-label"
+
+                        for="appleMockEmail"
+
+                    >
+
+                        APPLE ID
+
+                    </label>
+
+
+
+
+
+                    <input
+
+                        class="mock-input"
+
+                        id="appleMockEmail"
+
+                        type="email"
+
+                        placeholder="name@example.com"
+
+                    >
+
+
+
+
+
+                    <button
+
+                        class="mock-primary-button apple-mock-continue"
+
+                        id="appleMockContinue"
+
+                        type="button"
+
+                    >
+
+                        Continue
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="mock-secondary-button"
+
+                        id="appleMockCancel"
+
+                        type="button"
+
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <p
+
+                    class="mock-error"
+
+                    id="mockError"
+
+                ></p>
+
+
+
+
+
+                <p class="mock-disclaimer">
+
+                    Demo only. No credentials are sent or stored.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- DRIVER PLACEHOLDER -->
+
+    <!-- ====================================================== -->
+
+
+
+    <section
+
+        class="full-screen driver-screen hidden"
+
+        id="driverScreen"
+
+    >
+
+
+
+        <div class="driver-placeholder">
+
+
+
+            <img
+
+                src="Assets/larga-logo.png"
+
+                alt="LARGA"
+
+                class="driver-logo"
+
+            >
+
+
+
+            <h1>
+
+                Driver Mode
+
+            </h1>
+
+
+
+            <p>
+
+                The commuter application is being developed first.
+
+                Driver tools will be integrated next.
+
+            </p>
+
+
+
+
+
+            <button
+
+                class="main-button"
+
+                id="driverBackButton"
+
+                type="button"
+
+            >
+
+                Return to Role Selection
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+
+    <!-- COMMUTER APPLICATION -->
+
+    <!-- ====================================================== -->
+
+
+
+    <div
+
+        class="main-app hidden"
+
+        id="mainApp"
+
+    >
+
+
+
+        <!-- HEADER -->
+
+
+
+        <header class="top-bar">
+
+
+
+            <div>
+
+
+
+                <p class="brand-small">
+
+                    LARGA
+
+                </p>
+
+
+
+                <h2 id="pageTitle">
+
+                    Live Tracking
+
+                </h2>
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                class="profile-button"
+
+                id="profileButton"
+
+                type="button"
+
+            >
+
+                G
+
+            </button>
+
+
+
+        </header>
+
+
+
+
+
+
+
+        <main class="app-content">
+
+
+
+
+
+            <!-- ================================================= -->
+
+            <!-- GUIDE -->
+
+            <!-- ================================================= -->
+
+            <section
+                class="page guide-page"
+                id="guidePage"
+            >
+
+                <div class="guide-map-shell">
+
+                    <div
+                        class="guide-map-canvas"
+                        id="guideMapCanvas"
+                    >
+
+                        <div
+                            class="guide-google-map hidden"
+                            id="guideGoogleMap"
+                            aria-label="Google map showing Davao City jeepney routes"
+                        ></div>
+
+                        <div
+                            class="guide-map-setup hidden"
+                            id="guideMapSetup"
+                            role="status"
+                        >
+                            <strong>Google Maps Demo Key</strong>
+                            <span>Loading the open basemap…</span>
+                        </div>
+
+                        <div
+                            class="guide-map-world"
+                            id="guideMapWorld"
+                        >
+
+                            <div class="guide-map-road road-one"></div>
+                            <div class="guide-map-road road-two"></div>
+                            <div class="guide-map-road road-three"></div>
+                            <div class="guide-map-road road-four"></div>
+                            <div class="guide-map-road road-five"></div>
+
+                            <svg
+                                class="guide-route-svg"
+                                viewBox="0 0 360 260"
+                                preserveAspectRatio="none"
+                                aria-hidden="true"
+                            >
+                                <g id="guideRouteLayers"></g>
+                            </svg>
+
+                            <div
+                                class="guide-map-stops"
+                                id="guideMapStops"
+                            ></div>
+
+                            <div
+                                class="guide-map-jeeps"
+                                id="guideMapJeeps"
+                            ></div>
+
+                            <div
+                                class="guide-map-journey-markers"
+                                id="guideMapJourneyMarkers"
+                            ></div>
+
+                            <div
+                                class="guide-user-marker hidden"
+                                id="guideUserMarker"
+                                aria-label="Your location"
+                            >
+                                <span></span>
+                            </div>
+
+                        </div>
+
+                        <div class="guide-map-top-row">
+
+                            <div class="guide-map-route-label">
+
+                                <span
+                                    class="guide-map-route-dot"
+                                    id="guideMapRouteDot"
+                                ></span>
+
+                                <div>
+
+                                    <small id="guideMapEyebrow">
+                                        MAP PREVIEW
+                                    </small>
+
+                                    <strong id="guideMapRouteName">
+                                        Select a route
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="guide-map-actions">
+
+                                <button
+                                    class="guide-location-pill"
+                                    id="useLocationButton"
+                                    type="button"
+                                >
+                                    <span>⌖</span>
+                                    <span id="guideLocationText">
+                                        My location
+                                    </span>
+                                </button>
+
+                                <button
+                                    class="guide-map-expand-button"
+                                    id="guideMapExpandButton"
+                                    type="button"
+                                    aria-label="Expand map"
+                                    title="Expand map"
+                                >
+                                    <span id="guideMapExpandIcon">⛶</span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="guide-map-zoom-controls"
+                            aria-label="Map zoom controls"
+                        >
+                            <button
+                                id="guideMapZoomIn"
+                                type="button"
+                                aria-label="Zoom in"
+                            >+</button>
+                            <button
+                                id="guideMapZoomOut"
+                                type="button"
+                                aria-label="Zoom out"
+                            >−</button>
+                        </div>
+
+                        <div
+                            class="guide-map-selection-hint"
+                            id="guideMapSelectionHint"
+                        >
+                            Tap route cards to compare them on the map.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="guide-discovery-panel">
+
+                    <div class="guide-section-heading">
+
+                        <div>
+
+                            <p
+                                class="guide-kicker"
+                                id="guideSectionKicker"
+                            >
+                                DAVAO CITY
+                            </p>
+
+                            <h1 id="guideSectionTitle">
+                                Popular Downtown Routes
+                            </h1>
+
+                            <p
+                                class="guide-trip-summary hidden"
+                                id="guideTripSummary"
+                            ></p>
+
+                        </div>
+
+                        <button
+                            class="guide-header-action"
+                            id="guideHeaderAction"
+                            type="button"
+                            disabled
+                        >
+                            Deselect All
+                        </button>
+
+                    </div>
+
+
+
+                    <p id="connectionStatus" class="connection-status hidden" role="status"></p><div id="sharedTripBanner" class="shared-trip-banner hidden">A shared trip is ready. <button id="openSharedTrip" type="button">Open shared trip</button></div><details class="journey-tools hidden" id="journeyEditor"><summary>Edit places and stop order</summary><ol id="journeyEditStops" class="journey-edit-stops"></ol><div id="journeyEditSearchBox" class="hidden"><label for="journeyEditSearch">Replace this place</label><input id="journeyEditSearch" placeholder="Place or saved landmark" autocomplete="off"><div id="journeyEditResults" class="journey-edit-results"></div></div><button id="applyJourneyEdits" type="button" class="main-button">Update trip</button><p id="journeyEditStatus" role="status"></p></details><details id="journeyCompare" class="journey-tools hidden"><summary>Compare available routes</summary><label for="journeyCompareMode">Prefer</label><select id="journeyCompareMode"><option value="transfers">Fewer transfers</option><option value="walk">Less estimated walking</option></select><div id="journeyCompareOptions"></div><p id="journeyCompareNote"></p></details><button id="shareCurrentTrip" type="button" class="hidden">Share trip</button><div class="journey-controls hidden" id="journeyControls"><button id="viewPlanLive" type="button" class="plan-live-action" aria-label="View suggested routes in Live" title="View in Live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>View in Live</span></button></div><div id="tripRideInstructions" class="trip-ride-instructions hidden"></div><div
+                        class="route-carousel"
+                        id="routeCarousel"
+                        aria-label="Popular downtown jeepney routes"
+                    ></div>
+
+
+
+                    <div class="guide-route-search-block">
+
+                        <div
+                            class="guide-mode-switch"
+                            role="group"
+                            aria-label="Guide mode"
+                        >
+                            <button
+                                class="guide-mode-button active-guide-mode"
+                                id="browseRoutesModeButton"
+                                type="button"
+                            >
+                                Browse Routes
+                            </button>
+
+                            <button
+                                class="guide-mode-button"
+                                id="planTripModeButton"
+                                type="button"
+                            >
+                                Plan a Trip
+                            </button>
+                        </div>
+
+
+
+                        <div id="browseRoutesPanel">
+
+                            <label
+                                class="guide-search-label"
+                                for="routeSearchInput"
+                            >
+                                Search all jeepney routes
+                            </label>
+
+                            <div class="guide-search-control">
+
+                                <span class="guide-search-icon">
+                                    ⌕
+                                </span>
+
+                                <input
+                                    id="routeSearchInput"
+                                    type="text"
+                                    placeholder="Route name, landmark, or road"
+                                    autocomplete="off"
+                                >
+
+                                <button
+                                    class="guide-search-clear hidden"
+                                    id="routeSearchClear"
+                                    type="button"
+                                    aria-label="Clear route search"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                            <div
+                                class="guide-search-results hidden"
+                                id="routeSearchResults"
+                            ></div>
+
+                        </div>
+
+
+
+                        <div
+                            class="guide-trip-planner hidden"
+                            id="tripPlannerPanel"
+                        >
+
+                            <div class="guide-trip-inputs">
+
+                                <div class="guide-trip-field">
+                                    <label for="tripFromInput">FROM</label>
+                                    <input
+                                        id="tripFromInput"
+                                        type="text"
+                                        placeholder="Starting point"
+                                        autocomplete="off"
+                                        aria-autocomplete="list"
+                                        aria-controls="guidePlaceResults"
+                                    ><button type="button" class="planner-field-clear hidden" id="clearTripFrom" aria-label="Clear starting point">×</button>
+                                </div>
+
+                                <span class="guide-trip-arrow">→</span>
+
+                                <div class="guide-trip-field">
+                                    <label for="tripToInput">TO</label>
+                                    <input
+                                        id="tripToInput"
+                                        type="text"
+                                        placeholder="Destination"
+                                        autocomplete="off"
+                                        aria-autocomplete="list"
+                                        aria-controls="guidePlaceResults"
+                                    ><button type="button" class="planner-field-clear hidden" id="clearTripTo" aria-label="Clear destination">×</button>
+                                </div>
+
+                            </div>
+
+                            <div
+                                class="guide-place-results hidden"
+                                id="guidePlaceResults"
+                                role="listbox"
+                                aria-label="Location suggestions"
+                            ></div>
+
+                            <button
+                                class="guide-find-trip-button"
+                                id="findGuideTripButton"
+                                type="button"
+                            >
+                                Plan My Trip
+                            </button><button type="button" class="guide-save-trip-button hidden" id="saveSuggestedTripButton">Save Trip</button>
+
+                        </div>
+
+                        <p
+                            class="guide-message"
+                            id="guideMessage"
+                        ></p>
+
+                    </div>
+
+                </div>
+
+
+
+                <input
+                    type="hidden"
+                    id="destinationInput"
+                    value=""
+                >
+
+            </section>
+
+
+            <!-- ================================================= -->
+
+            <!-- LIVE -->
+
+            <!-- ================================================= -->
+
+
+
+            <section
+                class="page active-page live-page"
+                id="livePage"
+            >
+
+
+
+
+                <div class="live-route-section">
+
+                    <div class="live-section-heading">
+                        <div>
+                            <p class="live-section-kicker">
+                                SELECT A ROUTE
+                            </p>
+
+                            <h2>
+                                Live Routes
+                            </h2>
+                        </div>
+                    </div>
+
+
+                    <div
+                        class="live-route-carousel"
+                        id="liveRouteCarousel"
+                        aria-label="Live route selection" tabindex="0"
+                    ></div>
+
+
+                    <div class="live-search-wrap">
+
+                        <label
+                            class="live-search-label"
+                            for="liveRouteSearchInput"
+                        >
+                            Search all jeepney routes
+                        </label>
+
+                        <div class="live-search-control">
+                            <span
+                                class="live-search-icon"
+                                aria-hidden="true"
+                            >
+                                ⌕
+                            </span>
+
+                            <input
+                                id="liveRouteSearchInput"
+                                type="search"
+                                placeholder="Route name, landmark, or road"
+                                autocomplete="off"
+                            >
+
+                            <button
+                                class="live-search-clear hidden"
+                                id="liveRouteSearchClear"
+                                type="button"
+                                aria-label="Clear route search"
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div
+                            class="live-search-results hidden"
+                            id="liveRouteSearchResults"
+                            role="listbox"
+                            aria-label="Live route search results"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="live-map-section">
+
+                    <div
+                        class="live-google-map"
+                        id="liveGoogleMap"
+                        aria-label="Map showing jeepney locations"
+                    ></div>
+
+
+                    <div
+                        class="live-map-loading"
+                        id="liveMapLoading"
+                    >
+                        <span class="live-map-loader"></span>
+
+                        <strong>
+                            Preparing live map
+                        </strong>
+
+                        <small>
+                            Loading the selected route…
+                        </small>
+                    </div>
+
+
+                    <div class="live-map-topbar">
+
+                        <div class="live-map-route-pill">
+                            <span
+                                class="live-map-route-dot"
+                                id="liveMapRouteDot"
+                            ></span>
+
+                            <div>
+                                <small>
+                                    TRACKING
+                                </small>
+
+                                <strong
+                                    id="liveMapRouteName"
+                                >
+                                    Route 1
+                                </strong>
+                            </div>
+                        </div>
+
+
+                        <button
+                            class="live-location-button"
+                            id="liveLocationButton"
+                            type="button"
+                        >
+                            <span aria-hidden="true">⌖</span>
+
+                            <span id="liveLocationButtonText">
+                                Enable location
+                            </span>
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="live-map-legend"
+                        id="liveMapLegend"
+                    >
+                        <span class="live-legend-dot"></span>
+
+                        <span id="liveVehicleCountLabel">
+                            0 jeepneys
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="live-location-gate"
+                    id="liveLocationGate"
+                >
+                    <div class="live-location-gate-icon">
+                        ◎
+                    </div>
+
+                    <div>
+                        <strong>
+                            Enable location for arrival times
+                        </strong>
+
+                        <p>
+                            LARGA needs your location to estimate the nearest boarding point and the next jeepney approaching it.
+                        </p>
+                    </div>
+
+                    <button
+                        class="live-enable-location"
+                        id="liveEnableLocationButton"
+                        type="button"
+                    >
+                        Use my location
+                    </button>
+                </div>
+
+
+                <section
+                    class="live-nearest-section hidden"
+                    id="liveNearestSection"
+                    aria-live="polite"
+                >
+
+                    <div class="live-section-heading live-nearest-heading">
+                        <div>
+                            <p class="live-section-kicker">
+                                NEAREST JEEPNEY
+                            </p>
+
+                            <h2>
+                                Your next ride
+                            </h2>
+                        </div>
+
+                        <span
+                            class="live-nearest-eta"
+                            id="liveNearestEta"
+                        >
+                            -- min
+                        </span>
+                    </div>
+
+
+                    <article class="live-nearest-card">
+
+                        <div class="live-nearest-main">
+
+                            <div
+                                class="live-nearest-route-icon"
+                                id="liveNearestRouteIcon"
+                                aria-hidden="true"
+                            >
+                                <span class="live-mini-jeep-body">
+                                    <i></i>
+                                    <b></b>
+                                    <b></b>
+                                </span>
+                            </div>
+
+                            <div class="live-nearest-copy">
+
+                                <div class="live-nearest-title-row">
+                                    <strong
+                                        id="liveNearestRouteName"
+                                    >
+                                        Route 1
+                                    </strong>
+
+                                <span
+                                    class="live-nearest-plate"
+                                    id="liveNearestPlate"
+                                >
+                                    LJR 4821
+                                </span>
+                                </div>
+
+                                <small
+                                    id="liveNearestDistance"
+                                >
+                                    Calculating distance…
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="live-notify-control">
+
+                            <label for="liveNotifyThreshold">
+                                Notify me when it is
+                            </label>
+
+                            <div class="live-notify-row">
+
+                                <select
+                                    id="liveNotifyThreshold"
+                                    aria-label="Notification time before jeepney arrival"
+                                >
+                                    <option value="1">
+                                        1 min away
+                                    </option>
+
+                                    <option value="5" selected>
+                                        5 min away
+                                    </option>
+
+                                    <option value="10">
+                                        10 min away
+                                    </option>
+                                </select>
+
+                                <button
+                                    class="live-notify-button"
+                                    id="liveNotifyButton"
+                                    type="button"
+                                >
+                                    <span aria-hidden="true">♢</span>
+                                    Notify me
+                                </button>
+
+                            </div>
+
+                            <p
+                                class="live-notify-status"
+                                id="liveNotifyStatus"
+                            >
+                                Choose an alert time for this jeepney.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <div class="live-other-heading">
+                        <strong>
+                            Other jeepneys on this route
+                        </strong>
+
+                        <span id="liveOtherCount">
+                            0 vehicles
+                        </span>
+                    </div>
+
+
+                    <div
+                        class="live-vehicle-list"
+                        id="liveVehicleList"
+                    ></div>
+
+                </section>
+
+
+                <div
+                    class="larga-live-toast hidden"
+                    id="largaLiveToast"
+                    role="status"
+                    aria-live="assertive"
+                >
+                    <span class="larga-live-toast-icon">
+                        ♢
+                    </span>
+
+                    <div>
+                        <strong id="largaLiveToastTitle">
+                            Get ready to board
+                        </strong>
+
+                        <span id="largaLiveToastMessage">
+                            Your jeepney is approaching.
+                        </span>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+
+            <!-- TRIPS -->
+
+            <!-- ================================================= -->
+
+
+
+            <section class="page trips-library-page" id="tripsPage">
+ <div class="page-heading"><h1>Your saved routes</h1><p>Keep your routes and plans ready for school, work, or wherever you go.</p></div>
+ <button type="button" class="main-button" id="newSavedTripButton">Plan a new trip</button>
+ <p id="tripsLibraryStatus" class="guide-message" role="status"></p>
+ <div class="trip-library-filters premium-trip-filters"><input type="search" id="tripLibrarySearch" aria-label="Search your trips" placeholder="Search trips or routes"><div class="legacy-filter-selects" hidden><select id="tripLibraryLabel" aria-label="Filter trips by label"><option value="">All labels</option></select><select id="tripLibrarySort" aria-label="Sort trips"><option value="saved">Recently saved</option><option value="used">Recently used</option><option value="name">Name</option></select></div><div class="trip-filter-icons"><button type="button" id="tripLabelMenuButton" aria-label="Filter trip labels" aria-expanded="false" aria-controls="tripLabelsMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h8l10 10-7 7L3 10Z"/><circle cx="7.5" cy="8" r="1"/></svg></button><button type="button" id="tripFilterMenuButton" aria-label="Filter and sort trips" aria-expanded="false" aria-controls="tripFiltersMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8Z"/></svg></button></div><section class="trip-filter-dropdown hidden" id="tripLabelsMenu" aria-label="Trip labels"><strong>Labels</strong><div id="tripLabelChecklist"></div><button type="button" id="resetTripLabels">All labels</button></section><section class="trip-filter-dropdown hidden" id="tripFiltersMenu" aria-label="Trip filters"><strong>Show</strong><label><input type="checkbox" data-library-type="route" checked> Saved routes</label><label><input type="checkbox" data-library-type="plan" checked> Trip plans</label><strong>Sort by</strong><label><input type="radio" name="librarySort" value="saved" checked> Recently saved</label><label><input type="radio" name="librarySort" value="used"> Recently used</label><label><input type="radio" name="librarySort" value="name"> Name</label></section></div><h2 class="trip-list-heading">Saved trips</h2><div id="savedRoutesContainer"></div><h2 class="trip-list-heading">Recent trips</h2><div id="recentTripsContainer"></div>
+ <div class="legacy-trip-view" aria-hidden="true">
+
+
+
+                <div
+
+                    class="empty-state"
+
+                    id="noActiveTrip"
+
+                >
+
+
+
+                    <div class="empty-icon">
+
+                        🧭
+
+                    </div>
+
+
+
+                    <h2>
+
+                        No active trip
+
+                    </h2>
+
+
+
+                    <p>
+
+                        Search for a destination in Guide to begin your journey.
+
+                    </p>
+
+
+
+
+
+                    <button
+
+                        class="main-button"
+
+                        id="goToGuideButton"
+
+                        type="button"
+
+                    >
+
+                        Open Route Guide
+
+                    </button>
+
+
+
+                </div>
+
+
+
+
+
+                <div
+
+                    class="hidden"
+
+                    id="activeTrip"
+
+                >
+
+
+
+                    <div class="page-heading">
+
+
+
+                        <p class="status-live">
+
+                            ● TRIP ACTIVE
+
+                        </p>
+
+
+
+                        <h1 id="activeTripRoute">
+
+                            Bajada Route
+
+                        </h1>
+
+
+
+                        <p id="activeTripDestination">
+
+                            Going to destination
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="mock-map trip-map">
+
+
+
+                        <span class="map-label">
+
+                            ACTIVE TRIP
+
+                        </span>
+
+
+
+                        <div class="trip-route-line"></div>
+
+
+
+                        <div class="map-user-marker">
+
+                            YOU
+
+                        </div>
+
+
+
+                        <div class="trip-jeep">
+
+                            🚐
+
+                        </div>
+
+
+
+                        <div class="map-destination">
+
+                            📍
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="trip-status-card">
+
+
+
+                        <p class="eyebrow">
+
+                            CURRENT STEP
+
+                        </p>
+
+
+
+                        <h2 id="tripInstruction">
+
+                            Walk toward the boarding area
+
+                        </h2>
+
+
+
+                        <p id="tripSubtext">
+
+                            Your jeepney is approximately 3 minutes away.
+
+                        </p>
+
+
+
+                    </div>
+
+
+
+
+
+                    <button
+
+                        class="main-button"
+
+                        id="nextTripStepButton"
+
+                        type="button"
+
+                    >
+
+                        Simulate Next Step
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        class="danger-button"
+
+                        id="endTripButton"
+
+                        type="button"
+
+                    >
+
+                        End Trip
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </div>
+</section>
+
+
+
+
+
+
+
+            <!-- ================================================= -->
+
+            <!-- SAVED -->
+
+            <!-- ================================================= -->
+
+
+
+            <section class="page discover-page" id="discoverPage">
+ <div class="page-heading"><p class="eyebrow">EXPLORE DAVAO</p><h1>Find your next stop</h1><p>Find a place and plan how to get there.</p></div>
+ <label class="discover-search-label" for="discoverSearchInput">Search places</label>
+ <input id="discoverSearchInput" class="discover-search-input" type="search" placeholder="Food, Malls, Parks, Items…" autocomplete="off" aria-controls="discoverResults">
+ <div class="discover-categories"><button type="button" data-discover-query="restaurants in Davao City">Restaurants</button><button type="button" data-discover-query="activities in Davao City">Activities</button><button type="button" data-discover-query="malls in Davao City">Malls</button><button type="button" data-discover-query="parks in Davao City">Parks</button><button type="button" data-discover-query="hotels in Davao City">Hotels</button><button type="button" data-discover-query="inns in Davao City">Inns</button><button type="button" data-discover-query="shops in Davao City">Shops</button><button type="button" data-discover-query="cafes in Davao City">Cafés</button><button type="button" data-discover-query="museums in Davao City">Museums</button><button type="button" data-discover-query="gyms in Davao City">Fitness</button><button type="button" data-discover-query="cinemas in Davao City">Movies</button><button type="button" data-discover-query="markets in Davao City">Markets</button><button type="button" data-discover-query="attractions in Davao City">Attractions</button></div>
+ <section class="discover-stops hidden" id="discoverStopsTray"><h2>Your stops</h2><p>Visit these places in the order below.</p><ol id="discoverStopsList"></ol><p id="discoverStopsStatus" role="status"></p><button type="button" class="main-button" id="buildDiscoverStops">Plan these stops</button></section><p id="discoverStatus" class="guide-message" role="status">Search for a place to explore.</p><div hidden><select id="discoverMinRating"><option value="0">Any</option></select><input id="discoverOpenNow" type="checkbox"></div><div id="discoverResults"></div>
+</section>
+
+
+
+        </main><div class="share-trip-overlay hidden" id="shareTripOverlay"><section class="share-trip-dialog" role="dialog" aria-modal="true" aria-labelledby="shareTripTitle"><h2 id="shareTripTitle">Share your trip</h2><input id="shareTripLink" aria-label="Trip link" readonly><p id="shareTripStatus" role="status"></p><button type="button" id="copyShareTrip">Copy link</button><button type="button" id="closeShareTrip">Close</button></section></div><div class="profile-menu hidden" id="profileMenu"><button type="button" data-profile-panel="account" aria-expanded="false">Account <span>›</span></button><div class="profile-option-panel hidden" id="profileAccount"><strong id="profileAccountName">Guest</strong></div><button type="button" data-profile-panel="accessibility" aria-expanded="false">Accessibility <span>›</span></button><div class="profile-option-panel hidden" id="profileAccessibility"><label><input type="checkbox" id="profileLargerText"> Larger text</label><label><input type="checkbox" id="profileReducedMotion"> Reduce motion</label></div><button type="button" data-profile-panel="settings" aria-expanded="false">Settings <span>›</span></button><div class="profile-option-panel hidden" id="profileSettings"><label><input type="checkbox" id="profileDarkMode"> Dark mode</label><label><input type="checkbox" id="profileRideAlerts" checked> Ride alerts</label><p id="offlineReadyStatus">Preparing offline route reference…</p></div></div><div class="discover-trip-overlay hidden" id="discoverTripOverlay"><section class="discover-trip-dialog" role="dialog" aria-modal="true" aria-labelledby="discoverTripTitle"><button type="button" class="discover-trip-close" id="discoverTripClose" aria-label="Close trip preview">×</button><p class="eyebrow">YOUR RIDE</p><h2 id="discoverTripTitle">Plan your ride</h2><p id="discoverTripMessage" role="status"></p><p id="discoverTripSummary"></p><button type="button" class="main-button" id="discoverTripView" disabled>View trip</button><button type="button" class="discover-secondary hidden" id="discoverTripRetry">Try location again</button><button type="button" class="discover-secondary" id="discoverTripChooseStart">Choose starting point</button></section></div><div class="trip-save-overlay hidden" id="tripSaveOverlay"><form id="tripSaveForm" class="trip-save-dialog" role="dialog" aria-modal="true" aria-labelledby="tripSaveTitle"><h2 id="tripSaveTitle">Save your trip</h2><label for="tripLabelInput">Trip label</label><input id="tripLabelInput" maxlength="40" placeholder="e.g. School, Work, Gym" autocomplete="off"><div class="trip-label-presets"><button type="button" data-trip-label="School">School</button><button type="button" data-trip-label="Work">Work</button><button type="button" data-trip-label="Gym">Gym</button><button type="button" data-trip-label="Home">Home</button></div><p id="tripSaveStatus" role="status"></p><div class="trip-save-actions"><button type="button" id="cancelTripSaveButton">Cancel</button><button type="submit" class="main-button">Save</button></div></form></div>
+
+
+
+
+
+
+
+        <!-- ================================================= -->
+
+        <!-- ROUTE DETAIL LIQUID GLASS -->
+
+        <!-- ================================================= -->
+
+        <div
+            class="route-detail-overlay"
+            id="routeDetailOverlay"
+            aria-hidden="true"
+        >
+
+            <button
+                class="route-detail-backdrop"
+                id="routeDetailBackdrop"
+                type="button"
+                aria-label="Close route details"
+            ></button>
+
+            <article
+                class="route-detail-glass"
+                id="routeDetailGlass"
+            >
+
+                <button
+                    class="route-detail-close"
+                    id="closeRouteDetailButton"
+                    type="button"
+                    aria-label="Close route details"
+                >
+                    ×
+                </button>
+
+                <div class="route-detail-accent"></div>
+
+                <div class="route-detail-heading">
+
+                    <p
+                        class="route-detail-status"
+                        id="routeDetailStatus"
+                    >
+                        ROUTE REFERENCE
+                    </p>
+
+                    <h2 id="routeName">
+                        Select a route
+                    </h2>
+
+                    <p id="routeDetailSummary">
+                        Choose a route from the Guide page.
+                    </p>
+
+                </div>
+
+                <div class="route-detail-section">
+
+                    <p class="route-detail-label">
+                        FAMOUS LANDMARKS PASSED
+                    </p>
+
+                    <div
+                        class="route-landmark-chips"
+                        id="routeLandmarkChips"
+                    ></div>
+
+                </div>
+
+                <div class="route-detail-section">
+
+                    <p class="route-detail-label">
+                        MAJOR ROADS
+                    </p>
+
+                    <p
+                        class="route-detail-roads"
+                        id="routeDetailRoads"
+                    ></p>
+
+                </div>
+
+                <div class="route-detail-actions">
+
+                    <button
+                        class="route-detail-primary"
+                        id="startTripButton"
+                        type="button"
+                    >
+                        Start Trip
+                    </button>
+
+                    <button
+                        class="route-detail-secondary"
+                        id="saveCurrentRouteButton"
+                        type="button"
+                    >
+                        ☆ Save Route
+                    </button>
+
+                </div>
+
+                <p
+                    class="route-detail-save-message"
+                    id="saveMessage"
+                ></p>
+
+            </article>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+
+        <!-- BOTTOM NAV -->
+
+        <!-- ================================================= -->
+
+
+
+        <nav class="bottom-nav">
+
+<button
+
+                class="nav-item active-nav"
+
+                data-page="live"
+
+                type="button"
+
+            >
+
+                <span class="live-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></span>
+
+                <p>Live</p>
+
+            </button>
+
+<button
+
+                class="nav-item"
+
+                data-page="guide"
+
+                type="button"
+
+            >
+
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="m16.5 7.5-3 6-6 3 3-6 6-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+
+                <p>Guide</p>
+
+            </button>
+
+<button
+
+                class="nav-item"
+
+                data-page="trips"
+
+                type="button"
+
+            >
+
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="1.4" fill="currentColor"/><circle cx="4" cy="12" r="1.4" fill="currentColor"/><circle cx="4" cy="18" r="1.4" fill="currentColor"/></svg></span>
+
+                <p>Trips</p>
+
+            </button>
+
+<button
+
+                class="nav-item"
+
+                data-page="discover"
+
+                type="button"
+
+            >
+
+                <span class="guide-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><p>Discover</p>
+
+            </button>
+
+</nav>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<script
+
+    src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.3/dist/js/intlTelInput.min.js"
+
+></script>
+
+
+
+<script src="maplibre-gl.js"></script>
+<script src="open-maps.js?v=20261110-chevron-tint"></script>
+<script src="pitch-session.js?v=f4g"></script><script src="script.js?v=f4g"></script>
+
+
+
+</body>
+
+
+
+</html>
