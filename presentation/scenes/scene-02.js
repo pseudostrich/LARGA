@@ -175,7 +175,7 @@
    if(spec.startsWith('wide:'))next=cam.wide(+spec.slice(5));
    else{
     let b;
-    if(opts.scroll){b=await call('frame',spec,'center',opts.duration||800);}
+    if(opts.scroll){b=await call('frame',spec,'center',opts.duration||800,opts.easing||null);}
     if(!b)b=await frameBox(spec);
     if(!alive()||!b)return;next=cam.target(b,opts);
    }

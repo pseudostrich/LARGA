@@ -250,3 +250,13 @@ html.dark-mode #mainApp {
 
 #mainApp .sponsor-map-credit{margin:4px 18px 0;font-size:11px;line-height:1.4;}
 #mainApp #guideMessage:empty{display:none;}
+
+/* ── Route card open: smooth morph (no reflowed/stretched text, no late pops) ── */
+.guide-route-card.route-card-expanded.route-card-morphing{backdrop-filter:none;-webkit-backdrop-filter:none;will-change:transform}
+.guide-route-card.route-card-expanded.route-card-morphing>.route-card-select-area,
+.guide-route-card.route-card-expanded.route-card-morphing>.route-card-more{opacity:0!important;transition:none!important}
+.guide-route-card.route-card-expanded.route-card-morphing::after{animation:routeMorphVeil .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes routeMorphVeil{from{opacity:0}to{opacity:1}}
+.guide-route-card.route-card-expanded .route-detail-glass{transform:translateY(6px)!important;transition:opacity .24s ease,transform .3s cubic-bezier(.22,1,.36,1)!important}
+.guide-route-card.route-card-expanded.route-card-details-visible .route-detail-glass{transform:none!important}
+.route-detail-overlay.card-morph-open{will-change:opacity}

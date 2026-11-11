@@ -11007,17 +11007,49 @@ window.addEventListener(
                 const offset=typeof position==='number'?position:position==='start'?14:Math.max(10,(area.height-r.height)/2);
                 content.scrollTo({top:content.scrollTop+r.top-area.top-offset,behavior:smooth&&!reduced()?'smooth':'instant'});
             }
-            let scrollAnim=null;
-            function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
-            function scrollSmooth(top,ms){
-                if(scrollAnim)cancelAnimationFrame(scrollAnim);
+            // Film scrolling runs on the compositor: jump to the target scroll position at once, then glide the page
+            // in with a transform that uses the camera's own duration and easing. A main-thread rAF scroll could
+            // stall under load while the camera kept moving, which read as jitter.
+            let scrollAnims=[];
+            const FILM_EASE='cubic-bezier(.65,0,.35,1)';
+            function scrollSmooth(top,ms,easing=FILM_EASE){
+                scrollAnims.forEach(a=>a.cancel());scrollAnims=[];
                 const from=content.scrollTop,max=content.scrollHeight-content.clientHeight,to=Math.max(0,Math.min(max,top));
-                if(reduced()||ms<=0||Math.abs(to-from)<1){content.scrollTo({top:to,behavior:'instant'});return to-from;}
-                const start=performance.now();
-                const step=now=>{const k=Math.min(1,(now-start)/ms);content.scrollTo({top:from+(to-from)*ease(k),behavior:'instant'});scrollAnim=k<1?requestAnimationFrame(step):null;};
-                scrollAnim=requestAnimationFrame(step);
-                return to-from;
+                content.scrollTo({top:to,behavior:'instant'});
+                const delta=to-from;
+                if(reduced()||ms<=0||Math.abs(delta)<1)return delta;
+                scrollAnims=[...content.children].filter(el=>el.getClientRects().length).map(el=>el.animate(
+                    [{transform:`translate3d(0,${delta}px,0)`},{transform:'translate3d(0,0,0)'}],
+                    {duration:ms,delay:16,easing,fill:'backwards'}));
+                const mine=scrollAnims;Promise.all(mine.map(a=>a.finished)).then(()=>{if(scrollAnims===mine)scrollAnims=[];},()=>{});
+                return delta;
             }
+            // Keep a film overlay (the highlight) locked to content that is still gliding into place.
+            function followScroll(el){
+                const a=scrollAnims[0];if(!a||a.playState!=='running'&&a.playState!=='pending')return;
+                const t=a.effect.getComputedTiming();if(t.progress===null||t.progress>=1)return;
+                const kf=a.effect.getKeyframes(),f=el.animate(kf,{duration:a.effect.getTiming().duration,delay:0,easing:a.effect.getTiming().easing,fill:'backwards'});
+                f.currentTime=Math.max(0,(a.currentTime||0)-16);
+            }
+            // Page changes under the camera: a quick fade-through instead of a hard cut.
+            function swap(fn){
+                if(reduced()){fn();return Promise.resolve(true);}
+                const layers=[content,...document.querySelectorAll('.trip-save-overlay:not(.hidden),.discover-trip-overlay:not(.hidden)')];
+                const outs=layers.map(l=>l.animate([{opacity:1},{opacity:0}],{duration:110,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'}));
+                return outs[0].finished.catch(()=>{}).then(()=>{
+                    fn();
+                    content.animate([{opacity:0},{opacity:1}],{duration:230,easing:'cubic-bezier(0,0,.2,1)'});
+                    outs.forEach(a=>a.cancel());
+                    return true;
+                });
+            }
+            // Dialogs that open during the film ease in instead of popping.
+            function popIn(overlay){
+                if(!overlay||reduced())return;
+                overlay.animate([{opacity:0},{opacity:1}],{duration:200,easing:'ease-out'});
+                overlay.firstElementChild?.animate([{opacity:0,transform:'translateY(10px) scale(.96)'},{opacity:1,transform:'none'}],{duration:280,easing:'cubic-bezier(.22,1,.36,1)'});
+            }
+            function fadeIn(el,ms=240){if(el&&!reduced())el.animate([{opacity:0},{opacity:1}],{duration:ms,easing:'ease-out'});}
             function ripple(node){
                 const b=box(node);if(!b||reduced())return;
                 const dot=document.createElement('div');dot.className='film-ripple';
@@ -11039,7 +11071,12 @@ window.addEventListener(
                 if(!node)return;
                 const b=box(node);if(!b)return;
                 const r=Array.isArray(node)?'12px':getComputedStyle(node).borderRadius;
-                Object.assign(spot.style,{left:b.x-pad+'px',top:b.y-pad+'px',width:b.w+pad*2+'px',height:b.h+pad*2+'px',borderRadius:r&&r!=='0px'?`calc(${r} + ${pad}px)`:'14px'});
+                // box() is measured mid-glide; add back what the glide still has to travel so the spot lands on its final spot.
+                let rest=0;const a=scrollAnims[0];
+                if(a&&a.effect){const ct=a.effect.getComputedTiming();if(ct.progress!==null&&ct.progress<1){const m=getComputedStyle(a.effect.target).transform;const mm=m&&m!=='none'?new DOMMatrixReadOnly(m):null;rest=mm?mm.m42:0;}}
+                Object.assign(spot.style,{left:b.x-pad+'px',top:b.y-rest-pad+'px',width:b.w+pad*2+'px',height:b.h+pad*2+'px',borderRadius:r&&r!=='0px'?`calc(${r} + ${pad}px)`:'14px'});
+                spot.getAnimations().forEach(x=>{if(x.effect?.getKeyframes?.().some(k=>k.transform))x.cancel();});
+                if(rest)followScroll(spot);
                 spot.classList.add('on');
                 lifted=null;
             }
@@ -11169,12 +11206,12 @@ window.addEventListener(
                 },
                 box(name){return box(name==='trips-intro'?name:name==='getoff'?key('getoff-group'):key(name));},
                 // Scroll a target into a chosen screen position and return its box afterwards.
-                frame(name,position='center',ms=0){
+                frame(name,position='center',ms=0,easing=FILM_EASE){
                     const node=name==='getoff'?key('getoff-group'):key(name);const b=box(node);if(!b)return null;
                     const el=Array.isArray(node)?node[0]:node;if(!el||!content.contains(el))return b;
                     const area=content.getBoundingClientRect();
                     const offset=typeof position==='number'?position:position==='start'?14:Math.max(10,(area.height-b.h)/2);
-                    const moved=scrollSmooth(content.scrollTop+b.y-area.top-offset,ms);
+                    const moved=scrollSmooth(content.scrollTop+b.y-area.top-offset,ms,easing||FILM_EASE);
                     return {...b,y:b.y-moved};
                 },
                 press(name){press(key(name));},
@@ -11229,17 +11266,22 @@ window.addEventListener(
                         case 'save':
                             get('saveSuggestedTripButton').click();
                             tripLabelInput.value='Bankerohan trip';
+                            popIn(get('tripSaveOverlay'));
                             break;
                         case 'save-submit':
                             if(pendingSavedTrip)get('tripSaveForm').requestSubmit();
                             [...navButtons].find(t=>t.dataset.page==='trips')?.click();
                             content.scrollTo({top:0,behavior:'instant'});
                             break;
-                        case 'type-search':
-                            discoverResults.replaceChildren();
-                            return typeInto(discoverInput,'San Pedro Cathedral',780,true);
+                        case 'type-search':{
+                            const clear=()=>discoverResults.replaceChildren();
+                            if(discoverResults.children.length&&!reduced())discoverResults.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-in',fill:'forwards'}).finished.then(a=>{clear();a?.cancel?.();},()=>clear());
+                            else clear();
+                            return typeInto(discoverInput,'San Pedro Cathedral',780,true).then(()=>fadeIn(discoverResults,260));
+                        }
                         case 'discover-plan':
                             key('discover-plan')?.click();
+                            popIn(get('discoverTripOverlay'));
                             break;
                         case 'choose-start':
                             get('discoverTripChooseStart').click();
@@ -11274,7 +11316,7 @@ window.addEventListener(
                 go(name){
                     const tab=i=>{closeAll();if(i!==0)stopSmoothVehicles();[...navButtons].find(t=>t.dataset.page===filmPages[i])?.click();content.scrollTo({top:0,behavior:'instant'});};
                     if(name==='open'){window.LargaPitchFilm.reveal();return true;}
-                    if(name.startsWith('tab:')){tab(+name.slice(4));if(name==='tab:0'){liveRouteCarousel.scrollTo({left:0,behavior:'instant'});}if(name==='tab:1'){try{setGuideMode('browse');}catch{}routeCarousel.scrollTo({left:0,behavior:'instant'});}return true;}
+                    if(name.startsWith('tab:')){const run=()=>{tab(+name.slice(4));if(name==='tab:0'){liveRouteCarousel.scrollTo({left:0,behavior:'instant'});}if(name==='tab:1'){try{setGuideMode('browse');}catch{}routeCarousel.scrollTo({left:0,behavior:'instant'});}};return name==='tab:0'?(run(),true):swap(run);}
                     if(name.startsWith('frame:')){scrollTo(key(name.slice(6)),'center');return true;}
                     switch(name){
                         case 'live-map':{
@@ -11282,18 +11324,18 @@ window.addEventListener(
                             try{const a=sampleLivePathAtDistance(activeLiveRoutePath,activeLiveRouteMetrics,liveVehicles[0].distanceOnRoute),b=film.location;
                                 if(a&&b&&liveGoogleMap?.easeTo)liveGoogleMap.easeTo({center:[(a.lng+b.lng)/2,(a.lat+b.lat)/2],zoom:15.5,duration:reduced()?0:2200,easing:t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2});}catch{}
                             return true;}
-                        case 'trips':tab(2);return true;
-                        case 'new-trip':get('newSavedTripButton').click();content.scrollTo({top:0,behavior:'instant'});return true;
-                        case 'plan':{get('findGuideTripButton').click();const d=get('tripRideInstructions').querySelector('details');if(d)d.open=true;return true;}
-                        case 'saved':if(pendingSavedTrip)get('tripSaveForm').requestSubmit();tab(2);return true;
-                        case 'choose-start':{
+                        case 'trips':return swap(()=>tab(2));
+                        case 'new-trip':return swap(()=>{get('newSavedTripButton').click();content.scrollTo({top:0,behavior:'instant'});});
+                        case 'plan':{get('findGuideTripButton').click();const d=get('tripRideInstructions').querySelector('details');if(d)d.open=true;fadeIn(get('tripRideInstructions'),280);return true;}
+                        case 'saved':return swap(()=>{if(pendingSavedTrip)get('tripSaveForm').requestSubmit();tab(2);});
+                        case 'choose-start':return swap(()=>{
                             let tries=0;const attempt=()=>{if(discoverTripOverlay.classList.contains('hidden')||tries++>6)return;get('discoverTripChooseStart').click();content.scrollTo({top:0,behavior:'instant'});setTimeout(attempt,90);};
-                            attempt();return true;}
+                            attempt();});
                     }
                     return true;
                 },
                 ready(){return Boolean(mainApp&&onboardingScreen);},
-                stop(){++film.session;stopSmoothVehicles();unlift();document.querySelectorAll('.film-cover').forEach(n=>n.remove());}
+                stop(){++film.session;stopSmoothVehicles();unlift();scrollAnims.forEach(x=>x.cancel());scrollAnims=[];document.querySelectorAll('.film-cover').forEach(n=>n.remove());}
             };
             // Message bridge: works when the deck is opened as a local file (file://), where the
             // presentation cannot reach into this frame directly.

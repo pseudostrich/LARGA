@@ -4,6 +4,8 @@
   'use strict';
   const scene=window.LargaSequence;
   if(!scene){document.body.textContent='Presentation failed to load. Check scenes/scene-00.js.';return;}
+  // Panel Q&A renders read-only slide snapshots from a chrome-less copy of the deck (qa.js).
+  if(new URLSearchParams(location.search).has('qaEmbed'))return;
   const byId=id=>document.getElementById(id);
   const root=byId('presentation'),stage=byId('stage'),host=byId('sceneHost');
   const previousButton=byId('previousButton'),nextButton=byId('nextButton');
@@ -52,13 +54,26 @@
     controlStatus.textContent=`${String(activeBeat+1).padStart(2,'0')} / ${String(scene.beats.length).padStart(2,'0')}`;
     progressFill.style.width=`${(activeBeat+1)/scene.beats.length*100}%`;
     previousButton.disabled=activeBeat===0;
-    nextButton.disabled=animating||activeBeat===scene.beats.length-1;triggerInput.disabled=animating;const goButton=triggerForm.querySelector?.('button');if(goButton)goButton.disabled=animating;stage.setAttribute('aria-busy',String(animating));
+    nextButton.disabled=activeBeat===scene.beats.length-1;triggerInput.disabled=animating;const goButton=triggerForm.querySelector?.('button');if(goButton)goButton.disabled=animating;stage.setAttribute('aria-busy',String(animating));
   }
+  function closingSettled(){const audio=document.querySelector('.closing-audio');return !animating&&(!audio||audio.paused||audio.ended);}
+  let lastForwardStart=-1e9;
   function enqueue(direction){
-    if(window.LargaReview?.isOpen?.())return;
-    const from=activeBeat,to=from+direction;if(to<0||to>=scene.beats.length)return;
+    if(window.LargaReview?.isOpen?.()||window.LargaQA?.isOpen?.())return;
+    const from=activeBeat,to=from+direction;
+    // One more Next after the settled finale (animation and closing music finished) opens Panel Q&A.
+    if(direction>0&&to>=scene.beats.length){if(closingSettled())window.LargaQA?.open?.({from:'finale'});return;}
+    if(to<0||to>=scene.beats.length)return;
+    if(animating&&direction>0){
+      // Next during a transition: finish the current beat instantly, then move on — no dead clicks.
+      // (A short guard stops one physical press that fires twice from skipping two beats.)
+      if(performance.now()-lastForwardStart<220)return;
+      ++navigationGeneration;
+      scene.setBeat(activeBeat);
+      animating=false;
+      return enqueue(direction);
+    }
     if(animating){
-      if(direction>0)return;
       ++navigationGeneration;
       activeBeat=to;
       stopVoice();
@@ -68,6 +83,7 @@
       stage.focus({preventScroll:true});
       return;
     }
+    if(direction>0)lastForwardStart=performance.now();
     const generation=++navigationGeneration;animating=true;activeBeat=to;stopVoice();controls();if(direction>0)keepBrowserBackLocal();
     void (async()=>{try{await scene.transitionTo(to,from);if(generation===navigationGeneration&&!window.LargaReview?.isOpen?.()&&!window.LargaScenes?.scene02?.isInteractive?.())stage.focus({preventScroll:true});}finally{if(generation===navigationGeneration){animating=false;controls();}}})();
   }
@@ -108,6 +124,8 @@
     if(event.repeat||event.ctrlKey||event.metaKey)return;
     const browserBack=event.key==='BrowserBack'||event.code==='BrowserBack'||(event.altKey&&event.key==='ArrowLeft');
     if(browserBack){event.preventDefault();sideAction(3);return true;}
+    const browserForward=event.key==='BrowserForward'||event.code==='BrowserForward'||(event.altKey&&event.key==='ArrowRight');
+    if(browserForward){event.preventDefault();sideAction(4);return true;}
     if(event.altKey)return;
     if(event.target?.matches?.('input,textarea,select,[contenteditable="true"]'))return;
     const code=event.code||({ArrowRight:'ArrowRight',ArrowLeft:'ArrowLeft',Home:'Home',' ':'Space',f:'KeyF',F:'KeyF',m:'KeyM',M:'KeyM',v:'KeyV',V:'KeyV'}[event.key]);
@@ -127,26 +145,38 @@
   const sidePresses=new Map();
   const sideDocuments=new WeakSet();
   const historyKey='largaPresenterBackGuard';
-  let lastBackInput=-Infinity;
+  let lastBackInput=-Infinity,lastForwardInput=-Infinity,historySettling=0;
+  // Keep a guard entry on both sides of the deck in browser history, so a mouse side button
+  // that the browser turns into Back/Forward navigation still moves the presentation.
   function armBrowserBack(){
-    if(activeBeat===0||window.LargaReview?.isOpen?.()||history.state?.[historyKey])return;
-    try{history.pushState({...history.state,[historyKey]:true},'',location.href);}catch{}
+    if(window.LargaReview?.isOpen?.()||historySettling>0||history.state?.[historyKey]==='here')return;
+    try{
+      history.replaceState({...(history.state||{}),[historyKey]:'back'},'',location.href);
+      history.pushState({[historyKey]:'here'},'',location.href);
+      history.pushState({[historyKey]:'forward'},'',location.href);
+      historySettling++;history.back();
+    }catch{}
   }
-  let browserGuard=false;
-  function keepBrowserBackLocal(){
-    armBrowserBack();
-    browserGuard=Boolean(history.state?.[historyKey]);
-  }
+  function keepBrowserBackLocal(){armBrowserBack();}
   window.addEventListener('popstate',event=>{
-    if(event.state?.[historyKey]){browserGuard=true;return;}
-    if(!browserGuard)return;
-    browserGuard=false;
-    if(activeBeat===0||window.LargaReview?.isOpen?.())return;
-    if(performance.now()-lastBackInput>280)previous();
-    keepBrowserBackLocal();
+    const guard=event.state?.[historyKey];
+    if(guard==='here'){if(historySettling>0)historySettling--;return;}
+    if((guard==='back'||guard==='forward')&&window.LargaQA?.isOpen?.()){historySettling++;guard==='back'?history.forward():history.back();window.LargaQA.side(guard==='back'?-1:1);return;}
+    if(guard==='back'){
+      historySettling++;history.forward();
+      if(activeBeat>0&&!window.LargaReview?.isOpen?.()&&performance.now()-lastBackInput>280)previous();
+      return;
+    }
+    if(guard==='forward'){
+      historySettling++;history.back();
+      if(!window.LargaReview?.isOpen?.()&&performance.now()-lastForwardInput>280)next();
+      return;
+    }
+    armBrowserBack();
   });
   function sideAction(button){
-    if(button===3)lastBackInput=performance.now();
+    if(window.LargaQA?.side?.(button===3?-1:1))return;
+    if(button===3)lastBackInput=performance.now();else lastForwardInput=performance.now();
     enqueue(button===3?-1:1);
   }
   function sideEvent(event){
@@ -179,10 +209,12 @@
     try{bindSideButtons(frame.contentDocument);}catch{}
   }
   bindSideButtons(document);
+  armBrowserBack();
   window.addEventListener('blur',()=>sidePresses.clear());
 
   controls();stage.focus({preventScroll:true});
   function jump(index){
+    if(window.LargaQA?.isOpen?.())window.LargaQA.close();
     if(animating||window.LargaReview?.isOpen?.())return;
     const value=Math.round(Number(index));if(!Number.isFinite(value)||value<0||value>=scene.beats.length)return;
     const generation=++navigationGeneration;requests.length=0;animating=false;scene.setBeat(value);activeBeat=value;controls();stopVoice();keepBrowserBackLocal();

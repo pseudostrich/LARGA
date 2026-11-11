@@ -19,3 +19,6 @@
 
 .position-matrix .position-column-logo{display:block;height:4.3cqh;width:auto;margin:0 auto;filter:brightness(0) invert(1)}
 .position-matrix thead .position-larga small{font-size:.53cqw;font-weight:500;letter-spacing:.045em;color:#fff;opacity:.88;margin-top:.45cqh}
+.position-focus{position:absolute;left:87.5%;top:-.8cqh;width:12.5%;height:56cqh;border:2px solid #ff7919;border-radius:.7cqw;box-shadow:0 0 2.4cqw #f5660059,inset 0 0 1.6cqw #f566001f;pointer-events:none;transform-origin:50% 0;z-index:2}
+.position-matrix td:not(.position-larga),.position-matrix thead th:not(.position-larga):not(:first-child){opacity:.55}
+.position-matrix .position-status{transform-origin:50% 50%}

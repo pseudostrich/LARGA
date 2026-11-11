@@ -72,3 +72,4 @@
 .scene-01:is([data-beat="2"],[data-beat="3"],[data-beat="4"]) .metric-track{display:none}
 .scene-01:is([data-beat="2"],[data-beat="3"],[data-beat="4"]) .waiting-track{opacity:1;visibility:visible;transition-delay:0s}
 .scene-01:is([data-beat="3"],[data-beat="4"]) .waiting-track>svg{visibility:hidden}
+

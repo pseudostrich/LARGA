@@ -4,7 +4,7 @@
    frames real elements of the running app. */
 (function(){
  'use strict';
- const APP_SRC='assets/product-app-archive/index.html?v=f4g';
+ const APP_SRC='assets/product-app-archive/index.html?v=f5';
  function scene(host){return host.closest('.scene-02');}
  function prepare(host){
   const root=scene(host),screen=root.querySelector('.product-screen');

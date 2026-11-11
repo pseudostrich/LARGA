@@ -10904,29 +10904,41 @@ window.addEventListener(
             "LARGA loaded successfully."
         );
 
-        // Showcase controls for the presentation copy. Move the real Live map
-        // and lift individual app controls onto a separate 16:9 composition.
+        // Film the real app controls in a wide layout, with a persistent copy of its tab bar.
         document.body.classList.add('pitch-demo');
         launchShown=true;
         hide(onboardingScreen);
         selectedRole='commuter';isGuest=true;currentUserName='';
         finishAuthentication();
+
         const pitchRoute=getRouteById('route-1');
         const pitchOrigin='Marfori Heights',pitchPlace='Bankerohan Public Market';
+        const pitchFeatures=['live','guide','trips','discover'];
         const pitchStage=document.createElement('div');
         pitchStage.className='pitch-feature-stage';
-        mainApp.appendChild(pitchStage);
         const pitchMap=document.querySelector('.live-map-section');
         const pitchMapHome=document.createComment('live map position');
         pitchMap.before(pitchMapHome);
         const pitchPanel=document.createElement('div');
         pitchPanel.className='pitch-feature-panel';
-        let pitchShot=null;
-        function clearPitchStage(){
-            pitchMapHome.after(pitchMap);
-            pitchStage.replaceChildren();
-            delete pitchStage.dataset.feature;
-        }
+        const pitchNav=document.createElement('nav');
+        pitchNav.className='pitch-tab-bar';
+        pitchNav.setAttribute('aria-label','LARGA tabs');
+        const pitchTabs=pitchFeatures.map(page=>clonePitch(
+            [...navButtons].find(button=>button.dataset.page===page),'pitch-tab'
+        ));
+        pitchNav.append(...pitchTabs);
+        const pitchHeader=document.createElement('header');
+        pitchHeader.className='pitch-mobile-header';
+        const pitchTitle=document.createElement('strong');
+        const pitchMark=document.createElement('img');
+        pitchMark.src='Assets/larga-wordmark.png';pitchMark.alt='LARGA';
+        pitchHeader.append(pitchTitle,pitchMark);
+        pitchStage.append(pitchPanel,pitchHeader,pitchNav);
+        mainApp.appendChild(pitchStage);
+
+        let pitchShot=null,pitchPlan=null,guideCard=null,pitchEtaObserver=null;
+        const pitchMotion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches;
         function clonePitch(node,tag){
             if(!node)return null;
             const copy=node.cloneNode(true);
@@ -10939,109 +10951,225 @@ window.addEventListener(
         function pitchText(tag,text,style){
             const element=document.createElement(tag);
             element.textContent=text;
-            if(style)element.className=style;
+            element.className=style;
             return element;
         }
-        function showPitchStage(feature){
-            clearPitchStage();
-            pitchStage.dataset.feature=feature;
+        function pitchReveal(node){
+            if(node&&pitchMotion())node.animate(
+                [{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],
+                {duration:350,easing:'cubic-bezier(.22,1,.36,1)'}
+            );
+        }
+        function pitchPress(node){
+            if(!node||!pitchMotion())return;
+            node.animate([
+                {outline:'2px solid transparent',outlineOffset:'4px'},
+                {outline:'2px solid #ff913c',outlineOffset:'1px',offset:.3},
+                {outline:'2px solid transparent',outlineOffset:'6px'}
+            ],{duration:430,easing:'ease-out'});
+        }
+        function pitchType(input,value,duration=510){
+            if(!input)return;
+            if(!pitchMotion()){input.value=value;return;}
+            const start=performance.now();
+            const tick=now=>{
+                if(!input.isConnected)return;
+                const progress=Math.min(1,(now-start)/duration);
+                input.value=value.slice(0,Math.round(value.length*progress));
+                if(progress<1)requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }
+        function clearPitchStage(){
+            pitchEtaObserver?.disconnect();pitchEtaObserver=null;
+            if(pitchMap.parentNode===pitchStage)pitchMapHome.after(pitchMap);
             pitchPanel.replaceChildren();
-            pitchStage.append(pitchPanel);
+            delete pitchStage.dataset.feature;
+            delete pitchStage.dataset.phase;
         }
-        function pitchBoarding(){
-            const marker=pitchText('div','', 'pitch-boarding');
-            marker.append(pitchText('span','', 'pitch-boarding-dot'),pitchText('strong','Board at '+pitchOrigin),pitchText('small',pitchRoute.name+' · '+pitchRoute.short));
-            return marker;
+        function showPitchLiveRoutes(){
+            openPage('live');
+            const cards=[...liveRouteCarousel.querySelectorAll('.live-route-card')];
+            const selected=cards.find(card=>card.dataset.routeId===pitchRoute.id);
+            const list=pitchText('div','','pitch-route-list');
+            for(const card of [selected,...cards.filter(card=>card!==selected).slice(0,2)]){
+                const copy=clonePitch(card,'pitch-live-card');
+                if(copy)list.append(copy);
+            }
+            pitchPanel.append(pitchText('h2','Choose your route','pitch-app-heading'),list);
         }
-        function pitchRouteStroke(){
-            const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-            svg.setAttribute('viewBox','0 0 1200 400');
-            svg.setAttribute('class','pitch-route-stroke');
-            svg.innerHTML='<path d="M30 342H320Q420 342 420 240V155Q420 81 503 81H1125" pathLength="1"/><circle cx="503" cy="81" r="10"/>';
-            return svg;
-        }
-        function showLivePitch(){
-            showPitchStage('live');
+        function openPitchMap(){
             const [lng,lat]=pitchRoute.coordinates[42];
             liveUserCoordinates={lat,lng};
-            openPage('live');
             pitchStage.prepend(pitchMap);
-            void selectLiveRoute('route-1',{fitMap:true}).then(()=>{
+            pitchStage.dataset.phase='tracking';
+            pitchPanel.replaceChildren();
+            void selectLiveRoute(pitchRoute.id,{fitMap:true}).then(()=>{
                 if(pitchShot!==0)return;
                 liveGoogleMap?.resize?.();
             });
             liveGoogleMap?.resize?.();
+            pitchReveal(pitchMap);
+            updateLiveTrackingPanels();
         }
-        function showGuidePitch(){
-            showPitchStage('guide');
-            openPage('guide');setGuideMode('browse');ensureGuideRouteSelected('route-1',false);
-            const card=clonePitch(document.querySelector('.guide-route-card[data-route-id="route-1"]'),'pitch-route-card');
-            if(card)pitchPanel.append(card);
+        function showPitchEta(){
+            updateLiveTrackingPanels();
+            const time=get('liveNearestEta');
+            const eta=pitchText('div','','pitch-eta');
+            const value=pitchText('strong','','pitch-eta-time');
+            eta.append(pitchText('small','ESTIMATED ARRIVAL','pitch-eta-label'),value);
+            pitchPanel.append(eta);
+            const update=()=>{
+                value.textContent=time.textContent;
+                eta.hidden=!/\d/.test(value.textContent);
+            };
+            update();
+            pitchEtaObserver=new MutationObserver(update);
+            pitchEtaObserver.observe(time,{childList:true,subtree:true,characterData:true});
+            pitchReveal(eta);
         }
-        function showTripsPitch(){
-            showPitchStage('trips');
-            openPage('guide');setGuideMode('plan');resetTripPlanView();
-            tripFromInput.value=pitchOrigin;tripToInput.value=pitchPlace;
-            const fields=clonePitch(tripPlannerPanel,'pitch-fields');
-            if(fields){
-                const values=fields.querySelectorAll('input');
-                if(values[0])values[0].value=pitchOrigin;
-                if(values[1])values[1].value=pitchPlace;
-                fields.querySelectorAll('.guide-save-trip-button,.plan-action-bar,.guide-place-results').forEach(node=>node.remove());
-                pitchPanel.append(fields);
+        function showPitchGuide(){
+            openPage('guide');setGuideMode('browse');ensureGuideRouteSelected(pitchRoute.id,false);
+            const cards=[...document.querySelectorAll('.guide-route-card')];
+            const list=pitchText('div','','pitch-route-list');
+            guideCard=clonePitch(cards.find(card=>card.dataset.routeId===pitchRoute.id),'pitch-route-card');
+            if(guideCard)list.append(guideCard);
+            cards.filter(card=>card.dataset.routeId!==pitchRoute.id).slice(0,2).forEach(card=>list.append(clonePitch(card,'pitch-route-card')));
+            pitchPanel.append(pitchText('h2','Popular downtown routes','pitch-app-heading'),list);
+        }
+        function expandPitchGuide(){
+            const list=guideCard?.parentNode;
+            if(!list)return;
+            pitchPress(guideCard);
+            list.classList.add('pitch-guide-selected');
+            const from={label:pitchOrigin},to={label:pitchPlace};
+            const routePlan=findGuideTripPlan(from.label,to.label,[from,to]);
+            const board=routePlan.legs?.find(leg=>leg.route.id===pitchRoute.id)?.board;
+            if(board){
+                const boarding=pitchText('div','','pitch-boarding');
+                boarding.append(pitchText('span','','pitch-boarding-dot'),pitchText('strong','Board near '+board,'pitch-board-name'),pitchText('small',pitchRoute.name,'pitch-board-route'));
+                pitchPanel.append(boarding);
             }
         }
-        function showDiscoverPitch(){
-            showPitchStage('discover');
+        function showPitchTrips(){
+            openPage('trips');
+            const library=pitchText('div','','pitch-library');
+            library.append(clonePitch(get('tripsPage').querySelector('.page-heading'),'pitch-library-heading'));
+            library.append(clonePitch(get('newSavedTripButton'),'pitch-new-trip'));
+            const saved=get('savedRoutesContainer');
+            if(saved.firstElementChild)library.append(clonePitch(saved,'pitch-library-cards'));
+            pitchPanel.replaceChildren(library);
+            pitchReveal(library);
+        }
+        function showPitchPlanner(prefill=false){
+            openPage('guide');setGuideMode('plan');resetTripPlanView();
+            tripFromInput.value=prefill?pitchOrigin:'';
+            tripToInput.value=prefill?pitchPlace:'';
+            const fields=clonePitch(tripPlannerPanel,'pitch-fields');
+            const inputs=fields.querySelectorAll('input');
+            if(inputs[0])inputs[0].value=tripFromInput.value;
+            if(inputs[1])inputs[1].value=tripToInput.value;
+            fields.querySelectorAll('.guide-save-trip-button,.guide-place-results,.planner-field-clear').forEach(node=>node.remove());
+            pitchPanel.replaceChildren(fields);
+            pitchStage.dataset.phase='planner';
+            if(!prefill)pitchType(inputs[0],pitchOrigin);
+        }
+        function planPitchTrip(){
+            tripFromInput.value=pitchOrigin;tripToInput.value=pitchPlace;
+            const from={label:pitchOrigin},to={label:pitchPlace};
+            const plan=findGuideTripPlan(from.label,to.label,[from,to]);
+            if(plan.error)return;
+            plan.endpoints=[from,to];applyTripPlan(plan);
+            pitchPlan=plan;
+            const result=clonePitch(get('tripRideInstructions'),'pitch-trip-result');
+            if(!result)return;
+            const disclosure=result.matches('details')?result:result.querySelector('details');
+            if(disclosure)disclosure.open=true;
+            const save=clonePitch(get('saveSuggestedTripButton'),'pitch-save');
+            if(save&&pitchShot===2)result.append(save);
+            pitchPanel.append(result);
+            pitchStage.dataset.phase='planned';
+        }
+        function savePitchTrip(){
+            if(!pitchPlan)return;
+            const record=prepareSavedPlan(pitchPlan);
+            const previous=savedTrips.find(item=>item.id==='pitch-demo-trip');
+            savedTrips=savedTrips.filter(item=>item.id!=='pitch-demo-trip');
+            const saved={...record,id:'pitch-demo-trip',label:'Bankerohan trip',createdAt:previous?.createdAt??Date.now()};
+            savedTrips.unshift(saved);
+            removeSavedFromRecents(saved);
+            renderSavedRoutes();
+            showPitchTrips();
+            pitchStage.dataset.phase='saved';
+        }
+        function showPitchDiscover(){
             openPage('discover');
+            discoverInput.value='';
+            const search=clonePitch(discoverInput.closest('.discover-search')||discoverInput,'pitch-search');
+            const field=search.matches('input')?search:search.querySelector('input');
+            pitchPanel.append(pitchText('h2','Discover Davao','pitch-app-heading'),search);
+            pitchType(field,pitchPlace,740);
+        }
+        function showPitchPlace(){
             discoverInput.value=pitchPlace;
             const generation=++discoverGeneration;
             discoverResults.replaceChildren();
-            localDiscoverPlaces(pitchPlace).forEach(place=>renderDiscoverPlace(place,generation));
-            const search=clonePitch(discoverInput.closest('.discover-search')||discoverInput,'pitch-search');
-            if(search){
-                const field=search.matches('input')?search:search.querySelector('input');
-                if(field)field.value=pitchPlace;
-                pitchPanel.append(search);
-            }
+            localDiscoverPlaces(pitchPlace).slice(0,1).forEach(place=>renderDiscoverPlace(place,generation));
+            const card=clonePitch(discoverResults.querySelector('.discover-place-card'),'pitch-place');
+            if(card)pitchPanel.append(card);
         }
         window.LargaPitchDemo={
-            clear(){pitchShot=null;clearPitchStage();},
+            clear(){pitchShot=null;pitchPlan=null;clearPitchStage();},
+            open(){
+                this.clear();
+                savedTrips=savedTrips.filter(item=>item.id!=='pitch-demo-trip');
+                renderSavedRoutes();
+                this.show(0);
+                pitchTabs.forEach(tab=>tab.classList.remove('active-nav'));
+            },
+            tap(shot){
+                const tab=pitchTabs[shot];
+                pitchTabs.forEach(button=>button.classList.toggle('active-nav',button===tab));
+                if(!pitchMotion())return;
+                for(const layer of [pitchPanel,pitchMap.parentNode===pitchStage?pitchMap:null]){
+                    layer?.animate([{opacity:1},{opacity:.28}],{duration:175,fill:'none'});
+                }
+                tab.animate([{transform:'scale(1)'},{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:260});
+                const glyph=tab.querySelector('svg');
+                if(glyph)glyph.animate([{filter:'drop-shadow(0 0 0 #ff8736)'},{filter:'drop-shadow(0 0 12px #ff8736)'},{filter:'drop-shadow(0 0 0 #ff8736)'}],{duration:600});
+            },
             show(shot){
                 pitchShot=shot;
-                [showLivePitch,showGuidePitch,showTripsPitch,showDiscoverPitch][shot]?.();
-            },
-            feature(shot){
-                if(shot!==pitchShot)return;
-                if(shot===0){
-                    if(!matchMedia('(prefers-reduced-motion: reduce)').matches)liveGoogleMap?.panBy?.([32,-18],{duration:1100});
-                    updateLiveTrackingPanels();
-                    const eta=clonePitch(get('liveNearestEta'),'pitch-eta');
-                    if(eta?.textContent.trim())pitchPanel.append(eta);
-                    else pitchPanel.append(pitchText('div','Vehicle approaching','pitch-eta'));
-                }else if(shot===1){
-                    pitchStage.prepend(pitchRouteStroke());
-                    pitchPanel.append(pitchBoarding());
-                }else if(shot===2){
-                    const from={label:pitchOrigin},to={label:pitchPlace};
-                    const plan=findGuideTripPlan(from.label,to.label,[from,to]);
-                    if(plan.error)return;
-                    plan.endpoints=[from,to];applyTripPlan(plan);
-                    const result=clonePitch(get('tripRideInstructions'),'pitch-trip-result');
-                    if(result){const disclosure=result.matches('details')?result:result.querySelector('details');if(disclosure)disclosure.open=true;pitchPanel.append(result);}
-                }else{
-                    const card=clonePitch(discoverResults.querySelector('.discover-place-card'),'pitch-place');
-                    if(card)pitchPanel.append(card);
+                clearPitchStage();
+                pitchStage.dataset.feature=pitchFeatures[shot];
+                pitchTitle.textContent=['Live tracking','Route Guide','Your trips','Discover'][shot];
+                [showPitchLiveRoutes,showPitchGuide,showPitchTrips,showPitchDiscover][shot]();
+                const origin=pitchTabs[shot].getBoundingClientRect(),panel=pitchPanel.getBoundingClientRect();
+                if(pitchMotion()){
+                    const x=(origin.left+origin.width/2-panel.left)/panel.width*100;
+                    pitchPanel.style.transformOrigin=x+'% 100%';
+                    pitchPanel.animate([
+                        {opacity:0,transform:'translateY(32px) scale(.92)'},
+                        {opacity:1,transform:'translateY(0) scale(1)'}
+                    ],{duration:540,easing:'cubic-bezier(.22,1,.36,1)'});
                 }
             },
-            finish(shot){
-                if(shot!==pitchShot)return;
-                if(shot===2&&currentTripPlan){
-                    const save=clonePitch(get('saveSuggestedTripButton'),'pitch-save');
-                    if(save){save.textContent='✓ Trip saved';pitchPanel.append(save);}
-                }else if(shot===3){
-                    pitchStage.prepend(pitchRouteStroke());
-                    pitchPanel.querySelector('.main-button')?.classList.add('pitch-plan-focus');
+            action(step){
+                switch(step){
+                    case 'select-route':pitchPress(pitchPanel.querySelector('.pitch-live-card .live-route-select'));break;
+                    case 'track':openPitchMap();break;
+                    case 'eta':showPitchEta();break;
+                    case 'route':expandPitchGuide();break;
+                    case 'new-trip':pitchPress(pitchPanel.querySelector('.pitch-new-trip'));break;
+                    case 'planner':showPitchPlanner();break;
+                    case 'destination':pitchType(pitchPanel.querySelectorAll('.pitch-fields input')[1],pitchPlace,640);break;
+                    case 'plan':pitchPress(pitchPanel.querySelector('.pitch-fields .guide-find-trip-button'));break;
+                    case 'result':planPitchTrip();break;
+                    case 'save':pitchPress(pitchPanel.querySelector('.pitch-save'));break;
+                    case 'saved':savePitchTrip();break;
+                    case 'place':showPitchPlace();break;
+                    case 'plan-place':pitchPress(pitchPanel.querySelector('.pitch-place .main-button'));break;
+                    case 'place-planner':pitchTitle.textContent='Plan a Trip';showPitchPlanner(true);break;
                 }
             }
         };
